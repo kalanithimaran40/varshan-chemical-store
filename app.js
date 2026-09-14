@@ -4211,7 +4211,7 @@ async function syncOrdersFromBackend() {
   } catch (e) {}
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initApplicationLifecycle() {
   // Apply any custom products & price overrides to storefront catalog
   if (typeof window.applyCatalogOverridesToStorefront === 'function') {
     window.applyCatalogOverridesToStorefront();
@@ -4260,22 +4260,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (welcomeScreen) {
       welcomeScreen.classList.add('fade-out');
+      welcomeScreen.style.pointerEvents = 'none';
       setTimeout(() => {
         welcomeScreen.classList.add('hidden');
+        welcomeScreen.style.display = 'none';
         document.body.classList.remove('welcome-active');
         document.documentElement.classList.remove('welcome-active');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
         window.syncModalScrollLock?.();
-      }, 450);
+      }, 350);
     }
   }
 
-  // Click anywhere on welcome screen to enter immediately
+  // Click or touch anywhere on welcome screen to enter immediately
   if (welcomeScreen) {
     welcomeScreen.addEventListener('click', proceedToStorePortal);
+    welcomeScreen.addEventListener('touchstart', proceedToStorePortal, { passive: true });
   }
+  window.addEventListener('keydown', proceedToStorePortal, { once: true });
 
   // Automatic smooth transition
-  autoEnterTimeout = setTimeout(proceedToStorePortal, 2200);
+  autoEnterTimeout = setTimeout(proceedToStorePortal, 1400);
 
   // Automatic MutationObserver to keep body scroll locked when ANY modal opens
   try {
@@ -5168,7 +5174,17 @@ window.submitCustomerLoginForm = function(e) {
   if (typeof window.updateCatalogCategoryCounts === 'function') {
     window.updateCatalogCategoryCounts();
   }
-});
+}
+
+// -----------------------------------------------------------------------------
+// LIFECYCLE DISPATCHER: Reliable execution in all browser states
+// -----------------------------------------------------------------------------
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApplicationLifecycle);
+} else {
+  // DOM is already parsed (interactive or complete), execute immediately!
+  initApplicationLifecycle();
+}
 
 // -----------------------------------------------------------------------------
 // 6. DYNAMIC CATEGORY COUNTS & AUTO-REFLOW FILTERING

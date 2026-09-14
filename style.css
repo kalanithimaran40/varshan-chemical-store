@@ -170,9 +170,15 @@ html.welcome-active::-webkit-scrollbar {
 }
 
 .welcome-screen.fade-out {
-  opacity: 0;
+  opacity: 0 !important;
   transform: scale(1.04);
-  pointer-events: none;
+  pointer-events: none !important;
+}
+
+.welcome-screen.hidden {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }
 
 /* Divine Ambient Aura Background */
