@@ -515,7 +515,11 @@ window.openCustomerLoginModal = function() {
   const modal = document.getElementById('customer-login-modal');
   if (modal) {
     modal.classList.remove('hidden');
-    document.getElementById('standaloneUserName')?.focus();
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.style.zIndex = '99999';
+    setTimeout(() => {
+      document.getElementById('standaloneUserName')?.focus();
+    }, 100);
   }
   window.syncModalScrollLock();
 };
@@ -524,6 +528,7 @@ window.closeCustomerLoginModal = function() {
   const modal = document.getElementById('customer-login-modal');
   if (modal) {
     modal.classList.add('hidden');
+    modal.style.setProperty('display', 'none', 'important');
   }
   window.syncModalScrollLock();
 };
@@ -1007,11 +1012,16 @@ window.openAdminPortalModal = function() {
   if (profileDropdown) profileDropdown.classList.add('hidden');
 
   const customerLoginModal = document.getElementById('customer-login-modal');
-  if (customerLoginModal) customerLoginModal.classList.add('hidden');
+  if (customerLoginModal) {
+    customerLoginModal.classList.add('hidden');
+    customerLoginModal.style.setProperty('display', 'none', 'important');
+  }
 
   const loginModal = document.getElementById('admin-login-modal');
   if (loginModal) {
     loginModal.classList.remove('hidden');
+    loginModal.style.setProperty('display', 'flex', 'important');
+    loginModal.style.zIndex = '999999';
     const passInput = document.getElementById('admin-master-passcode');
     if (passInput) {
       passInput.value = '';
@@ -1023,13 +1033,19 @@ window.openAdminPortalModal = function() {
 
 window.switchToAdminFromCustomerLogin = function() {
   const customerLoginModal = document.getElementById('customer-login-modal');
-  if (customerLoginModal) customerLoginModal.classList.add('hidden');
+  if (customerLoginModal) {
+    customerLoginModal.classList.add('hidden');
+    customerLoginModal.style.setProperty('display', 'none', 'important');
+  }
   window.openAdminPortalModal();
 };
 
 window.closeAdminLoginModal = function() {
   const loginModal = document.getElementById('admin-login-modal');
-  if (loginModal) loginModal.classList.add('hidden');
+  if (loginModal) {
+    loginModal.classList.add('hidden');
+    loginModal.style.setProperty('display', 'none', 'important');
+  }
   window.syncModalScrollLock();
 };
 
@@ -4987,7 +5003,7 @@ window.submitCustomerLoginForm = function(e) {
     if (nameErr) nameErr.classList.remove('visible');
   }
 
-  if (rawMobile.length !== 10) {
+  if (cleanMobile.length !== 10) {
     if (mobileErr) { mobileErr.textContent = 'Enter a valid 10-digit mobile number'; mobileErr.classList.add('visible'); }
     if (isValid && mobileInput) mobileInput.focus();
     isValid = false;
@@ -5015,7 +5031,7 @@ window.submitCustomerLoginForm = function(e) {
 
   const userProfile = {
     name: name,
-    mobile: rawMobile,
+    mobile: cleanMobile,
     address: address,
     email: email || 'customer@varshanchemicals.com'
   };
@@ -5033,10 +5049,15 @@ window.submitCustomerLoginForm = function(e) {
     refreshUserProfileUI();
   }
 
-  // Close Login Modal
+  // Close Login Modal safely and unlock scrolling
   const modal = document.getElementById('customer-login-modal');
   if (modal) {
     modal.classList.add('hidden');
+    modal.style.display = 'none';
+  }
+  window.syncModalScrollLock?.();
+  if (typeof showToast === 'function') {
+    showToast(`✅ Welcome, ${name}! Profile saved successfully.`);
   }
   } catch (err) {
     console.error('Login submit error:', err);
@@ -5149,6 +5170,40 @@ window.submitCustomerLoginForm = function(e) {
       window.handleAdminLogout();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // STORE OWNER ADMIN DIRECT ACCESS (URL ?admin=1, #admin, or Triple-Tap Brand)
+  // ---------------------------------------------------------------------------
+  if (window.location.search.includes('admin') || window.location.hash.includes('admin')) {
+    setTimeout(() => {
+      if (typeof window.triggerAdminDirectAccess === 'function') {
+        window.triggerAdminDirectAccess();
+      } else if (typeof window.openAdminPortalModal === 'function') {
+        window.openAdminPortalModal();
+      }
+    }, 500);
+  }
+
+  // Triple-tap Header Vel Brand Logo to open Store Owner Admin Portal
+  const brandLogoEl = document.getElementById('header-brand-logo');
+  if (brandLogoEl) {
+    let logoTapCount = 0;
+    let logoTapTimer = null;
+    brandLogoEl.addEventListener('click', () => {
+      logoTapCount++;
+      if (logoTapTimer) clearTimeout(logoTapTimer);
+      if (logoTapCount >= 3) {
+        logoTapCount = 0;
+        if (typeof window.triggerAdminDirectAccess === 'function') {
+          window.triggerAdminDirectAccess();
+        } else if (typeof window.openAdminPortalModal === 'function') {
+          window.openAdminPortalModal();
+        }
+      } else {
+        logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 800);
+      }
+    });
+  }
 
   // Sync category counts on startup
   if (typeof window.updateCatalogCategoryCounts === 'function') {
