@@ -176,7 +176,11 @@ window.syncModalScrollLock = function() {
 window.openCartModal = function() {
   renderCartModal();
   const modal = document.getElementById('cart-drawer-modal');
-  if (modal) modal.classList.remove('hidden');
+  if (modal) {
+    modal.classList.remove('hidden');
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.style.zIndex = '99999';
+  }
   window.syncModalScrollLock();
 
   // Pre-fill In-Cart delivery form from remembered user profile
@@ -200,7 +204,10 @@ window.openCartModal = function() {
 
 window.closeCartModal = function() {
   const modal = document.getElementById('cart-drawer-modal');
-  if (modal) modal.classList.add('hidden');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.style.setProperty('display', 'none', 'important');
+  }
   window.syncModalScrollLock();
 };
 
@@ -537,6 +544,7 @@ window.closeSuccessOrderModal = function() {
   const modal = document.getElementById('success-modal');
   if (modal) {
     modal.classList.add('hidden');
+    modal.style.setProperty('display', 'none', 'important');
   }
   window.syncModalScrollLock();
   showToast('🎉 Chemical Dispatch Confirmed! Continue browsing Sivakasi store.');
@@ -636,13 +644,20 @@ window.openCustomerOrdersModal = function() {
   renderCustomerOrdersList();
 
   const modal = document.getElementById('customer-orders-modal');
-  if (modal) modal.classList.remove('hidden');
+  if (modal) {
+    modal.classList.remove('hidden');
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.style.zIndex = '99999';
+  }
   window.syncModalScrollLock();
 };
 
 window.closeCustomerOrdersModal = function() {
   const modal = document.getElementById('customer-orders-modal');
-  if (modal) modal.classList.add('hidden');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.style.setProperty('display', 'none', 'important');
+  }
   window.syncModalScrollLock();
 };
 
@@ -650,6 +665,8 @@ window.openStoreAboutModal = function() {
   const modal = document.getElementById('store-about-modal');
   if (modal) {
     modal.classList.remove('hidden');
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.style.zIndex = '99999';
   }
   window.syncModalScrollLock();
 };
@@ -658,6 +675,7 @@ window.closeStoreAboutModal = function() {
   const modal = document.getElementById('store-about-modal');
   if (modal) {
     modal.classList.add('hidden');
+    modal.style.setProperty('display', 'none', 'important');
   }
   window.syncModalScrollLock();
 };
@@ -4248,6 +4266,7 @@ function initApplicationLifecycle() {
   function proceedToStorePortal() {
     if (hasEntered) return;
     hasEntered = true;
+    try { sessionStorage.setItem('varshan_store_entered', '1'); } catch (e) {}
     if (autoEnterTimeout) clearTimeout(autoEnterTimeout);
 
     if (storePortal) {
@@ -4276,8 +4295,12 @@ function initApplicationLifecycle() {
   }
   window.addEventListener('keydown', proceedToStorePortal, { once: true });
 
-  // Automatic smooth transition
-  autoEnterTimeout = setTimeout(proceedToStorePortal, 1400);
+  // Automatic smooth transition (instant if already visited this session)
+  if (sessionStorage.getItem('varshan_store_entered') === '1') {
+    proceedToStorePortal();
+  } else {
+    autoEnterTimeout = setTimeout(proceedToStorePortal, 800);
+  }
 
   // Automatic MutationObserver to keep body scroll locked when ANY modal opens
   try {
@@ -4788,7 +4811,12 @@ function initApplicationLifecycle() {
 
       closeCartModal();
       const successModal = document.getElementById('success-modal');
-      if (successModal) successModal.classList.remove('hidden');
+      if (successModal) {
+        successModal.classList.remove('hidden');
+        successModal.style.setProperty('display', 'flex', 'important');
+        successModal.style.zIndex = '99999';
+      }
+      window.syncModalScrollLock();
 
       cartItems = [];
       updateCartBadge();
