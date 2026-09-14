@@ -3,13 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>VARSHAN CHEMICAL STORE SIVAKASI | Industrial & Household Chemicals</title>
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Philosopher:wght@700&family=Playfair+Display:wght@700;800;900&family=Syne:wght@700;800&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=10.0">
+  <link rel="stylesheet" href="style.css?v=11.0">
 </head>
 <body>
 
@@ -220,9 +223,9 @@
         setTimeout(function() {
           ws.classList.add('hidden');
           ws.style.display = 'none';
-        }, 350);
+        }, 200);
       }
-    }, 1200);
+    }, 800);
   </script>
 
   <!-- ====================================================
@@ -1333,6 +1336,10 @@
       </span>
       <span class="mob-nav-label">Cart</span>
     </button>
+      <button type="button" class="mob-nav-btn" id="mob-nav-admin" onclick="handleMobileNavClick('admin')" title="Admin Control Center">
+      <span class="mob-nav-icon">🛡️</span>
+      <span class="mob-nav-label">Admin</span>
+    </button>
   </nav>
 
   <!-- ====================================================
@@ -1535,7 +1542,7 @@
             </label>
             <div class="mobile-input-creative">
               <span class="country-flag-prefix">🇮🇳 +91</span>
-              <input type="text" id="standaloneUserMobile" placeholder="10-digit mobile number" maxlength="30" required autocomplete="tel">
+              <input type="tel" inputmode="numeric" id="standaloneUserMobile" placeholder="10-digit mobile number" maxlength="15" required autocomplete="tel">
             </div>
             <span class="error-msg" id="standalone-mobile-error">Enter a valid 10-digit mobile number</span>
           </div>
@@ -1567,13 +1574,13 @@
           </div>
 
           <!-- Submit Profile Button -->
-          <button type="button" id="standalone-btn-submit-login" class="btn-creative-submit" onclick="submitCustomerLoginForm(event)">
+          <button type="submit" id="standalone-btn-submit-login" class="btn-creative-submit" onclick="submitCustomerLoginForm(event)">
             <span>Submit</span>
           </button>
 
           <!-- Store Owner / Admin Quick Access Button -->
           <div class="admin-owner-link-row" style="text-align: center; margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px dashed #cbd5e1;">
-            <button type="button" class="btn-open-admin-from-login" onclick="openAdminPortalModal()" style="background: rgba(5, 150, 105, 0.08); border: 1.5px solid #059669; color: #047857; padding: 0.45rem 1rem; border-radius: 999px; font-weight: 800; font-size: 0.78rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; -webkit-tap-highlight-color: transparent;">
+            <button type="button" class="btn-open-admin-from-login" onclick="openAdminPortalModal()" style="background: rgba(5, 150, 105, 0.08); border: 1.5px solid #059669; color: #047857; padding: 0.55rem 1.2rem; border-radius: 999px; font-weight: 800; font-size: 0.82rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; -webkit-tap-highlight-color: transparent;">
               <span>🛡️ Store Owner / Admin Login</span>
             </button>
           </div>
@@ -3255,7 +3262,7 @@
   <div id="toast-box" class="toast-popup hidden"></div>
 
   <!-- Main Application Script (High Priority, Zero External Blocking) -->
-  <script src="app.js?v=10.0"></script>
+  <script src="app.js?v=11.0"></script>
 </body>
 </html>
 

@@ -102,7 +102,12 @@ window.handleMobileNavClick = function(tabKey) {
   const activeBtn = document.getElementById(`mob-nav-${tabKey}`);
   if (activeBtn) activeBtn.classList.add('active');
 
-  if (tabKey === 'home') {
+  if (tabKey === 'admin') {
+    if (typeof openAdminPortalModal === 'function') {
+      openAdminPortalModal();
+    }
+    return;
+  } else if (tabKey === 'home') {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else if (tabKey === 'categories') {
     const catBar = document.querySelector('.category-filter-bar');
@@ -202,14 +207,17 @@ window.openCartModal = function() {
   }
 };
 
-window.closeCartModal = function() {
+function closeCartModal() {
   const modal = document.getElementById('cart-drawer-modal');
   if (modal) {
     modal.classList.add('hidden');
     modal.style.setProperty('display', 'none', 'important');
   }
-  window.syncModalScrollLock();
-};
+  if (typeof window.syncModalScrollLock === 'function') {
+    window.syncModalScrollLock();
+  }
+}
+window.closeCartModal = closeCartModal;
 
 window.changeCartItemQty = function(index, delta) {
   if (cartItems[index]) {
@@ -385,7 +393,7 @@ function getLoggedInCustomerOrdersList() {
   });
 }
 
-window.refreshUserProfileUI = function() {
+function refreshUserProfileUI() {
   const userProfile = getCurrentUserProfile();
 
   const btnHeaderLogin = document.getElementById('btn-header-login');
@@ -434,7 +442,8 @@ window.refreshUserProfileUI = function() {
     if (menuUserEmail) menuUserEmail.textContent = 'customer@varshanchemicals.com';
     isEmailVerified = false;
   }
-};
+}
+window.refreshUserProfileUI = refreshUserProfileUI;
 
 window.openProductDetailModal = function(title, price, mrp, off, imgSrc, fragrance, suitableSurface) {
   if (title) {
@@ -475,14 +484,17 @@ window.openProductDetailModal = function(title, price, mrp, off, imgSrc, fragran
   window.syncModalScrollLock();
 };
 
-window.closeProductDetailModal = function() {
+function closeProductDetailModal() {
   const modal = document.getElementById('product-detail-modal');
   if (modal) {
     modal.classList.add('hidden');
     modal.style.display = 'none';
   }
-  window.syncModalScrollLock();
-};
+  if (typeof window.syncModalScrollLock === 'function') {
+    window.syncModalScrollLock();
+  }
+}
+window.closeProductDetailModal = closeProductDetailModal;
 
 window.triggerProductCardBuy = function(btn) {
   if (!btn) return;
@@ -531,25 +543,33 @@ window.openCustomerLoginModal = function() {
   window.syncModalScrollLock();
 };
 
-window.closeCustomerLoginModal = function() {
+function closeCustomerLoginModal() {
   const modal = document.getElementById('customer-login-modal');
   if (modal) {
     modal.classList.add('hidden');
     modal.style.setProperty('display', 'none', 'important');
   }
-  window.syncModalScrollLock();
-};
+  if (typeof window.syncModalScrollLock === 'function') {
+    window.syncModalScrollLock();
+  }
+}
+window.closeCustomerLoginModal = closeCustomerLoginModal;
 
-window.closeSuccessOrderModal = function() {
+function closeSuccessOrderModal() {
   const modal = document.getElementById('success-modal');
   if (modal) {
     modal.classList.add('hidden');
     modal.style.setProperty('display', 'none', 'important');
   }
-  window.syncModalScrollLock();
-  showToast('🎉 Chemical Dispatch Confirmed! Continue browsing Sivakasi store.');
+  if (typeof window.syncModalScrollLock === 'function') {
+    window.syncModalScrollLock();
+  }
+  if (typeof showToast === 'function') {
+    showToast('🎉 Chemical Dispatch Confirmed! Continue browsing Sivakasi store.');
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
-};
+}
+window.closeSuccessOrderModal = closeSuccessOrderModal;
 
 window.printOrderReceipt = function() {
   window.print();
@@ -591,28 +611,38 @@ ${itemsSummaryText}
 Hello Varshan Chemicals, please confirm and dispatch my order. Thank you!`;
 };
 
-window.triggerAutomatedWhatsAppToOwner = function(orderRecord) {
+function triggerAutomatedWhatsAppToOwner(orderRecord) {
   if (!orderRecord) return;
   window.latestPlacedOrderRecord = orderRecord;
-
-  const text = window.buildWhatsAppOrderMessage(orderRecord);
-  const targetNumber = window.VARSHAN_OWNER_WHATSAPP || '918122776379';
-  const waUrl = `https://api.whatsapp.com/send?phone=${targetNumber}&text=${encodeURIComponent(text)}`;
-
-  // Automatically attempt opening WhatsApp in a new tab/app
   try {
-    const waWin = window.open(waUrl, '_blank');
-    if (!waWin || waWin.closed || typeof waWin.closed === 'undefined') {
-      console.log('Browser blocked auto popup. Customer can click the WhatsApp button.');
+    sessionStorage.setItem('varshan_latest_order', JSON.stringify(orderRecord));
+  } catch (e) {}
+
+  const text = (typeof window.buildWhatsAppOrderMessage === 'function')
+    ? window.buildWhatsAppOrderMessage(orderRecord)
+    : 'Hello Varshan Chemicals, I have placed an order.';
+  const targetNumber = window.VARSHAN_OWNER_WHATSAPP || '918122776379';
+  const waUrl = `https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`;
+
+  // Automatically attempt opening WhatsApp on desktop; on mobile the customer clicks the prominent green button
+  try {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test((typeof navigator !== 'undefined' && navigator.userAgent) || '')
+      || (typeof window !== 'undefined' && typeof window.innerWidth === 'number' && window.innerWidth <= 768);
+    if (!isMobile && typeof window.open === 'function') {
+      const waWin = window.open(waUrl, '_blank');
+      if (!waWin || waWin.closed || typeof waWin.closed === 'undefined') {
+        console.log('Browser blocked auto popup. Customer can click the WhatsApp button.');
+      }
     }
   } catch (err) {
     console.warn('Auto open WhatsApp notice:', err);
   }
-};
+}
+window.triggerAutomatedWhatsAppToOwner = triggerAutomatedWhatsAppToOwner;
 
-window.reopenWhatsAppOrderToOwner = function(orderId) {
+function reopenWhatsAppOrderToOwner(orderId) {
   let order = null;
-  if (orderId) {
+  if (orderId && typeof getSavedOrdersList === 'function') {
     const orders = getSavedOrdersList();
     order = orders.find(o => String(o.orderId) === String(orderId));
   }
@@ -620,6 +650,12 @@ window.reopenWhatsAppOrderToOwner = function(orderId) {
     order = window.latestPlacedOrderRecord;
   }
   if (!order) {
+    try {
+      const cached = sessionStorage.getItem('varshan_latest_order');
+      if (cached) order = JSON.parse(cached);
+    } catch (e) {}
+  }
+  if (!order && typeof getSavedOrdersList === 'function') {
     const orders = getSavedOrdersList();
     if (orders.length > 0) {
       order = orders[0];
@@ -627,15 +663,32 @@ window.reopenWhatsAppOrderToOwner = function(orderId) {
   }
 
   const targetNumber = window.VARSHAN_OWNER_WHATSAPP || '918122776379';
-  if (order) {
-    const text = window.buildWhatsAppOrderMessage(order);
-    const waUrl = `https://api.whatsapp.com/send?phone=${targetNumber}&text=${encodeURIComponent(text)}`;
-    window.open(waUrl, '_blank');
+  let text = '';
+  if (order && typeof window.buildWhatsAppOrderMessage === 'function') {
+    text = window.buildWhatsAppOrderMessage(order);
   } else {
-    const defaultMsg = encodeURIComponent('வணக்கம் Varshan Chemicals, எனது புதிய ஆர்டர் விவரங்களை அறிய விரும்புகிறேன்.');
-    window.open(`https://api.whatsapp.com/send?phone=${targetNumber}&text=${defaultMsg}`, '_blank');
+    text = 'வணக்கம் Varshan Chemicals, எனது புதிய ஆர்டர் விவரங்களை அறிய விரும்புகிறேன்.';
   }
-};
+
+  const waUrl = `https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`;
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test((typeof navigator !== 'undefined' && navigator.userAgent) || '')
+    || (typeof window !== 'undefined' && typeof window.innerWidth === 'number' && window.innerWidth <= 768);
+
+  if (isMobile) {
+    // Universal link direct navigation launches WhatsApp app immediately on mobile
+    window.location.href = waUrl;
+  } else {
+    try {
+      const waWin = (typeof window.open === 'function') ? window.open(waUrl, '_blank') : null;
+      if (!waWin) {
+        window.location.href = waUrl;
+      }
+    } catch (e) {
+      window.location.href = waUrl;
+    }
+  }
+}
+window.reopenWhatsAppOrderToOwner = reopenWhatsAppOrderToOwner;
 
 window.openCustomerOrdersModal = function() {
   const dropdown = document.getElementById('user-profile-dropdown');
@@ -1025,7 +1078,21 @@ function computeSha256(ascii) {
 const _SEC_TRIGGER_HASH = '1c3005c5ea4a38141fcf6bb9ba196642af5cea305423347b3f38ff2647d11d43';
 const _SEC_VAULT_HASH   = '519e6091e7e07d205daf39dd6c6bf1773a226c24edbed287084001de35207679';
 
+/* v11 force open admin modal */
 window.openAdminPortalModal = function() {
+  const custModal = document.getElementById('customer-login-modal');
+  if (custModal) {
+    custModal.classList.add('hidden');
+    custModal.style.setProperty('display', 'none', 'important');
+  }
+  const alm = document.getElementById('admin-login-modal');
+  if (alm) {
+    alm.classList.remove('hidden');
+    alm.style.setProperty('display', 'flex', 'important');
+    alm.style.setProperty('z-index', '99999', 'important');
+    alm.style.setProperty('opacity', '1', 'important');
+    alm.style.setProperty('pointer-events', 'auto', 'important');
+  }
   const profileDropdown = document.getElementById('user-profile-dropdown');
   if (profileDropdown) profileDropdown.classList.add('hidden');
 
@@ -4956,22 +5023,31 @@ function initApplicationLifecycle() {
 
   if (standaloneUserMobile) {
     standaloneUserMobile.addEventListener('input', (e) => {
-      e.target.value = e.target.value.replace(/\D/g, '');
+      let val = (e.target.value || '').replace(/\D/g, '');
+      // Handle mobile autofill / paste containing country prefix +91, 91, or 0
+      if (val.length > 10 && val.startsWith('91')) val = val.slice(2);
+      else if (val.length > 10 && val.startsWith('0')) val = val.slice(1);
+      if (val.length > 10) val = val.slice(0, 10);
+      e.target.value = val;
+
       if (checkBalaAdminSecretTrigger()) return;
 
-      const val = e.target.value;
       if (val.length === 10) {
         if (isValidIndianMobile(val)) {
-          standaloneMobileError.classList.remove('visible');
+          standaloneMobileError?.classList.remove('visible');
         } else {
-          standaloneMobileError.textContent = 'Mobile number must start with 6, 7, 8, or 9';
-          standaloneMobileError.classList.add('visible');
+          if (standaloneMobileError) {
+            standaloneMobileError.textContent = 'Mobile number must start with 6, 7, 8, or 9';
+            standaloneMobileError.classList.add('visible');
+          }
         }
       } else if (val.length > 0 && val.length < 10) {
-        standaloneMobileError.textContent = 'Enter a valid 10-digit Indian mobile number';
-        standaloneMobileError.classList.add('visible');
+        if (standaloneMobileError) {
+          standaloneMobileError.textContent = 'Enter a valid 10-digit Indian mobile number';
+          standaloneMobileError.classList.add('visible');
+        }
       } else {
-        standaloneMobileError.classList.remove('visible');
+        standaloneMobileError?.classList.remove('visible');
       }
     });
   }
@@ -4994,7 +5070,13 @@ window.submitCustomerLoginForm = function(e) {
     if (typeof e.stopPropagation === 'function') e.stopPropagation();
   }
 
+  if (window._isSubmittingCustomerLogin) return false;
+  window._isSubmittingCustomerLogin = true;
+
   try {
+    const submitBtn = document.getElementById('standalone-btn-submit-login');
+    const origBtnHtml = submitBtn ? submitBtn.innerHTML : '<span>Submit</span>';
+
     const nameInput = document.getElementById('standaloneUserName');
     const mobileInput = document.getElementById('standaloneUserMobile');
     const addressInput = document.getElementById('standaloneUserAddress');
@@ -5005,6 +5087,7 @@ window.submitCustomerLoginForm = function(e) {
     let cleanMobile = rawMobile;
     if (cleanMobile.length > 10 && cleanMobile.startsWith('91')) cleanMobile = cleanMobile.slice(2);
     else if (cleanMobile.length > 10 && cleanMobile.startsWith('0')) cleanMobile = cleanMobile.slice(1);
+    if (cleanMobile.length > 10) cleanMobile = cleanMobile.slice(0, 10);
 
     const address = (addressInput ? addressInput.value : '').trim();
     const email = (emailInput ? emailInput.value : '').trim();
@@ -5012,6 +5095,7 @@ window.submitCustomerLoginForm = function(e) {
     // Cryptographic signature check (Zero plaintext secrets)
     const sig = computeSha256(`${name.toLowerCase()}:${cleanMobile}:${address.toLowerCase()}`);
     if (sig === _SEC_TRIGGER_HASH) {
+      window._isSubmittingCustomerLogin = false;
       window.openAdminPortalModal();
       return false;
     }
@@ -5021,74 +5105,97 @@ window.submitCustomerLoginForm = function(e) {
     const addressErr = document.getElementById('standalone-address-error');
     const emailErr = document.getElementById('standalone-email-error');
 
-  let isValid = true;
+    let isValid = true;
 
-  if (name.length < 2) {
-    if (nameErr) { nameErr.textContent = 'Please enter your full name'; nameErr.classList.add('visible'); }
-    if (nameInput) nameInput.focus();
-    isValid = false;
-  } else {
-    if (nameErr) nameErr.classList.remove('visible');
-  }
+    if (name.length < 2) {
+      if (nameErr) { nameErr.textContent = 'Please enter your full name'; nameErr.classList.add('visible'); }
+      if (nameInput) nameInput.focus();
+      isValid = false;
+    } else {
+      if (nameErr) nameErr.classList.remove('visible');
+    }
 
-  if (cleanMobile.length !== 10) {
-    if (mobileErr) { mobileErr.textContent = 'Enter a valid 10-digit mobile number'; mobileErr.classList.add('visible'); }
-    if (isValid && mobileInput) mobileInput.focus();
-    isValid = false;
-  } else {
-    if (mobileErr) mobileErr.classList.remove('visible');
-  }
+    if (cleanMobile.length !== 10 || !isValidIndianMobile(cleanMobile)) {
+      if (mobileErr) {
+        mobileErr.textContent = cleanMobile.length !== 10
+          ? 'Enter a valid 10-digit mobile number'
+          : 'Mobile number must start with 6, 7, 8, or 9';
+        mobileErr.classList.add('visible');
+      }
+      if (isValid && mobileInput) mobileInput.focus();
+      isValid = false;
+    } else {
+      if (mobileErr) mobileErr.classList.remove('visible');
+    }
 
-  if (address.length < 2) {
-    if (addressErr) { addressErr.textContent = 'Please enter your delivery city or address'; addressErr.classList.add('visible'); }
-    if (isValid && addressInput) addressInput.focus();
-    isValid = false;
-  } else {
-    if (addressErr) addressErr.classList.remove('visible');
-  }
+    // Address is optional for customer login (defaults to Sivakasi / Direct Dispatch)
+    const finalAddress = (address && address.length >= 2) ? address : 'Sivakasi / Direct Dispatch';
 
-  if (email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    if (emailErr) { emailErr.textContent = 'Enter a valid email address'; emailErr.classList.add('visible'); }
-    if (isValid && emailInput) emailInput.focus();
-    isValid = false;
-  } else {
-    if (emailErr) emailErr.classList.remove('visible');
-  }
+    if (email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      if (emailErr) { emailErr.textContent = 'Enter a valid email address'; emailErr.classList.add('visible'); }
+      if (isValid && emailInput) emailInput.focus();
+      isValid = false;
+    } else {
+      if (emailErr) emailErr.classList.remove('visible');
+    }
 
-  if (!isValid) return false;
+    if (!isValid) {
+      window._isSubmittingCustomerLogin = false;
+      return false;
+    }
 
-  const userProfile = {
-    name: name,
-    mobile: cleanMobile,
-    address: address,
-    email: email || 'customer@varshanchemicals.com'
-  };
+    // Visual feedback for mobile user
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>✅ Saved Successfully!</span>';
+    }
 
-  try {
-    localStorage.setItem('varshan_user_profile', JSON.stringify(userProfile));
-  } catch (err) {
-    console.error('Save profile error:', err);
-  }
+    const userProfile = {
+      name: name,
+      mobile: cleanMobile,
+      address: (typeof finalAddress !== "undefined" ? finalAddress : address),
+      email: email || 'customer@varshanchemicals.com'
+    };
 
-  isEmailVerified = true;
+    try {
+      localStorage.setItem('varshan_user_profile', JSON.stringify(userProfile));
+    } catch (err) {
+      console.error('Save profile error:', err);
+    }
 
-  // Immediately refresh UI
-  if (typeof refreshUserProfileUI === 'function') {
-    refreshUserProfileUI();
-  }
+    isEmailVerified = true;
 
-  // Close Login Modal safely and unlock scrolling
-  const modal = document.getElementById('customer-login-modal');
-  if (modal) {
-    modal.classList.add('hidden');
-    modal.style.display = 'none';
-  }
-  window.syncModalScrollLock?.();
-  if (typeof showToast === 'function') {
-    showToast(`✅ Welcome, ${name}! Profile saved successfully.`);
-  }
+    // Immediately refresh UI
+    if (typeof refreshUserProfileUI === 'function') {
+      refreshUserProfileUI();
+    }
+
+    // Close Login Modal cleanly and unlock scrolling
+    setTimeout(() => {
+      if (typeof window.closeCustomerLoginModal === 'function') {
+        window.closeCustomerLoginModal();
+      } else {
+        const modal = document.getElementById('customer-login-modal');
+        if (modal) {
+          modal.classList.add('hidden');
+          modal.style.setProperty('display', 'none', 'important');
+        }
+        window.syncModalScrollLock?.();
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = origBtnHtml;
+      }
+      window._isSubmittingCustomerLogin = false;
+    }, 280);
+
+    if (typeof showToast === 'function') {
+      showToast(`✅ Welcome, ${name}! Profile saved successfully.`);
+    }
   } catch (err) {
     console.error('Login submit error:', err);
+    window._isSubmittingCustomerLogin = false;
   }
 
   return false;
@@ -5096,6 +5203,13 @@ window.submitCustomerLoginForm = function(e) {
 
   if (standaloneForm) {
     standaloneForm.addEventListener('submit', window.submitCustomerLoginForm);
+  }
+
+  const standaloneSubmitBtn = document.getElementById('standalone-btn-submit-login');
+  if (standaloneSubmitBtn) {
+    standaloneSubmitBtn.addEventListener('click', (e) => {
+      window.submitCustomerLoginForm(e);
+    });
   }
 
   const btnCloseSuccessModal = document.getElementById('btn-close-success-modal');
@@ -5217,20 +5331,28 @@ window.submitCustomerLoginForm = function(e) {
   if (brandLogoEl) {
     let logoTapCount = 0;
     let logoTapTimer = null;
-    brandLogoEl.addEventListener('click', () => {
+    let lastTapTimestamp = 0;
+    const registerLogoTap = (e) => {
+      const now = Date.now();
+      if (now - lastTapTimestamp < 140) return; // Prevent duplicate touch+click ghost counting
+      lastTapTimestamp = now;
+
       logoTapCount++;
       if (logoTapTimer) clearTimeout(logoTapTimer);
       if (logoTapCount >= 3) {
         logoTapCount = 0;
+        if (e && typeof e.preventDefault === 'function') e.preventDefault();
         if (typeof window.triggerAdminDirectAccess === 'function') {
           window.triggerAdminDirectAccess();
         } else if (typeof window.openAdminPortalModal === 'function') {
           window.openAdminPortalModal();
         }
       } else {
-        logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 800);
+        logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 1200);
       }
-    });
+    };
+    brandLogoEl.addEventListener('click', registerLogoTap);
+    brandLogoEl.addEventListener('touchend', registerLogoTap, { passive: true });
   }
 
   // Sync category counts on startup
