@@ -16,7 +16,7 @@
   <!-- ====================================================
        1. WELCOME SCREEN (MAJESTIC LORD MURUGAN SACRED VEL HERO SHOWPIECE)
        ==================================================== -->
-  <section id="welcome-screen" class="welcome-screen">
+  <section id="welcome-screen" class="welcome-screen" onclick="this.classList.add('fade-out'); setTimeout(() => this.classList.add('hidden'), 350);">
     <!-- Divine ambient background aura & floating sparkles -->
     <div class="divine-bg-aura"></div>
     <div class="divine-sparkles-layer">
@@ -210,6 +210,20 @@
 
     </div>
   </section>
+
+  <script>
+    setTimeout(function() {
+      var ws = document.getElementById('welcome-screen');
+      if (ws) {
+        ws.classList.add('fade-out');
+        ws.style.pointerEvents = 'none';
+        setTimeout(function() {
+          ws.classList.add('hidden');
+          ws.style.display = 'none';
+        }, 350);
+      }
+    }, 1200);
+  </script>
 
   <!-- ====================================================
        2. MAIN CHEMICAL STORE PORTAL (FULL CATALOG + SIVAKASI BRANDING)
@@ -3237,7 +3251,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js" defer></script>
   <!-- EmailJS SDK (Loaded asynchronously with defer for zero render blocking) -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
-  <script src="app.js?v=6.2" defer></script>
+  <script src="app.js?v=7.0"></script>
 </body>
 </html>
 
