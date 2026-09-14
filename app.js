@@ -482,36 +482,16 @@ window.triggerProductCardBuy = function(btn) {
   const card = btn.closest('.compact-card');
   if (!card) return;
 
-  // 1. Direct trigger via title onclick if present
   const titleEl = card.querySelector('.comp-title');
-  if (titleEl && typeof titleEl.onclick === 'function') {
-    titleEl.onclick();
-    return;
-  }
-  if (titleEl && titleEl.getAttribute('onclick')) {
-    titleEl.click();
-    return;
-  }
-
-  // 2. Direct trigger via img-box onclick if present
-  const imgBox = card.querySelector('.compact-img-box');
-  if (imgBox && typeof imgBox.onclick === 'function') {
-    imgBox.onclick();
-    return;
-  }
-  if (imgBox && imgBox.getAttribute('onclick')) {
-    imgBox.click();
-    return;
-  }
-
-  // 3. Fallback: Parse card elements directly
-  const title = titleEl?.textContent?.trim() || 'VARSHAN Chemical Product';
+  const title = titleEl?.textContent?.trim() || card.getAttribute('data-title') || 'VARSHAN Chemical Product';
   const price = card.querySelector('.comp-curr-price')?.textContent?.trim() || '₹149';
   const mrp = card.querySelector('.comp-mrp')?.textContent?.trim() || '₹220';
   const off = card.querySelector('.comp-off')?.textContent?.trim() || '32% off';
   const imgSrc = card.querySelector('.compact-bottle-img')?.getAttribute('src') || 'varshan_phenyl_perfect.png';
+  
   window.openProductDetailModal(title, price, mrp, off, imgSrc, 'Standard Safe Formula', 'All Floors, Tiles & Restroom Areas');
 };
+
 
 window.openCustomerLoginModal = function() {
   let userProfile = null;

@@ -9,14 +9,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Philosopher:wght@700&family=Playfair+Display:wght@700;800;900&family=Syne:wght@700;800&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=6.0">
+  <link rel="stylesheet" href="style.css?v=8.0">
 </head>
 <body>
 
   <!-- ====================================================
        1. WELCOME SCREEN (MAJESTIC LORD MURUGAN SACRED VEL HERO SHOWPIECE)
        ==================================================== -->
-  <section id="welcome-screen" class="welcome-screen" onclick="this.classList.add('fade-out'); setTimeout(() => this.classList.add('hidden'), 350);">
+  <section id="welcome-screen" class="welcome-screen" onclick="this.classList.add('fade-out'); setTimeout(() => { this.classList.add('hidden'); this.style.display='none'; }, 300);" ontouchstart="this.classList.add('fade-out'); setTimeout(() => { this.classList.add('hidden'); this.style.display='none'; }, 300);">
     <!-- Divine ambient background aura & floating sparkles -->
     <div class="divine-bg-aura"></div>
     <div class="divine-sparkles-layer">
@@ -3247,11 +3247,8 @@
   <!-- Toast Notification Box -->
   <div id="toast-box" class="toast-popup hidden"></div>
 
-  <!-- DOMPurify (Clientside XSS Sanitization) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js" defer></script>
-  <!-- EmailJS SDK (Loaded asynchronously with defer for zero render blocking) -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
-  <script src="app.js?v=7.0"></script>
+  <!-- Main Application Script (High Priority, Zero External Blocking) -->
+  <script src="app.js?v=8.0"></script>
 </body>
 </html>
 

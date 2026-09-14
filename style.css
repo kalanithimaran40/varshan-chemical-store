@@ -1510,6 +1510,8 @@ html.welcome-active::-webkit-scrollbar {
   font-size: 0.76rem;
   font-weight: 700;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 0 0.4rem;
   white-space: nowrap;
@@ -1541,6 +1543,8 @@ html.welcome-active::-webkit-scrollbar {
   font-size: 0.76rem;
   font-weight: 700;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 0 0.4rem;
   white-space: nowrap;
