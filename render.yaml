@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: varshan-chemical-store
+    env: node
+    plan: free
+    buildCommand: npm --prefix server install
+    startCommand: node server/src/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true

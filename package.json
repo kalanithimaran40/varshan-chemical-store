@@ -1,0 +1,21 @@
+{
+  "name": "varshan-chemical-store-sivakasi",
+  "version": "1.0.0",
+  "description": "Varshan Chemical Store & Enterprise Factory Admin Dashboard",
+  "main": "server/src/server.js",
+  "scripts": {
+    "start": "node server/src/server.js",
+    "server": "npm --prefix server start",
+    "dev": "npm --prefix server run dev",
+    "postinstall": "npm --prefix server install"
+  },
+  "keywords": [
+    "chemical-store",
+    "sivakasi",
+    "enterprise-admin",
+    "erp",
+    "ecommerce"
+  ],
+  "author": "Varshan Chemicals",
+  "license": "ISC"
+}
