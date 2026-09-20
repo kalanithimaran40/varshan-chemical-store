@@ -103,31 +103,28 @@ window.handleMobileNavClick = function(tabKey) {
   if (activeBtn) activeBtn.classList.add('active');
 
   // Close open modals when switching bottom tabs to prevent lock-in
-  if (tabKey !== 'cart' && typeof closeCartModal === 'function') closeCartModal();
-  if (typeof closeProductDetailModal === 'function') closeProductDetailModal();
-  if (tabKey !== 'orders' && typeof closeCustomerOrdersModal === 'function') closeCustomerOrdersModal();
-  if (tabKey !== 'admin' && typeof closeAdminDashboardModal === 'function') closeAdminDashboardModal();
-  if (typeof closeCustomerLoginModal === 'function') closeCustomerLoginModal();
+  if (tabKey !== 'cart' && typeof window.closeCartModal === 'function') window.closeCartModal();
+  if (typeof window.closeProductDetailModal === 'function') window.closeProductDetailModal();
+  if (tabKey !== 'orders' && typeof window.closeCustomerOrdersModal === 'function') window.closeCustomerOrdersModal();
+  if (typeof window.closeCustomerLoginModal === 'function') window.closeCustomerLoginModal();
 
-  if (tabKey === 'admin') {
-    if (typeof openAdminPortalModal === 'function') {
-      openAdminPortalModal();
-    }
-    return;
-  } else if (tabKey === 'home') {
+  if (tabKey === 'home') {
+    if (typeof filterCatalogCategory === 'function') filterCatalogCategory('all');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else if (tabKey === 'categories') {
     const catBar = document.querySelector('.category-filter-bar');
     if (catBar) {
       catBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.scrollTo({ top: 180, behavior: 'smooth' });
     }
   } else if (tabKey === 'orders') {
-    if (typeof openCustomerOrdersModal === 'function') {
-      openCustomerOrdersModal();
+    if (typeof window.openCustomerOrdersModal === 'function') {
+      window.openCustomerOrdersModal();
     }
   } else if (tabKey === 'cart') {
-    if (typeof openCartModal === 'function') {
-      openCartModal();
+    if (typeof window.openCartModal === 'function') {
+      window.openCartModal();
     }
   }
 };
@@ -272,10 +269,12 @@ function closeCartModal() {
 window.closeCartModal = closeCartModal;
 
 window.changeCartItemQty = function(index, delta) {
-  if (cartItems[index]) {
-    cartItems[index].quantity += delta;
-    if (cartItems[index].quantity <= 0) {
-      cartItems.splice(index, 1);
+  const i = parseInt(index, 10);
+  const d = parseInt(delta, 10);
+  if (!isNaN(i) && i >= 0 && i < cartItems.length) {
+    cartItems[i].quantity += d;
+    if (cartItems[i].quantity <= 0) {
+      cartItems.splice(i, 1);
     }
     updateCartBadge();
     renderCartModal();
@@ -283,12 +282,15 @@ window.changeCartItemQty = function(index, delta) {
 };
 
 window.removeCartItem = function(index) {
-  if (cartItems[index]) {
-    const removedName = cartItems[index].name;
-    cartItems.splice(index, 1);
+  const i = parseInt(index, 10);
+  if (!isNaN(i) && i >= 0 && i < cartItems.length) {
+    const removedName = cartItems[i].name;
+    cartItems.splice(i, 1);
     updateCartBadge();
     renderCartModal();
-    showToast(`Removed "${removedName}" from cart.`);
+    if (typeof showToast === 'function') {
+      showToast(`Removed "${removedName}" from cart.`);
+    }
   }
 };
 
@@ -326,7 +328,7 @@ function renderCartModal() {
 
   if (container) {
     container.innerHTML = cartItems.map((item, idx) => `
-      <div class="cart-item-card">
+      <div class="cart-item-card" data-index="${idx}">
         <div class="cart-item-left">
           <div class="cart-item-thumb">
             <img src="${item.image}" alt="${item.name}">
@@ -341,14 +343,14 @@ function renderCartModal() {
         </div>
         <div class="cart-item-right">
           <div class="cart-qty-stepper">
-            <button type="button" class="btn-qty-step" onclick="changeCartItemQty(${idx}, -1)" aria-label="Decrease quantity">−</button>
+            <button type="button" class="btn-qty-step" data-index="${idx}" data-delta="-1" onclick="changeCartItemQty(${idx}, -1)" aria-label="Decrease quantity">−</button>
             <span class="cart-qty-value">${item.quantity}</span>
-            <button type="button" class="btn-qty-step" onclick="changeCartItemQty(${idx}, 1)" aria-label="Increase quantity">+</button>
+            <button type="button" class="btn-qty-step" data-index="${idx}" data-delta="1" onclick="changeCartItemQty(${idx}, 1)" aria-label="Increase quantity">+</button>
           </div>
           <div class="cart-item-price-col">
             <span class="cart-item-line-total">₹${item.price * item.quantity}</span>
           </div>
-          <button type="button" class="btn-cart-remove-item" onclick="removeCartItem(${idx})" title="Remove product" aria-label="Remove item">✕</button>
+          <button type="button" class="btn-cart-remove-item" data-index="${idx}" onclick="removeCartItem(${idx})" title="Remove product" aria-label="Remove item">✕</button>
         </div>
       </div>
     `).join('');
@@ -719,17 +721,32 @@ function reopenWhatsAppOrderToOwner(orderId) {
   if (order && typeof window.buildWhatsAppOrderMessage === 'function') {
     text = window.buildWhatsAppOrderMessage(order);
   } else {
-    text = 'வணக்கம் Varshan Chemicals, எனது புதிய ஆர்டர் விவரங்களை அறிய விரும்புகிறேன்.';
+    text = 'வணக்கம் Varshan Chemicals, எனது புதிய ஆர்டரை உறுதி செய்யவும்.';
   }
 
   const waUrl = `https://api.whatsapp.com/send?phone=${targetNumber}&text=${encodeURIComponent(text)}`;
-  try {
-    const waWin = (typeof window.open === 'function') ? window.open(waUrl, '_blank') : null;
-    if (!waWin || waWin.closed || typeof waWin.closed === 'undefined') {
+
+  // Update href on invoice link if present
+  const waBtn = document.getElementById('btn-reopen-wa-order');
+  if (waBtn) {
+    waBtn.href = waUrl;
+  }
+
+  // Mobile detection for direct native app launch
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '')
+    || (window.innerWidth <= 860);
+
+  if (isMobile) {
+    window.location.href = waUrl;
+  } else {
+    try {
+      const waWin = window.open(waUrl, '_blank');
+      if (!waWin) {
+        window.location.href = waUrl;
+      }
+    } catch (e) {
       window.location.href = waUrl;
     }
-  } catch (e) {
-    window.location.href = waUrl;
   }
 }
 window.reopenWhatsAppOrderToOwner = reopenWhatsAppOrderToOwner;
@@ -792,36 +809,33 @@ function renderCustomerOrdersList() {
   if (!container) return;
 
   const userProfile = getCurrentUserProfile();
+  const allOrders = getSavedOrdersList();
 
-  if (!userProfile || !userProfile.name) {
-    if (subtitle) {
-      subtitle.textContent = 'Please login to view your personal order history';
+  // If customer is logged in, prioritize their orders; otherwise display all orders saved on this device
+  let orders = [];
+  if (userProfile && userProfile.name) {
+    orders = getLoggedInCustomerOrdersList();
+    if (orders.length === 0 && allOrders.length > 0) {
+      orders = allOrders;
     }
-    container.innerHTML = `
-      <div class="orders-empty-state">
-        <div class="orders-empty-icon">👤</div>
-        <h4>Customer Login Required</h4>
-        <p>Please log in to your account to view your past purchases and live Flipkart-style dispatch tracking.</p>
-        <button type="button" class="btn-orders-browse" onclick="closeCustomerOrdersModal(); openCustomerLoginModal();">🔑 Login to Account</button>
-      </div>
-    `;
-    return;
+  } else {
+    orders = allOrders;
   }
 
-  // ONLY get orders belonging to the logged-in customer (e.g. Frank or Ashik)
-  const orders = getLoggedInCustomerOrdersList();
-  
   if (subtitle) {
-    subtitle.textContent = `${orders.length} order(s) placed by ${userProfile.name} (+91 ${userProfile.mobile})`;
+    const custLabel = userProfile && userProfile.name ? `${userProfile.name}` : 'this device';
+    subtitle.textContent = orders.length > 0
+      ? `${orders.length} order(s) placed from ${custLabel}`
+      : 'Your Sivakasi factory order history';
   }
 
   if (orders.length === 0) {
     container.innerHTML = `
       <div class="orders-empty-state">
         <div class="orders-empty-icon">📦</div>
-        <h4>No Orders Placed Yet for ${userProfile.name}</h4>
-        <p>You haven't placed any orders yet with mobile <b>+91 ${userProfile.mobile}</b>. When you place an order, your live Flipkart-style tracking with exact dates will appear here.</p>
-        <button type="button" class="btn-orders-browse" onclick="closeCustomerOrdersModal()">✨ Browse Catalog &amp; Order</button>
+        <h4>No Orders Placed Yet</h4>
+        <p>You haven't placed any chemical orders yet. Browse our 38 Sivakasi products and place an order to track live dispatch status here.</p>
+        <button type="button" class="btn-orders-browse" onclick="closeCustomerOrdersModal()">✨ Browse 38 Products</button>
       </div>
     `;
     return;
@@ -4932,6 +4946,18 @@ function initApplicationLifecycle() {
 
       refreshUserProfileUI();
 
+      window.latestPlacedOrderRecord = orderRecord;
+      try {
+        sessionStorage.setItem('varshan_latest_order', JSON.stringify(orderRecord));
+      } catch (e) {}
+
+      // Immediately pre-populate the WhatsApp button href with full invoice text
+      const waBtn = document.getElementById('btn-reopen-wa-order');
+      if (waBtn) {
+        const text = (typeof buildWhatsAppOrderMessage === 'function') ? buildWhatsAppOrderMessage(orderRecord) : 'New Varshan Order';
+        waBtn.href = `https://api.whatsapp.com/send?phone=918122776379&text=${encodeURIComponent(text)}`;
+      }
+
       closeCartModal();
       const successModal = document.getElementById('success-modal');
       if (successModal) {
@@ -4947,7 +4973,7 @@ function initApplicationLifecycle() {
   }
 
   // ---------------------------------------------------------------------------
-  // 5C. PRODUCT CARD CLICKS: "QUICK ADD" VS "VIEW & BUY"
+  // 5C. EVENT DELEGATION: PRODUCT CARDS, CART ITEMS & MOBILE BOTTOM NAV
   // ---------------------------------------------------------------------------
   document.addEventListener('click', (e) => {
     // 1. Quick Add to Cart button on Card
@@ -4965,6 +4991,46 @@ function initApplicationLifecycle() {
       e.preventDefault();
       e.stopPropagation();
       window.triggerProductCardBuy(buyBtn);
+      return;
+    }
+
+    // 3. Cart Remove Item Button
+    const removeBtn = e.target.closest('.btn-cart-remove-item');
+    if (removeBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const rawIdx = removeBtn.getAttribute('data-index') || removeBtn.getAttribute('onclick')?.match(/\d+/)?.[0] || '0';
+      window.removeCartItem(parseInt(rawIdx, 10));
+      return;
+    }
+
+    // 4. Cart Qty Stepper Button (+ / -)
+    const stepBtn = e.target.closest('.btn-qty-step');
+    if (stepBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const rawIdx = stepBtn.getAttribute('data-index') || stepBtn.getAttribute('onclick')?.match(/\d+/)?.[0] || '0';
+      const rawDelta = stepBtn.getAttribute('data-delta') || (stepBtn.textContent.includes('−') || stepBtn.textContent.includes('-') ? -1 : 1);
+      window.changeCartItemQty(parseInt(rawIdx, 10), parseInt(rawDelta, 10));
+      return;
+    }
+
+    // 5. Native Mobile Bottom Navigation Bar Buttons
+    const navBtn = e.target.closest('.mob-nav-btn');
+    if (navBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const tab = navBtn.id.replace('mob-nav-', '');
+      if (typeof window.handleMobileNavClick === 'function') {
+        window.handleMobileNavClick(tab);
+      }
+      return;
+    }
+
+    // 6. Direct WhatsApp Order Button on Bill Modal
+    const waLink = e.target.closest('#btn-reopen-wa-order');
+    if (waLink) {
+      window.reopenWhatsAppOrderToOwner();
       return;
     }
   });
