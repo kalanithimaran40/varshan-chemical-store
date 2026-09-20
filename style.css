@@ -55,15 +55,29 @@ body {
      and lock background body scrolling completely.
    ========================================================================== */
 
-/* Body scroll locking when any modal or welcome screen is open */
+/* Body scroll locking when any modal or welcome screen is open (Zero touch freeze) */
 body.modal-open,
 html.modal-open,
 body.welcome-active,
 html.welcome-active {
   overflow: hidden !important;
   height: 100% !important;
-  touch-action: none !important;
   -webkit-overflow-scrolling: auto !important;
+}
+
+/* Enable smooth fluid touch scrolling on all modal containers */
+.modal-backdrop,
+.modern-modal-body-grid,
+.cart-modal-body,
+.customer-orders-body,
+.orders-modal-body,
+.store-about-body,
+.supermarket-bill-card,
+.login-form-area,
+.admin-tab-viewport {
+  touch-action: pan-y manipulation !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
 }
 
 /* Hide scrollbars EVERYWHERE across all modals, cards, popovers, drawers, tables, dialogs */
@@ -2406,7 +2420,16 @@ html.welcome-active::-webkit-scrollbar {
     max-height: 220px;
   }
   .modal-action-buttons-row {
-    position: static;
+    position: sticky !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: #ffffff !important;
+    padding: 0.75rem 1rem max(0.75rem, env(safe-area-inset-bottom, 10px)) !important;
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.12) !important;
+    z-index: 50 !important;
+    border-top: 1px solid #e2e8f0 !important;
+    margin-top: 1rem !important;
   }
 }
 
@@ -11442,3 +11465,100 @@ html.welcome-active::-webkit-scrollbar {
   transform: scale(0.96) !important;
   background: rgba(5, 150, 105, 0.18) !important;
 }
+
+/* ==========================================================================
+   MOBILE VIEWPORT & TOUCH SCREEN PERFECTION (iOS Safari & Android Chrome)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Prevent fixed mobile-bottom-nav from overlapping products 33 to 38 */
+  body {
+    padding-bottom: calc(75px + env(safe-area-inset-bottom, 16px)) !important;
+  }
+  .portal-product-showcase {
+    padding-bottom: calc(85px + env(safe-area-inset-bottom, 16px)) !important;
+  }
+
+  /* Catalog card buttons touch optimization */
+  .comp-btn-group {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.4rem !important;
+    margin-top: 0.4rem !important;
+  }
+  .btn-comp-cart,
+  .btn-comp-buy {
+    min-height: 38px !important;
+    padding: 0.45rem 0.35rem !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.25rem !important;
+    cursor: pointer !important;
+  }
+
+  /* Cart Stepper and Delete button touch targets */
+  .cart-qty-stepper {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.2rem !important;
+  }
+  .btn-qty-step {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    font-size: 1.1rem !important;
+    font-weight: 800 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+    cursor: pointer !important;
+  }
+  .btn-cart-remove-item {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    font-size: 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+    cursor: pointer !important;
+  }
+
+  /* Modal Close Buttons 44px Touch Targets */
+  .btn-modal-close,
+  .btn-cart-close,
+  .btn-orders-close,
+  .btn-about-close,
+  .btn-bill-cross {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  /* Mobile bottom sheet full width and scroll fix */
+  .modern-detail-modal-card,
+  .cart-modal-card,
+  .supermarket-bill-card,
+  .orders-history-modal-card {
+    max-height: 90vh !important;
+    width: 100% !important;
+    margin: auto 0 0 0 !important;
+    border-radius: 18px 18px 0 0 !important;
+    touch-action: pan-y manipulation !important;
+  }
+}
+

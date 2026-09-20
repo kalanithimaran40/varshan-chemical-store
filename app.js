@@ -102,6 +102,13 @@ window.handleMobileNavClick = function(tabKey) {
   const activeBtn = document.getElementById(`mob-nav-${tabKey}`);
   if (activeBtn) activeBtn.classList.add('active');
 
+  // Close open modals when switching bottom tabs to prevent lock-in
+  if (tabKey !== 'cart' && typeof closeCartModal === 'function') closeCartModal();
+  if (typeof closeProductDetailModal === 'function') closeProductDetailModal();
+  if (tabKey !== 'orders' && typeof closeCustomerOrdersModal === 'function') closeCustomerOrdersModal();
+  if (tabKey !== 'admin' && typeof closeAdminDashboardModal === 'function') closeAdminDashboardModal();
+  if (typeof closeCustomerLoginModal === 'function') closeCustomerLoginModal();
+
   if (tabKey === 'admin') {
     if (typeof openAdminPortalModal === 'function') {
       openAdminPortalModal();
@@ -148,6 +155,51 @@ window.addProductToCart = function(productName, priceStr, mrpStr, imgSrc, packSi
 
   updateCartBadge();
   showToast(`🛒 Added "${productName}" (${size}) to Cart!`);
+};
+
+// Global Bulletproof Mobile Touch Handlers
+window.quickAddToCart = function(cartBtn) {
+  if (!cartBtn) return;
+  const now = Date.now();
+  if (cartBtn._lastClick && (now - cartBtn._lastClick < 400)) return;
+  cartBtn._lastClick = now;
+
+  const card = cartBtn.closest('.compact-card');
+  const title = card?.querySelector('.comp-title')?.textContent?.trim() || card?.getAttribute('data-title') || 'VARSHAN Chemical Product';
+  const price = card?.querySelector('.comp-curr-price')?.textContent?.trim() || '₹149';
+  const mrp = card?.querySelector('.comp-mrp')?.textContent?.trim() || '₹220';
+  const imgSrc = card?.querySelector('.compact-bottle-img')?.getAttribute('src') || 'varshan_phenyl_perfect.png';
+  
+  window.addProductToCart(title, price, mrp, imgSrc, '1 Bottle');
+
+  // Visual feedback on button
+  cartBtn.textContent = '✓ Added!';
+  setTimeout(() => {
+    cartBtn.innerHTML = '&#128722; Quick Add';
+  }, 1200);
+};
+
+window.modalAddToCart = function() {
+  if (currentSelectedProduct && currentSelectedProduct.title) {
+    const title = currentSelectedProduct.title;
+    const price = document.getElementById('modal-product-price')?.textContent?.trim() || currentSelectedProduct.price;
+    const mrp = document.getElementById('modal-product-mrp')?.textContent?.trim() || currentSelectedProduct.mrp;
+    const img = document.getElementById('modal-product-img')?.getAttribute('src') || currentSelectedProduct.image;
+    window.addProductToCart(title, price, mrp, img, selectedPackSize);
+    if (typeof closeProductDetailModal === 'function') closeProductDetailModal();
+  }
+};
+
+window.modalBuyNow = function() {
+  if (currentSelectedProduct && currentSelectedProduct.title) {
+    const title = currentSelectedProduct.title;
+    const price = document.getElementById('modal-product-price')?.textContent?.trim() || currentSelectedProduct.price;
+    const mrp = document.getElementById('modal-product-mrp')?.textContent?.trim() || currentSelectedProduct.mrp;
+    const img = document.getElementById('modal-product-img')?.getAttribute('src') || currentSelectedProduct.image;
+    window.addProductToCart(title, price, mrp, img, selectedPackSize);
+    if (typeof closeProductDetailModal === 'function') closeProductDetailModal();
+    if (typeof openCartModal === 'function') openCartModal();
+  }
 };
 
 // =========================================================================
@@ -670,22 +722,14 @@ function reopenWhatsAppOrderToOwner(orderId) {
     text = 'வணக்கம் Varshan Chemicals, எனது புதிய ஆர்டர் விவரங்களை அறிய விரும்புகிறேன்.';
   }
 
-  const waUrl = `https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`;
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test((typeof navigator !== 'undefined' && navigator.userAgent) || '')
-    || (typeof window !== 'undefined' && typeof window.innerWidth === 'number' && window.innerWidth <= 768);
-
-  if (isMobile) {
-    // Universal link direct navigation launches WhatsApp app immediately on mobile
-    window.location.href = waUrl;
-  } else {
-    try {
-      const waWin = (typeof window.open === 'function') ? window.open(waUrl, '_blank') : null;
-      if (!waWin) {
-        window.location.href = waUrl;
-      }
-    } catch (e) {
+  const waUrl = `https://api.whatsapp.com/send?phone=${targetNumber}&text=${encodeURIComponent(text)}`;
+  try {
+    const waWin = (typeof window.open === 'function') ? window.open(waUrl, '_blank') : null;
+    if (!waWin || waWin.closed || typeof waWin.closed === 'undefined') {
       window.location.href = waUrl;
     }
+  } catch (e) {
+    window.location.href = waUrl;
   }
 }
 window.reopenWhatsAppOrderToOwner = reopenWhatsAppOrderToOwner;
@@ -4599,6 +4643,18 @@ function initApplicationLifecycle() {
         return;
       }
 
+      function scrollToMissingField(inputEl) {
+        const card = document.getElementById('cart-quick-delivery-card');
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        if (inputEl) {
+          setTimeout(() => {
+            try { inputEl.focus(); } catch (e) {}
+          }, 300);
+        }
+      }
+
       // Validate inputs right inside the cart!
       if (delName.length < 2) {
         if (delErrorBox) {
@@ -4607,8 +4663,8 @@ function initApplicationLifecycle() {
         }
         if (delNameInput) {
           delNameInput.classList.add('input-error');
-          delNameInput.focus();
         }
+        scrollToMissingField(delNameInput);
         return;
       }
 
@@ -4619,8 +4675,8 @@ function initApplicationLifecycle() {
         }
         if (delPhoneInput) {
           delPhoneInput.classList.add('input-error');
-          delPhoneInput.focus();
         }
+        scrollToMissingField(delPhoneInput);
         return;
       }
 
@@ -4631,8 +4687,8 @@ function initApplicationLifecycle() {
         }
         if (delAddressInput) {
           delAddressInput.classList.add('input-error');
-          delAddressInput.focus();
         }
+        scrollToMissingField(delAddressInput);
         return;
       }
 
@@ -4899,19 +4955,7 @@ function initApplicationLifecycle() {
     if (cartBtn) {
       e.preventDefault();
       e.stopPropagation();
-      const card = cartBtn.closest('.compact-card');
-      const title = card?.querySelector('.comp-title')?.textContent?.trim() || 'Chemical Product';
-      const price = card?.querySelector('.comp-curr-price')?.textContent?.trim() || '₹149';
-      const mrp = card?.querySelector('.comp-mrp')?.textContent?.trim() || '₹220';
-      const imgSrc = card?.querySelector('.compact-bottle-img')?.getAttribute('src') || 'varshan_phenyl_perfect.png';
-      
-      addProductToCart(title, price, mrp, imgSrc, '1 Bottle');
-
-      // Visual feedback on button
-      cartBtn.textContent = '✓ Added!';
-      setTimeout(() => {
-        cartBtn.innerHTML = '&#128722; Quick Add';
-      }, 1200);
+      window.quickAddToCart(cartBtn);
       return;
     }
 

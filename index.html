@@ -19,7 +19,7 @@
   <!-- ====================================================
        1. WELCOME SCREEN (MAJESTIC LORD MURUGAN SACRED VEL HERO SHOWPIECE)
        ==================================================== -->
-  <section id="welcome-screen" class="welcome-screen" onclick="this.classList.add('fade-out'); setTimeout(() => { this.classList.add('hidden'); this.style.display='none'; }, 300);" ontouchstart="this.classList.add('fade-out'); setTimeout(() => { this.classList.add('hidden'); this.style.display='none'; }, 300);">
+  <section id="welcome-screen" class="welcome-screen" onclick="dismissWelcomeScreen()" ontouchstart="dismissWelcomeScreen()">
     <!-- Divine ambient background aura & floating sparkles -->
     <div class="divine-bg-aura"></div>
     <div class="divine-sparkles-layer">
@@ -215,7 +215,7 @@
   </section>
 
   <script>
-    setTimeout(function() {
+    function dismissWelcomeScreen() {
       var ws = document.getElementById('welcome-screen');
       if (ws) {
         ws.classList.add('fade-out');
@@ -223,9 +223,17 @@
         setTimeout(function() {
           ws.classList.add('hidden');
           ws.style.display = 'none';
-        }, 200);
+        }, 250);
       }
-    }, 800);
+      document.body.classList.remove('welcome-active');
+      document.documentElement.classList.remove('welcome-active');
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if (typeof window.syncModalScrollLock === 'function') {
+        window.syncModalScrollLock();
+      }
+    }
+    setTimeout(dismissWelcomeScreen, 800);
   </script>
 
   <!-- ====================================================
@@ -378,7 +386,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹149</span><span class="comp-mrp">₹220</span><span class="comp-off">32% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -403,7 +411,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹149</span><span class="comp-mrp">₹220</span><span class="comp-off">32% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -428,7 +436,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹139</span><span class="comp-mrp">₹199</span><span class="comp-off">30% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -453,7 +461,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹129</span><span class="comp-mrp">₹185</span><span class="comp-off">30% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -478,7 +486,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹129</span><span class="comp-mrp">₹185</span><span class="comp-off">30% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -503,7 +511,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹89</span><span class="comp-mrp">₹130</span><span class="comp-off">31% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Pack Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -528,7 +536,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹135</span><span class="comp-mrp">₹195</span><span class="comp-off">31% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -553,7 +561,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹99</span><span class="comp-mrp">₹150</span><span class="comp-off">34% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Unit Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -578,7 +586,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹119</span><span class="comp-mrp">₹175</span><span class="comp-off">32% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -603,7 +611,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹159</span><span class="comp-mrp">₹230</span><span class="comp-off">31% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -628,7 +636,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹79</span><span class="comp-mrp">₹115</span><span class="comp-off">31% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Pack Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -653,7 +661,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹129</span><span class="comp-mrp">₹180</span><span class="comp-off">28% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -678,7 +686,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹109</span><span class="comp-mrp">₹155</span><span class="comp-off">30% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -703,7 +711,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹99</span><span class="comp-mrp">₹145</span><span class="comp-off">32% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -728,7 +736,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹139</span><span class="comp-mrp">₹199</span><span class="comp-off">30% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Can Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -753,7 +761,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹85</span><span class="comp-mrp">₹120</span><span class="comp-off">29% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -778,7 +786,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹169</span><span class="comp-mrp">₹249</span><span class="comp-off">32% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -803,7 +811,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹59</span><span class="comp-mrp">₹85</span><span class="comp-off">31% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Pack Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -828,7 +836,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹115</span><span class="comp-mrp">₹165</span><span class="comp-off">30% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -853,7 +861,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹149</span><span class="comp-mrp">₹215</span><span class="comp-off">31% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -878,7 +886,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹169</span><span class="comp-mrp">₹245</span><span class="comp-off">31% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -903,7 +911,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹199</span><span class="comp-mrp">₹310</span><span class="comp-off">36% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Unit Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -928,7 +936,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹119</span><span class="comp-mrp">₹175</span><span class="comp-off">32% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Unit Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -953,7 +961,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹115</span><span class="comp-mrp">₹170</span><span class="comp-off">32% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Pack Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -978,7 +986,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹89</span><span class="comp-mrp">₹135</span><span class="comp-off">34% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Unit Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1003,7 +1011,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹159</span><span class="comp-mrp">₹230</span><span class="comp-off">30% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1028,7 +1036,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹145</span><span class="comp-mrp">₹210</span><span class="comp-off">31% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1053,7 +1061,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹99</span><span class="comp-mrp">₹150</span><span class="comp-off">34% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Pack Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1078,7 +1086,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹149</span><span class="comp-mrp">₹210</span><span class="comp-off">29% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1103,7 +1111,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹149</span><span class="comp-mrp">₹220</span><span class="comp-off">32% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1128,7 +1136,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹130</span><span class="comp-mrp">₹185</span><span class="comp-off">30% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1153,7 +1161,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹110</span><span class="comp-mrp">₹165</span><span class="comp-off">33% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1178,7 +1186,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹170</span><span class="comp-mrp">₹245</span><span class="comp-off">31% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1203,7 +1211,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹180</span><span class="comp-mrp">₹260</span><span class="comp-off">31% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1228,7 +1236,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹175</span><span class="comp-mrp">₹250</span><span class="comp-off">30% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1253,7 +1261,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹280</span><span class="comp-mrp">₹390</span><span class="comp-off">28% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Combo Pack Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1278,7 +1286,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹135</span><span class="comp-mrp">₹190</span><span class="comp-off">29% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1303,7 +1311,7 @@
             <div class="comp-price-row"><span class="comp-curr-price">₹125</span><span class="comp-mrp">₹180</span><span class="comp-off">31% off</span></div>
             <span class="comp-del-note">Free Delivery &bull; 1 Bottle Rate</span>
             <div class="comp-btn-group">
-              <button class="btn-comp-cart">&#128722; Quick Add</button>
+              <button type="button" class="btn-comp-cart" onclick="quickAddToCart(this)">&#128722; Quick Add</button>
               <button type="button" class="btn-comp-buy" onclick="triggerProductCardBuy(this)">&#128269; View &amp; Buy</button>
             </div>
           </div>
@@ -1542,7 +1550,7 @@
             </label>
             <div class="mobile-input-creative">
               <span class="country-flag-prefix">🇮🇳 +91</span>
-              <input type="tel" inputmode="numeric" id="standaloneUserMobile" placeholder="10-digit mobile number" maxlength="15" required autocomplete="tel">
+              <input type="text" id="standaloneUserMobile" placeholder="10-digit mobile number" maxlength="30" required autocomplete="tel">
             </div>
             <span class="error-msg" id="standalone-mobile-error">Enter a valid 10-digit mobile number</span>
           </div>
@@ -3000,10 +3008,10 @@
 
           <!-- Instant Order & Add to Cart Action Buttons -->
           <div class="modal-action-buttons-row">
-            <button type="button" class="btn-book-add-cart" id="btn-book-add-cart">
+            <button type="button" class="btn-book-add-cart" id="btn-book-add-cart" onclick="modalAddToCart()">
               <span>🛒 Add to Cart</span>
             </button>
-            <button type="button" class="btn-book-buy-now" id="btn-book-buy-now">
+            <button type="button" class="btn-book-buy-now" id="btn-book-buy-now" onclick="modalBuyNow()">
               <span>⚡ Buy Now</span>
             </button>
           </div>
