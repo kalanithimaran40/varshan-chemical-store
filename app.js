@@ -6062,17 +6062,35 @@ window.submitCustomerLoginForm = function(e) {
     }, 500);
   }
 
-  // Triple-tap Header Vel Brand Logo to open Store Owner Admin Portal
+  // Fast Store Owner Admin Access via Header Vel Brand Logo (Click 3 times OR Long-press on mobile)
   const brandLogoEl = document.getElementById('header-brand-logo');
   if (brandLogoEl) {
     let logoTapCount = 0;
     let logoTapTimer = null;
-    let lastTapTimestamp = 0;
-    const registerLogoTap = (e) => {
-      const now = Date.now();
-      if (now - lastTapTimestamp < 140) return; // Prevent duplicate touch+click ghost counting
-      lastTapTimestamp = now;
+    let longPressTimer = null;
 
+    // Mobile touch long-press (hold for 800ms)
+    brandLogoEl.addEventListener('touchstart', () => {
+      if (longPressTimer) clearTimeout(longPressTimer);
+      longPressTimer = setTimeout(() => {
+        if (typeof window.triggerAdminDirectAccess === 'function') {
+          window.triggerAdminDirectAccess();
+        } else if (typeof window.openAdminPortalModal === 'function') {
+          window.openAdminPortalModal();
+        }
+      }, 800);
+    }, { passive: true });
+
+    brandLogoEl.addEventListener('touchend', () => {
+      if (longPressTimer) clearTimeout(longPressTimer);
+    }, { passive: true });
+
+    brandLogoEl.addEventListener('touchmove', () => {
+      if (longPressTimer) clearTimeout(longPressTimer);
+    }, { passive: true });
+
+    // Multi-click / Multi-tap handler
+    brandLogoEl.addEventListener('click', (e) => {
       logoTapCount++;
       if (logoTapTimer) clearTimeout(logoTapTimer);
       if (logoTapCount >= 3) {
@@ -6084,11 +6102,9 @@ window.submitCustomerLoginForm = function(e) {
           window.openAdminPortalModal();
         }
       } else {
-        logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 1200);
+        logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 1500);
       }
-    };
-    brandLogoEl.addEventListener('click', registerLogoTap);
-    brandLogoEl.addEventListener('touchend', registerLogoTap, { passive: true });
+    });
   }
 
   // Sync category counts on startup

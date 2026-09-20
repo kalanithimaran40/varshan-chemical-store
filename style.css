@@ -12533,4 +12533,124 @@ html.welcome-active #customer-login-modal,
   box-shadow: 0 3px 10px rgba(5, 150, 105, 0.3) !important;
 }
 
+/* ==========================================================================
+   ADMIN LOGIN MODAL - 100% BULLETPROOF MOBILE POSITIONING & VIEWPORT CENTERING
+   ========================================================================== */
+#admin-login-modal.modal-backdrop:not(.hidden) {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100% !important;
+  height: 100dvh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1rem !important;
+  background: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  z-index: 99999999 !important;
+  overflow-y: auto !important;
+  touch-action: pan-y manipulation !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+#admin-login-modal .admin-login-card {
+  position: relative !important;
+  margin: auto !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  border-radius: 20px !important;
+  transform: none !important;
+  animation: popModal 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+  border: 2px solid #059669 !important;
+  background: #ffffff !important;
+  max-height: 90vh !important;
+  max-height: 90dvh !important;
+  overflow-y: auto !important;
+  padding: 1.5rem 1.25rem !important;
+  touch-action: pan-y manipulation !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.login-admin-switch-row {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed #cbd5e1;
+  text-align: center;
+}
+
+.btn-switch-to-admin {
+  background: #f0fdf4 !important;
+  color: #065f46 !important;
+  border: 1.5px solid #a7f3d0 !important;
+  border-radius: 12px !important;
+  padding: 0.65rem 1rem !important;
+  font-size: 0.86rem !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-switch-to-admin:hover,
+.btn-switch-to-admin:active {
+  background: #059669 !important;
+  color: #ffffff !important;
+  border-color: #059669 !important;
+  transform: translateY(-1px) !important;
+}
+
+.portal-store-footer {
+  background: linear-gradient(180deg, #02281e 0%, #011c15 100%) !important;
+  color: #e2e8f0 !important;
+  padding: 2.2rem 1rem 3.5rem !important;
+  text-align: center !important;
+  border-top: 2px solid rgba(52, 211, 153, 0.3) !important;
+  margin-top: 2.5rem !important;
+}
+
+.portal-store-footer h4 {
+  color: #ffffff !important;
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  margin: 0 0 0.4rem 0 !important;
+}
+
+.portal-store-footer p {
+  font-size: 0.82rem !important;
+  color: #94a3b8 !important;
+  margin: 0.3rem 0 !important;
+}
+
+.footer-admin-row {
+  margin-top: 1.25rem !important;
+}
+
+.btn-footer-admin-login {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #a7f3d0 !important;
+  border: 1px solid rgba(52, 211, 153, 0.3) !important;
+  border-radius: 20px !important;
+  padding: 0.45rem 1.1rem !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-footer-admin-login:hover,
+.btn-footer-admin-login:active {
+  background: #059669 !important;
+  color: #ffffff !important;
+}
+
 
