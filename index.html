@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Philosopher:wght@700&family=Playfair+Display:wght@700;800;900&family=Syne:wght@700;800&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=21.0">
+  <link rel="stylesheet" href="style.css?v=22.0">
 </head>
 <body class="welcome-active">
 
@@ -252,7 +252,7 @@
       } catch (e) {}
 
       // Rule: If not logged in and not admin, user MUST complete login before accessing website
-      // Opens strictly AFTER the 10-second animation completes
+      // Opens strictly AFTER the 6-second animation completes
       if (!isAlreadyAdmin && (!userProfile || !userProfile.name || !userProfile.mobile)) {
         if (typeof window.openCustomerLoginModal === 'function') {
           window.openCustomerLoginModal('force_timer');
@@ -267,8 +267,8 @@
         }
       }
     }
-    // Stay for 5 full seconds (5000ms) as requested by user
-    setTimeout(dismissWelcomeScreen, 5000);
+    // Stay for 6 full seconds (6000ms) strictly as requested by user
+    setTimeout(dismissWelcomeScreen, 6000);
   </script>
 
   <!-- ====================================================
@@ -3273,7 +3273,7 @@
   <div id="toast-box" class="toast-popup hidden"></div>
 
   <!-- Main Application Script (High Priority, Zero External Blocking) -->
-  <script src="app.js?v=21.0"></script>
+  <script src="app.js?v=22.0"></script>
 </body>
 </html>
 
