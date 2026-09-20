@@ -911,6 +911,32 @@ html.welcome-active::-webkit-scrollbar {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
 }
 
+/* 1B. Header Orders Pill Button */
+.header-orders-pill {
+  height: 33px;
+  color: #ffffff;
+  padding: 0 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.2px solid rgba(255, 255, 255, 0.28);
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.header-orders-pill:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: #34d399;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
 .cart-count-badge {
   background: #fbbf24;
   color: #78350f;
@@ -9153,8 +9179,34 @@ html.welcome-active::-webkit-scrollbar {
     order: 2 !important;
     display: flex !important;
     align-items: center !important;
-    gap: 0.3rem !important;
+    gap: 0.25rem !important;
     flex-shrink: 0 !important;
+  }
+
+  .header-orders-pill {
+    height: 28px !important;
+    padding: 0 0.48rem !important;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    gap: 0.25rem !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .orders-pill-icon {
+    font-size: 0.78rem !important;
+    line-height: 1 !important;
+  }
+
+  .orders-pill-label {
+    display: inline !important;
+    font-size: 0.66rem !important;
+    font-weight: 700 !important;
   }
 
   .header-cart-pill {
@@ -9530,8 +9582,29 @@ html.welcome-active::-webkit-scrollbar {
     flex-direction: column !important;
   }
 
+  .orders-history-modal-card {
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: 90vh !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 0 !important;
+    margin: auto 0 0 0 !important;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.35) !important;
+    animation: slideUpSheet 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .orders-history-modal-card .orders-modal-body {
+    overflow-y: auto !important;
+    padding: 0.85rem !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    flex: 1 !important;
+  }
+
   .customer-login-card,
-  .orders-history-modal-card,
   .store-about-modal-card,
   .admin-login-card,
   .supermarket-bill-card,
