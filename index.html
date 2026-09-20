@@ -12,14 +12,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Philosopher:wght@700&family=Playfair+Display:wght@700;800;900&family=Syne:wght@700;800&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=15.0">
+  <link rel="stylesheet" href="style.css?v=16.0">
 </head>
 <body>
 
   <!-- ====================================================
        1. WELCOME SCREEN (MAJESTIC LORD MURUGAN SACRED VEL HERO SHOWPIECE)
        ==================================================== -->
-  <section id="welcome-screen" class="welcome-screen" onclick="dismissWelcomeScreen()" ontouchstart="dismissWelcomeScreen()">
+  <section id="welcome-screen" class="welcome-screen">
     <!-- Divine ambient background aura & floating sparkles -->
     <div class="divine-bg-aura"></div>
     <div class="divine-sparkles-layer">
@@ -223,7 +223,7 @@
         setTimeout(function() {
           ws.classList.add('hidden');
           ws.style.display = 'none';
-        }, 250);
+        }, 300);
       }
       document.body.classList.remove('welcome-active');
       document.documentElement.classList.remove('welcome-active');
@@ -232,8 +232,25 @@
       if (typeof window.syncModalScrollLock === 'function') {
         window.syncModalScrollLock();
       }
+
+      // Check if user is already logged in
+      var userProfile = null;
+      try {
+        var stored = localStorage.getItem('varshan_user_profile');
+        if (stored) userProfile = JSON.parse(stored);
+      } catch (e) {}
+
+      // Rule: If not logged in, user MUST complete login before accessing website
+      if (!userProfile || !userProfile.name || !userProfile.mobile) {
+        setTimeout(function() {
+          if (typeof window.openCustomerLoginModal === 'function') {
+            window.openCustomerLoginModal(true);
+          }
+        }, 300);
+      }
     }
-    setTimeout(dismissWelcomeScreen, 2600);
+    // Stay for 4 full seconds
+    setTimeout(dismissWelcomeScreen, 4000);
   </script>
 
   <!-- ====================================================
@@ -3244,7 +3261,7 @@
   <div id="toast-box" class="toast-popup hidden"></div>
 
   <!-- Main Application Script (High Priority, Zero External Blocking) -->
-  <script src="app.js?v=15.0"></script>
+  <script src="app.js?v=16.0"></script>
 </body>
 </html>
 

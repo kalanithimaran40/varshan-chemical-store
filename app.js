@@ -558,12 +558,35 @@ window.triggerProductCardBuy = function(btn) {
 };
 
 
-window.openCustomerLoginModal = function() {
+window.openCustomerLoginModal = function(isMandatory) {
   let userProfile = null;
   try {
     const stored = localStorage.getItem('varshan_user_profile');
     if (stored) userProfile = JSON.parse(stored);
   } catch (e) {}
+
+  const mustLogin = (typeof isMandatory === 'boolean')
+    ? isMandatory
+    : (!userProfile || !userProfile.name || !userProfile.mobile);
+
+  window._isLoginMandatory = mustLogin;
+
+  const closeBtn = document.getElementById('btn-close-login-modal');
+  const badgePill = document.querySelector('.login-badge-pill');
+  const mainHeading = document.querySelector('.form-header-intro h3');
+  const submitBtnText = document.querySelector('#standalone-btn-submit-login span');
+
+  if (mustLogin) {
+    if (closeBtn) closeBtn.style.setProperty('display', 'none', 'important');
+    if (badgePill) badgePill.textContent = '🔐 MANDATORY CUSTOMER LOGIN';
+    if (mainHeading) mainHeading.textContent = 'Login to Enter Varshan Chemical Store';
+    if (submitBtnText) submitBtnText.textContent = 'Submit & Enter Store';
+  } else {
+    if (closeBtn) closeBtn.style.setProperty('display', 'flex', 'important');
+    if (badgePill) badgePill.textContent = '✨ FAST CUSTOMER LOGIN';
+    if (mainHeading) mainHeading.textContent = 'Welcome to Varshan Chemicals';
+    if (submitBtnText) submitBtnText.textContent = 'Submit';
+  }
 
   if (userProfile) {
     const uName = document.getElementById('standaloneUserName');
@@ -593,7 +616,17 @@ window.openCustomerLoginModal = function() {
   window.syncModalScrollLock();
 };
 
-function closeCustomerLoginModal() {
+function closeCustomerLoginModal(force) {
+  if (force !== true && window._isLoginMandatory) {
+    const profile = getCurrentUserProfile();
+    if (!profile || !profile.name || !profile.mobile) {
+      if (typeof showToast === 'function') {
+        showToast('⚠️ Please enter your name and mobile to enter the store');
+      }
+      return;
+    }
+  }
+  window._isLoginMandatory = false;
   const modal = document.getElementById('customer-login-modal');
   if (modal) {
     modal.classList.add('hidden');
@@ -4571,12 +4604,12 @@ function initApplicationLifecycle() {
 
   const btnCloseLogin = document.getElementById('btn-close-login-modal');
   if (btnCloseLogin) {
-    btnCloseLogin.addEventListener('click', closeCustomerLoginModal);
+    btnCloseLogin.addEventListener('click', () => closeCustomerLoginModal(false));
   }
 
   const customerLoginModal = document.getElementById('customer-login-modal');
   customerLoginModal?.addEventListener('click', (e) => {
-    if (e.target === customerLoginModal) closeCustomerLoginModal();
+    if (e.target === customerLoginModal) closeCustomerLoginModal(false);
   });
 
   const btnCloseCheckout = document.getElementById('btn-close-checkout-modal');
@@ -5285,8 +5318,9 @@ window.submitCustomerLoginForm = function(e) {
 
     // Close Login Modal cleanly and unlock scrolling
     setTimeout(() => {
+      window._isLoginMandatory = false;
       if (typeof window.closeCustomerLoginModal === 'function') {
-        window.closeCustomerLoginModal();
+        window.closeCustomerLoginModal(true);
       } else {
         const modal = document.getElementById('customer-login-modal');
         if (modal) {
