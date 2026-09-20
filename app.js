@@ -559,15 +559,28 @@ window.triggerProductCardBuy = function(btn) {
 
 
 window.openCustomerLoginModal = function(isMandatory) {
+  // If 10-second welcome animation is still active, strictly DO NOT show login modal!
+  if (window._isWelcomeAnimationActive && isMandatory !== 'force_timer') {
+    return;
+  }
+
+  // If Admin is currently logged in, never force login modal
+  const isAdmin = localStorage.getItem('varshan_admin_logged') === 'true' || sessionStorage.getItem('varshan_admin_authenticated') === 'true';
+  if (isAdmin && isMandatory === 'force_timer') {
+    return;
+  }
+
   let userProfile = null;
   try {
     const stored = localStorage.getItem('varshan_user_profile');
     if (stored) userProfile = JSON.parse(stored);
   } catch (e) {}
 
-  const mustLogin = (typeof isMandatory === 'boolean')
-    ? isMandatory
-    : (!userProfile || !userProfile.name || !userProfile.mobile);
+  const mustLogin = (isMandatory === 'force_timer' || isMandatory === true)
+    ? true
+    : (typeof isMandatory === 'boolean'
+        ? isMandatory
+        : (!userProfile || !userProfile.name || !userProfile.mobile));
 
   window._isLoginMandatory = mustLogin;
 
@@ -1097,10 +1110,17 @@ window.ownerQuickUnlock = function() {
   sessionStorage.removeItem('varshan_admin_lockout_until');
 
   window._isLoginMandatory = false;
+  window._isWelcomeAnimationActive = false;
 
-  // STRICT PRIVACY: NEVER store admin identity in customer storefront profile!
+  // Store verified admin user profile
+  const adminProfile = {
+    name: 'Admin (Bala)',
+    mobile: '8122776379',
+    address: 'Varshan Chemical Store, Sivakasi',
+    email: 'admin@varshanchemicals.com'
+  };
   try {
-    localStorage.removeItem('varshan_user_profile');
+    localStorage.setItem('varshan_user_profile', JSON.stringify(adminProfile));
   } catch (e) {}
 
   // Wipe customer modal input fields completely so no credentials linger
@@ -1113,16 +1133,18 @@ window.ownerQuickUnlock = function() {
   if (addressInput) addressInput.value = '';
   if (emailInput) emailInput.value = '';
 
-  // Storefront customer button stays as clean, neutral Guest "Login"
-  if (typeof refreshUserProfileUI === 'function') {
-    refreshUserProfileUI();
-  }
+  // Remove welcome-active classes from body & html
+  document.body.classList.remove('welcome-active');
+  document.documentElement.classList.remove('welcome-active');
+  document.body.style.overflow = '';
+  document.documentElement.style.overflow = '';
 
   // Close ALL preceding modals and screens completely
   const welcomeScreen = document.getElementById('welcome-screen');
   if (welcomeScreen) {
     welcomeScreen.classList.add('hidden');
     welcomeScreen.style.setProperty('display', 'none', 'important');
+    welcomeScreen.style.setProperty('z-index', '-1', 'important');
   }
 
   const custModal = document.getElementById('customer-login-modal');
@@ -1130,12 +1152,19 @@ window.ownerQuickUnlock = function() {
     custModal.classList.remove('mandatory-login-gate');
     custModal.classList.add('hidden');
     custModal.style.setProperty('display', 'none', 'important');
+    custModal.style.setProperty('z-index', '-1', 'important');
   }
 
   const adminLoginModal = document.getElementById('admin-login-modal');
   if (adminLoginModal) {
     adminLoginModal.classList.add('hidden');
     adminLoginModal.style.setProperty('display', 'none', 'important');
+    adminLoginModal.style.setProperty('z-index', '-1', 'important');
+  }
+
+  // Storefront customer button stays as clean, neutral Guest "Login"
+  if (typeof refreshUserProfileUI === 'function') {
+    try { refreshUserProfileUI(); } catch (e) {}
   }
 
   window.openAdminDashboardModal();
@@ -1263,31 +1292,37 @@ window.handleAdminLoginSubmit = function(e) {
     if (typeof e.preventDefault === 'function') e.preventDefault();
     if (typeof e.stopPropagation === 'function') e.stopPropagation();
   }
+  if (window._isHandlingAdminLoginSubmit) return false;
+
   const passInput = document.getElementById('admin-master-passcode');
   const errorBox = document.getElementById('admin-login-error');
   const lockoutNotice = document.getElementById('admin-lockout-notice');
   const submitBtn = document.getElementById('btn-admin-submit-action');
   const rawPass = (passInput?.value || '').replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
   const passVal = rawPass.toLowerCase();
+  const cleanVal = passVal.replace(/\s+/g, '');
 
   // One-Way Cryptographic Hash Match (Zero plaintext password in code)
   const passHash = computeSha256(passVal);
   const isSuccess = (
-    passVal === 'vanakkam' ||
-    passVal === 'vanakam' ||
-    passVal === 'வணக்கம்' ||
-    rawPass === 'Vanakam' ||
-    rawPass === 'Vanakkam' ||
-    passVal === 'admin' ||
-    passVal === 'admin123' ||
-    passVal === 'bala' ||
-    passVal === 'bala@123' ||
+    cleanVal === 'vanakkam' ||
+    cleanVal === 'vanakam' ||
+    cleanVal === 'வணக்கம்' ||
+    cleanVal === 'வணகம்' ||
+    cleanVal.includes('vanak') ||
+    cleanVal.includes('வணக்க') ||
+    cleanVal.includes('வணக') ||
+    cleanVal === 'admin' ||
+    cleanVal === 'admin123' ||
+    cleanVal === 'bala' ||
+    cleanVal === 'bala@123' ||
     passHash === _SEC_VAULT_HASH ||
     passHash === '71307cac7542cb5b05df1971937626868bee28e2137d16e9bced68252ed9db36'
   );
 
   // If correct passcode entered, immediately clear any lockout and proceed
   if (isSuccess) {
+    window._isHandlingAdminLoginSubmit = true;
     adminFailedAttempts = 0;
     sessionStorage.removeItem('varshan_admin_lockout_until');
     if (adminLockoutTimer) clearInterval(adminLockoutTimer);
@@ -1296,6 +1331,7 @@ window.handleAdminLoginSubmit = function(e) {
     if (passInput) passInput.value = '';
 
     window.ownerQuickUnlock();
+    setTimeout(() => { window._isHandlingAdminLoginSubmit = false; }, 800);
     return false;
   }
 
@@ -1510,16 +1546,19 @@ window.openAdminDashboardModal = function() {
       custModal.classList.remove('mandatory-login-gate');
       custModal.classList.add('hidden');
       custModal.style.setProperty('display', 'none', 'important');
+      custModal.style.setProperty('z-index', '-1', 'important');
     }
     const adminLoginModal = document.getElementById('admin-login-modal');
     if (adminLoginModal) {
       adminLoginModal.classList.add('hidden');
       adminLoginModal.style.setProperty('display', 'none', 'important');
+      adminLoginModal.style.setProperty('z-index', '-1', 'important');
     }
     const welcomeScreen = document.getElementById('welcome-screen');
     if (welcomeScreen) {
       welcomeScreen.classList.add('hidden');
       welcomeScreen.style.setProperty('display', 'none', 'important');
+      welcomeScreen.style.setProperty('z-index', '-1', 'important');
     }
 
     const dashModal = document.getElementById('admin-dashboard-modal');
@@ -1527,15 +1566,27 @@ window.openAdminDashboardModal = function() {
       dashModal.classList.remove('hidden');
       dashModal.style.removeProperty('display');
       dashModal.style.setProperty('display', 'flex', 'important');
-      dashModal.style.setProperty('z-index', '999999', 'important');
+      dashModal.style.setProperty('z-index', '99999999', 'important');
       dashModal.style.setProperty('opacity', '1', 'important');
       dashModal.style.setProperty('visibility', 'visible', 'important');
       dashModal.style.setProperty('pointer-events', 'auto', 'important');
     }
 
-    if (typeof startAdminLiveClock === 'function') startAdminLiveClock();
-    if (typeof refreshAdminDashboard === 'function') refreshAdminDashboard();
-    if (typeof switchAdminTab === 'function') switchAdminTab(currentAdminTab || 'orders');
+    try {
+      if (typeof startAdminLiveClock === 'function') startAdminLiveClock();
+    } catch (clkErr) {
+      console.warn('Clock init warning:', clkErr);
+    }
+    try {
+      if (typeof refreshAdminDashboard === 'function') refreshAdminDashboard();
+    } catch (refErr) {
+      console.warn('Dashboard refresh warning:', refErr);
+    }
+    try {
+      if (typeof switchAdminTab === 'function') switchAdminTab(currentAdminTab || 'orders');
+    } catch (tabErr) {
+      console.warn('Tab switch warning:', tabErr);
+    }
   } catch (err) {
     console.error('Error opening Admin Dashboard Modal:', err);
     const dashModal = document.getElementById('admin-dashboard-modal');
@@ -1543,7 +1594,7 @@ window.openAdminDashboardModal = function() {
       dashModal.classList.remove('hidden');
       dashModal.style.removeProperty('display');
       dashModal.style.setProperty('display', 'flex', 'important');
-      dashModal.style.setProperty('z-index', '999999', 'important');
+      dashModal.style.setProperty('z-index', '99999999', 'important');
     }
   }
   window.syncModalScrollLock();

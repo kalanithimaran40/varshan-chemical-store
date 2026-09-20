@@ -177,7 +177,7 @@ html.welcome-active::-webkit-scrollbar {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 99999999 !important;
   padding: 1rem;
   overflow: hidden;
   transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2153,6 +2153,17 @@ html.welcome-active::-webkit-scrollbar {
   color: #ffffff;
   transform: rotate(90deg) scale(1.08);
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+}
+
+/* While welcome animation is active, customer login modal CANNOT EVER display */
+body.welcome-active #customer-login-modal,
+html.welcome-active #customer-login-modal,
+#customer-login-modal.hidden {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
 }
 
 /* Full-Screen Mandatory Login Gatekeeper Screen (Matches Divine Murugan Vel Theme) */
@@ -9559,7 +9570,17 @@ html.welcome-active::-webkit-scrollbar {
   }
 
   /* 5A. Dedicated Customer Login Modal Mobile Scroll & Virtual Keyboard Clearance */
-  #customer-login-modal.modal-backdrop {
+  body.welcome-active #customer-login-modal,
+  html.welcome-active #customer-login-modal,
+  #customer-login-modal.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+  }
+
+  #customer-login-modal.modal-backdrop:not(.hidden) {
     position: fixed !important;
     inset: 0 !important;
     height: 100% !important;

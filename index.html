@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="welcome-active">
 <head>
   <meta charset="UTF-8">
+  <script>
+    window._isWelcomeAnimationActive = true;
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -12,9 +15,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Philosopher:wght@700&family=Playfair+Display:wght@700;800;900&family=Syne:wght@700;800&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=18.0">
+  <link rel="stylesheet" href="style.css?v=20.0">
 </head>
-<body>
+<body class="welcome-active">
 
   <!-- ====================================================
        1. WELCOME SCREEN (MAJESTIC LORD MURUGAN SACRED VEL HERO SHOWPIECE)
@@ -215,7 +218,10 @@
   </section>
 
   <script>
+    window._isWelcomeAnimationActive = true;
+
     function dismissWelcomeScreen() {
+      window._isWelcomeAnimationActive = false;
       var ws = document.getElementById('welcome-screen');
       if (ws) {
         ws.classList.add('fade-out');
@@ -223,7 +229,7 @@
         setTimeout(function() {
           ws.classList.add('hidden');
           ws.style.display = 'none';
-        }, 400);
+        }, 500);
       }
       document.body.classList.remove('welcome-active');
       document.documentElement.classList.remove('welcome-active');
@@ -233,30 +239,36 @@
         window.syncModalScrollLock();
       }
 
-      // Check if user is already logged in
+      // Check if user is already logged in (customer or admin)
+      var isAlreadyAdmin = false;
+      try {
+        isAlreadyAdmin = (localStorage.getItem('varshan_admin_logged') === 'true') || (sessionStorage.getItem('varshan_admin_authenticated') === 'true');
+      } catch (e) {}
+
       var userProfile = null;
       try {
         var stored = localStorage.getItem('varshan_user_profile');
         if (stored) userProfile = JSON.parse(stored);
       } catch (e) {}
 
-      // Rule: If not logged in, user MUST complete login before accessing website
-      if (!userProfile || !userProfile.name || !userProfile.mobile) {
+      // Rule: If not logged in and not admin, user MUST complete login before accessing website
+      // Opens strictly AFTER the 10-second animation completes
+      if (!isAlreadyAdmin && (!userProfile || !userProfile.name || !userProfile.mobile)) {
         if (typeof window.openCustomerLoginModal === 'function') {
-          window.openCustomerLoginModal(true);
+          window.openCustomerLoginModal('force_timer');
         } else {
           var checkInit = setInterval(function() {
             if (typeof window.openCustomerLoginModal === 'function') {
               clearInterval(checkInit);
-              window.openCustomerLoginModal(true);
+              window.openCustomerLoginModal('force_timer');
             }
           }, 50);
           setTimeout(function() { clearInterval(checkInit); }, 4000);
         }
       }
     }
-    // Stay for 8 full seconds (8000ms)
-    setTimeout(dismissWelcomeScreen, 8000);
+    // Stay for 10 full seconds (10000ms)
+    setTimeout(dismissWelcomeScreen, 10000);
   </script>
 
   <!-- ====================================================
@@ -1483,7 +1495,7 @@
        2B. DEDICATED MODERN CUSTOMER LOGIN & WHOLESALE ACCESS PORTAL
            (OPENS WHEN HEADER "LOGIN" BUTTON IS CLICKED)
        ==================================================== -->
-  <div id="customer-login-modal" class="modal-backdrop hidden">
+  <div id="customer-login-modal" class="modal-backdrop hidden" style="display: none !important;">
     <div class="creative-login-card">
       
       <!-- Modal Exit Button in Corner -->
@@ -1777,7 +1789,7 @@
         </div>
         <div id="admin-login-error" class="admin-error-text hidden"></div>
         <div id="admin-lockout-notice" class="admin-lockout-text hidden"></div>
-        <button type="button" id="btn-admin-submit-action" class="btn-admin-login-submit" onclick="handleAdminLoginSubmit(event)">
+        <button type="submit" id="btn-admin-submit-action" class="btn-admin-login-submit">
           <span>🔐 Verify Password &amp; Open Admin Panel</span>
         </button>
 
@@ -3261,7 +3273,7 @@
   <div id="toast-box" class="toast-popup hidden"></div>
 
   <!-- Main Application Script (High Priority, Zero External Blocking) -->
-  <script src="app.js?v=18.0"></script>
+  <script src="app.js?v=20.0"></script>
 </body>
 </html>
 
