@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Philosopher:wght@700&family=Playfair+Display:wght@700;800;900&family=Syne:wght@700;800&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=16.0">
+  <link rel="stylesheet" href="style.css?v=18.0">
 </head>
 <body>
 
@@ -223,7 +223,7 @@
         setTimeout(function() {
           ws.classList.add('hidden');
           ws.style.display = 'none';
-        }, 300);
+        }, 400);
       }
       document.body.classList.remove('welcome-active');
       document.documentElement.classList.remove('welcome-active');
@@ -242,15 +242,21 @@
 
       // Rule: If not logged in, user MUST complete login before accessing website
       if (!userProfile || !userProfile.name || !userProfile.mobile) {
-        setTimeout(function() {
-          if (typeof window.openCustomerLoginModal === 'function') {
-            window.openCustomerLoginModal(true);
-          }
-        }, 300);
+        if (typeof window.openCustomerLoginModal === 'function') {
+          window.openCustomerLoginModal(true);
+        } else {
+          var checkInit = setInterval(function() {
+            if (typeof window.openCustomerLoginModal === 'function') {
+              clearInterval(checkInit);
+              window.openCustomerLoginModal(true);
+            }
+          }, 50);
+          setTimeout(function() { clearInterval(checkInit); }, 4000);
+        }
       }
     }
-    // Stay for 4 full seconds
-    setTimeout(dismissWelcomeScreen, 4000);
+    // Stay for 8 full seconds (8000ms)
+    setTimeout(dismissWelcomeScreen, 8000);
   </script>
 
   <!-- ====================================================
@@ -312,13 +318,7 @@
         <!-- Header Actions: Orders + Cart + Login/Profile -->
         <div class="header-actions">
 
-          <!-- 1. Orders Pill Button (Direct Access to My Orders) -->
-          <button type="button" class="header-orders-pill" id="btn-header-orders" onclick="openCustomerOrdersModal()" title="My Orders &amp; Tracking">
-            <span class="orders-pill-icon">📦</span>
-            <span class="orders-pill-label">Orders</span>
-          </button>
-
-          <!-- 2. Cart Button with Animated Count Badge -->
+          <!-- 1. Cart Button with Animated Count Badge -->
           <button type="button" class="header-cart-pill" id="btn-view-cart" title="View Cart">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="9" cy="21" r="1"></circle>
@@ -3261,7 +3261,7 @@
   <div id="toast-box" class="toast-popup hidden"></div>
 
   <!-- Main Application Script (High Priority, Zero External Blocking) -->
-  <script src="app.js?v=16.0"></script>
+  <script src="app.js?v=18.0"></script>
 </body>
 </html>
 

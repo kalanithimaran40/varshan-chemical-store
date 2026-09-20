@@ -2155,6 +2155,18 @@ html.welcome-active::-webkit-scrollbar {
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
 }
 
+/* Full-Screen Mandatory Login Gatekeeper Screen (Matches Divine Murugan Vel Theme) */
+#customer-login-modal.mandatory-login-gate {
+  background: radial-gradient(ellipse at 50% 30%, #064e3b 0%, #032b21 40%, #021a14 75%, #010c09 100%) !important;
+  opacity: 1 !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+#customer-login-modal.mandatory-login-gate .creative-login-card {
+  box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.85), 0 0 45px rgba(250, 204, 21, 0.35) !important;
+  border: 2px solid rgba(250, 204, 21, 0.55) !important;
+}
+
 /* ==========================================================================
    MINIMAL CHEMICAL PORTAL STAGE (CLEAN & PROFESSIONAL)
    ========================================================================== */
@@ -4594,23 +4606,49 @@ html.welcome-active::-webkit-scrollbar {
 }
 
 .btn-orders-close {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  width: 28px;
-  height: 28px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
   border-radius: 50%;
   color: #ffffff;
-  cursor: pointer;
+  cursor: pointer !important;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  z-index: 30;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
 }
 
-.btn-orders-close:hover {
+.btn-orders-close:hover,
+.btn-orders-close:active {
   background: #ef4444;
   border-color: #ef4444;
-  transform: rotate(90deg) scale(1.05);
+  transform: rotate(90deg) scale(1.08);
+}
+
+/* Ensure SVG icons inside close buttons do not intercept click events */
+.btn-orders-close svg,
+.btn-orders-close *,
+.btn-modal-close svg,
+.btn-modal-close *,
+.btn-cart-close svg,
+.btn-cart-close *,
+.btn-about-close svg,
+.btn-about-close *,
+.btn-bill-cross svg,
+.btn-bill-cross *,
+.btn-creative-close svg,
+.btn-creative-close *,
+.btn-admin-close-cross svg,
+.btn-admin-close-cross *,
+.btn-p-edit-close svg,
+.btn-p-edit-close * {
+  pointer-events: none !important;
 }
 
 .orders-modal-body {
