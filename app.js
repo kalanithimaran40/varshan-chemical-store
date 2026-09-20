@@ -94,6 +94,17 @@ window.updateCartBadge = function() {
     bottomBadge.textContent = totalCount;
     bottomBadge.style.display = totalCount > 0 ? 'inline-flex' : 'none';
   }
+
+  // Real-time synchronization for Card Steppers, Sticky Dock, and Bulk Order
+  if (typeof window.syncAllProductCardQuantities === 'function') {
+    window.syncAllProductCardQuantities();
+  }
+  if (typeof window.updateStickyOrderDock === 'function') {
+    window.updateStickyOrderDock();
+  }
+  if (typeof window.syncBulkOrderInputs === 'function') {
+    window.syncBulkOrderInputs();
+  }
 };
 
 window.handleMobileNavClick = function(tabKey) {
@@ -356,6 +367,380 @@ function renderCartModal() {
     `).join('');
   }
 }
+
+// =============================================================================
+// LIVE ORDER VISIBILITY, PRODUCT CARD STEPPERS & WHOLESALE BULK ORDER SHEET
+// =============================================================================
+
+function escapeCardAttr(str) {
+  return (str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+window.syncAllProductCardQuantities = function() {
+  const cards = document.querySelectorAll('#products-catalog-list .compact-card');
+  cards.forEach(card => {
+    const title = card.querySelector('.comp-title')?.textContent?.trim() || card.getAttribute('data-title') || '';
+    if (!title) return;
+
+    const totalQty = cartItems
+      .filter(i => (i.name || '').trim().toLowerCase() === title.toLowerCase())
+      .reduce((sum, i) => sum + (i.quantity || 0), 0);
+
+    const btnGroup = card.querySelector('.comp-btn-group');
+    let badge = card.querySelector('.card-in-cart-badge');
+
+    if (totalQty > 0) {
+      card.classList.add('has-cart-items');
+
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'card-in-cart-badge';
+        card.appendChild(badge);
+      }
+      badge.innerHTML = `✓ ${totalQty} in cart`;
+      badge.style.display = 'inline-flex';
+
+      if (btnGroup) {
+        const quickBtn = btnGroup.querySelector('.btn-comp-cart');
+        if (quickBtn) quickBtn.style.display = 'none';
+
+        let stepper = btnGroup.querySelector('.card-qty-stepper');
+        if (!stepper) {
+          stepper = document.createElement('div');
+          stepper.className = 'card-qty-stepper';
+          btnGroup.insertBefore(stepper, btnGroup.firstChild);
+        }
+        stepper.style.display = 'flex';
+        stepper.innerHTML = `
+          <button type="button" class="card-stepper-btn" onclick="window.changeCardItemQtyByTitle('${escapeCardAttr(title)}', -1)" aria-label="Decrease quantity">−</button>
+          <div class="card-stepper-meta">
+            <span class="card-stepper-val">${totalQty}</span>
+            <span class="card-stepper-sub">IN CART</span>
+          </div>
+          <button type="button" class="card-stepper-btn" onclick="window.changeCardItemQtyByTitle('${escapeCardAttr(title)}', 1)" aria-label="Increase quantity">+</button>
+        `;
+      }
+    } else {
+      card.classList.remove('has-cart-items');
+      if (badge) badge.remove();
+      if (btnGroup) {
+        const quickBtn = btnGroup.querySelector('.btn-comp-cart');
+        if (quickBtn) quickBtn.style.display = '';
+        const stepper = btnGroup.querySelector('.card-qty-stepper');
+        if (stepper) stepper.style.display = 'none';
+      }
+    }
+  });
+};
+
+window.changeCardItemQtyByTitle = function(title, delta) {
+  const normTitle = (title || '').trim().toLowerCase();
+  const itemIndex = cartItems.findIndex(i => (i.name || '').trim().toLowerCase() === normTitle);
+
+  if (itemIndex > -1) {
+    cartItems[itemIndex].quantity += delta;
+    if (cartItems[itemIndex].quantity <= 0) {
+      cartItems.splice(itemIndex, 1);
+    }
+  } else if (delta > 0) {
+    const allProds = typeof getAllCatalogProductsList === 'function' ? getAllCatalogProductsList() : [];
+    const prod = allProds.find(p => (p.title || '').trim().toLowerCase() === normTitle);
+    if (prod) {
+      window.addProductToCart(prod.title, prod.price, prod.mrp, prod.img, '1 Bottle');
+      return;
+    } else {
+      const card = Array.from(document.querySelectorAll('#products-catalog-list .compact-card')).find(c => {
+        const cTitle = (c.querySelector('.comp-title')?.textContent?.trim() || '').toLowerCase();
+        return cTitle === normTitle;
+      });
+      if (card) {
+        const price = card.querySelector('.comp-curr-price')?.textContent?.trim() || '₹149';
+        const mrp = card.querySelector('.comp-mrp')?.textContent?.trim() || '₹220';
+        const imgSrc = card.querySelector('.compact-bottle-img')?.getAttribute('src') || 'varshan_phenyl_perfect.png';
+        const realTitle = card.querySelector('.comp-title')?.textContent?.trim() || title;
+        window.addProductToCart(realTitle, price, mrp, imgSrc, '1 Bottle');
+        return;
+      }
+    }
+  }
+
+  updateCartBadge();
+  renderCartModal();
+};
+
+window.updateStickyOrderDock = function() {
+  const dock = document.getElementById('sticky-order-dock');
+  if (!dock) return;
+
+  const totalUnits = cartItems.reduce((acc, item) => acc + (item.quantity || 0), 0);
+  const totalProducts = cartItems.length;
+  const totalPrice = cartItems.reduce((acc, item) => acc + ((item.price || 0) * (item.quantity || 0)), 0);
+
+  if (totalUnits > 0) {
+    dock.classList.remove('hidden');
+    dock.style.removeProperty('display');
+  } else {
+    dock.classList.add('hidden');
+    const popover = document.getElementById('dock-quick-preview-panel');
+    if (popover) popover.classList.add('hidden');
+    return;
+  }
+
+  const badgeCounter = document.getElementById('dock-badge-counter');
+  if (badgeCounter) badgeCounter.textContent = totalUnits;
+
+  const textCount = document.getElementById('dock-items-count-text');
+  if (textCount) {
+    textCount.textContent = `${totalProducts} Product${totalProducts === 1 ? '' : 's'} (${totalUnits} Unit${totalUnits === 1 ? '' : 's'})`;
+  }
+
+  const priceVal = document.getElementById('dock-total-price');
+  if (priceVal) {
+    priceVal.textContent = `₹${totalPrice.toLocaleString('en-IN')}`;
+  }
+
+  const previewBadge = document.getElementById('dock-preview-count');
+  if (previewBadge) {
+    previewBadge.textContent = `${totalProducts} item${totalProducts === 1 ? '' : 's'}`;
+  }
+
+  const popover = document.getElementById('dock-quick-preview-panel');
+  if (popover && !popover.classList.contains('hidden')) {
+    window.renderDockPreviewList();
+  }
+};
+
+window.toggleDockQuickPreview = function(forceState) {
+  const popover = document.getElementById('dock-quick-preview-panel');
+  if (!popover) return;
+
+  const shouldOpen = forceState !== undefined ? forceState : popover.classList.contains('hidden');
+  if (shouldOpen) {
+    window.renderDockPreviewList();
+    popover.classList.remove('hidden');
+  } else {
+    popover.classList.add('hidden');
+  }
+};
+
+window.renderDockPreviewList = function() {
+  const listContainer = document.getElementById('dock-popover-list');
+  if (!listContainer) return;
+
+  if (cartItems.length === 0) {
+    listContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 20px; font-weight: 600;">No items selected yet.</div>';
+    return;
+  }
+
+  listContainer.innerHTML = cartItems.map((item, idx) => `
+    <div class="dock-preview-item-row">
+      <img src="${item.image || 'varshan_phenyl_perfect.png'}" class="dock-item-thumb" alt="${item.name}">
+      <div class="dock-item-meta">
+        <div class="dock-item-title" title="${item.name}">${item.name}</div>
+        <div class="dock-item-rate">₹${item.price} each (${item.packSize || '1 Bottle'})</div>
+      </div>
+      <div class="dock-item-ctrls">
+        <button type="button" class="dock-ctrl-btn" onclick="changeCartItemQty(${idx}, -1)" aria-label="Decrease">−</button>
+        <span class="dock-ctrl-val">${item.quantity}</span>
+        <button type="button" class="dock-ctrl-btn" onclick="changeCartItemQty(${idx}, 1)" aria-label="Increase">+</button>
+      </div>
+      <div class="dock-item-total">₹${((item.price || 0) * item.quantity).toLocaleString('en-IN')}</div>
+    </div>
+  `).join('');
+};
+
+let currentBulkCat = 'all';
+let currentBulkQuery = '';
+
+window.openBulkOrderModal = function() {
+  const modal = document.getElementById('bulk-order-modal');
+  if (!modal) return;
+
+  modal.classList.remove('hidden');
+  modal.style.setProperty('display', 'flex', 'important');
+  modal.style.zIndex = '99999';
+
+  window.renderBulkOrderList();
+  if (typeof window.syncModalScrollLock === 'function') {
+    window.syncModalScrollLock();
+  }
+};
+
+window.closeBulkOrderModal = function() {
+  const modal = document.getElementById('bulk-order-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.style.setProperty('display', 'none', 'important');
+  }
+  if (typeof window.syncModalScrollLock === 'function') {
+    window.syncModalScrollLock();
+  }
+};
+
+window.filterBulkCategory = function(cat) {
+  currentBulkCat = cat || 'all';
+  const pills = document.querySelectorAll('.bulk-cat-btn');
+  pills.forEach(p => {
+    if (p.getAttribute('data-cat') === currentBulkCat) {
+      p.classList.add('active');
+    } else {
+      p.classList.remove('active');
+    }
+  });
+  window.renderBulkOrderList();
+};
+
+window.handleBulkSearch = function(query) {
+  currentBulkQuery = (query || '').trim().toLowerCase();
+  window.renderBulkOrderList();
+};
+
+window.renderBulkOrderList = function() {
+  const listContainer = document.getElementById('bulk-grid-list');
+  if (!listContainer) return;
+
+  const allProds = typeof getAllCatalogProductsList === 'function' ? getAllCatalogProductsList() : [];
+
+  const filtered = allProds.filter(p => {
+    const matchesCat = currentBulkCat === 'all' || p.cat === currentBulkCat;
+    const matchesQuery = !currentBulkQuery || (p.title || '').toLowerCase().includes(currentBulkQuery);
+    return matchesCat && matchesQuery;
+  });
+
+  if (filtered.length === 0) {
+    listContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 40px; font-weight: 700;">No products match your search.</div>';
+    updateBulkSummaryFooter();
+    return;
+  }
+
+  listContainer.innerHTML = filtered.map(p => {
+    const inCart = cartItems.find(i => (i.name || '').toLowerCase() === (p.title || '').toLowerCase());
+    const qty = inCart ? inCart.quantity : 0;
+    const subtotal = qty * (p.price || 0);
+
+    return `
+      <div class="bulk-item-card ${qty > 0 ? 'has-qty' : ''}" id="bulk-item-${p.id}">
+        <img src="${p.img || 'varshan_phenyl_perfect.png'}" class="bulk-item-img" alt="${p.title}" loading="lazy">
+        <div class="bulk-col-info">
+          <div class="bulk-col-title" title="${p.title}">${p.title}</div>
+          <div class="bulk-col-meta">
+            <span>₹${p.price} / unit</span>
+            ${p.stock !== undefined ? `<span style="color: #059669; font-weight: 600;">• Stock: ${p.stock}</span>` : ''}
+          </div>
+        </div>
+        <div class="bulk-col-rate">₹${p.price}</div>
+        <div class="bulk-input-stepper">
+          <button type="button" class="bulk-step-btn" onclick="window.changeBulkItemQty('${p.id}', -1)" aria-label="Decrease">−</button>
+          <input type="number" min="0" max="9999" class="bulk-qty-input" id="bulk-qty-input-${p.id}" value="${qty}" onchange="window.changeBulkItemQty('${p.id}', 0, this.value)" aria-label="Quantity">
+          <button type="button" class="bulk-step-btn" onclick="window.changeBulkItemQty('${p.id}', 1)" aria-label="Increase">+</button>
+        </div>
+        <div class="bulk-col-subtotal" id="bulk-subtotal-${p.id}">₹${subtotal.toLocaleString('en-IN')}</div>
+      </div>
+    `;
+  }).join('');
+
+  updateBulkSummaryFooter();
+};
+
+function updateBulkSummaryFooter() {
+  const totalUnits = cartItems.reduce((acc, item) => acc + (item.quantity || 0), 0);
+  const totalProducts = cartItems.length;
+  const totalPrice = cartItems.reduce((acc, item) => acc + ((item.price || 0) * (item.quantity || 0)), 0);
+
+  const countSummary = document.getElementById('bulk-summary-count');
+  if (countSummary) {
+    countSummary.textContent = `${totalProducts} products selected (${totalUnits} total units)`;
+  }
+
+  const totalSummary = document.getElementById('bulk-summary-total');
+  if (totalSummary) {
+    totalSummary.textContent = `Total: ₹${totalPrice.toLocaleString('en-IN')}`;
+  }
+}
+
+window.changeBulkItemQty = function(productId, delta, exactVal) {
+  const allProds = typeof getAllCatalogProductsList === 'function' ? getAllCatalogProductsList() : [];
+  const prod = allProds.find(p => p.id === productId);
+  if (!prod) return;
+
+  const itemIndex = cartItems.findIndex(i => (i.name || '').toLowerCase() === (prod.title || '').toLowerCase());
+  const currentQty = itemIndex > -1 ? cartItems[itemIndex].quantity : 0;
+
+  let newQty = currentQty;
+  if (exactVal !== undefined) {
+    newQty = Math.max(0, parseInt(exactVal, 10) || 0);
+  } else {
+    newQty = Math.max(0, currentQty + delta);
+  }
+
+  if (newQty > 0) {
+    if (itemIndex > -1) {
+      cartItems[itemIndex].quantity = newQty;
+    } else {
+      cartItems.push({
+        id: Date.now() + Math.random(),
+        name: prod.title,
+        price: prod.price,
+        mrp: prod.mrp,
+        image: prod.img || 'varshan_phenyl_perfect.png',
+        packSize: '1 Bottle',
+        quantity: newQty
+      });
+    }
+  } else {
+    if (itemIndex > -1) {
+      cartItems.splice(itemIndex, 1);
+    }
+  }
+
+  const row = document.getElementById(`bulk-item-${productId}`);
+  if (row) {
+    if (newQty > 0) {
+      row.classList.add('has-qty');
+    } else {
+      row.classList.remove('has-qty');
+    }
+    const input = document.getElementById(`bulk-qty-input-${productId}`);
+    if (input && document.activeElement !== input) input.value = newQty;
+    const subtotalEl = document.getElementById(`bulk-subtotal-${productId}`);
+    if (subtotalEl) subtotalEl.textContent = `₹${(newQty * (prod.price || 0)).toLocaleString('en-IN')}`;
+  }
+
+  updateCartBadge();
+  renderCartModal();
+  updateBulkSummaryFooter();
+};
+
+window.clearBulkCart = function() {
+  if (cartItems.length === 0) return;
+  if (confirm('Clear all items currently selected in cart?')) {
+    cartItems = [];
+    updateCartBadge();
+    renderCartModal();
+    window.renderBulkOrderList();
+  }
+};
+
+window.syncBulkOrderInputs = function() {
+  const modal = document.getElementById('bulk-order-modal');
+  if (!modal || modal.classList.contains('hidden')) return;
+
+  const allProds = typeof getAllCatalogProductsList === 'function' ? getAllCatalogProductsList() : [];
+  allProds.forEach(p => {
+    const inCart = cartItems.find(i => (i.name || '').toLowerCase() === (p.title || '').toLowerCase());
+    const qty = inCart ? inCart.quantity : 0;
+    const row = document.getElementById(`bulk-item-${p.id}`);
+    if (row) {
+      if (qty > 0) row.classList.add('has-qty');
+      else row.classList.remove('has-qty');
+      const input = document.getElementById(`bulk-qty-input-${p.id}`);
+      if (input && document.activeElement !== input) input.value = qty;
+      const subtotalEl = document.getElementById(`bulk-subtotal-${p.id}`);
+      if (subtotalEl) subtotalEl.textContent = `₹${(qty * (p.price || 0)).toLocaleString('en-IN')}`;
+    }
+  });
+  updateBulkSummaryFooter();
+};
 
 function getSavedOrdersList() {
   try {
@@ -4470,6 +4855,9 @@ function initApplicationLifecycle() {
     helplineInput.value = localStorage.getItem('varshan_factory_helpline') || '8122776379';
   }
 
+  // Initialize cart badge, card steppers, and floating dock
+  updateCartBadge();
+
   // ---------------------------------------------------------------------------
   // 3. SACRED VEL WELCOME SCREEN SMOOTH AUTO-TRANSITION (DIRECT, NO WHITE GAP)
   // ---------------------------------------------------------------------------
@@ -5166,6 +5554,23 @@ function initApplicationLifecycle() {
   // 5C. EVENT DELEGATION: PRODUCT CARDS, CART ITEMS & MOBILE BOTTOM NAV
   // ---------------------------------------------------------------------------
   document.addEventListener('click', (e) => {
+    // Close dock preview popover when clicking outside
+    const popover = document.getElementById('dock-quick-preview-panel');
+    if (popover && !popover.classList.contains('hidden')) {
+      if (!e.target.closest('#sticky-order-dock')) {
+        popover.classList.add('hidden');
+      }
+    }
+
+    // Close bulk modal when clicking backdrop
+    const bulkModal = document.getElementById('bulk-order-modal');
+    if (bulkModal && !bulkModal.classList.contains('hidden')) {
+      if (e.target === bulkModal) {
+        window.closeBulkOrderModal();
+        return;
+      }
+    }
+
     // 1. Quick Add to Cart button on Card
     const cartBtn = e.target.closest('.btn-comp-cart');
     if (cartBtn) {
