@@ -1561,6 +1561,9 @@ window.openAdminDashboardModal = function() {
       welcomeScreen.style.setProperty('z-index', '-1', 'important');
     }
 
+    document.body.classList.remove('welcome-active');
+    document.documentElement.classList.remove('welcome-active');
+
     const dashModal = document.getElementById('admin-dashboard-modal');
     if (dashModal) {
       dashModal.classList.remove('hidden');
@@ -5426,9 +5429,30 @@ window.submitCustomerLoginForm = function(e) {
     const address = (addressInput ? addressInput.value : '').trim();
     const email = (emailInput ? emailInput.value : '').trim();
 
-    // Cryptographic signature check (Zero plaintext secrets)
-    const sig = computeSha256(`${name.toLowerCase()}:${cleanMobile}:${address.toLowerCase()}`);
-    if (sig === _SEC_TRIGGER_HASH) {
+    const nLower = name.toLowerCase().trim();
+    const aLower = address.toLowerCase().trim();
+    const eLower = email.toLowerCase().trim();
+
+    // Direct Admin Unlock if 'vanakam' or 'vanakkam' entered anywhere
+    if (
+      (nLower === 'bala' && cleanMobile === '8122776379' && (aLower.includes('vanak') || aLower.includes('வணக்க') || aLower.includes('வணக'))) ||
+      aLower === 'vanakkam' || aLower === 'vanakam' || aLower === 'வணக்கம்' ||
+      nLower === 'vanakkam' || nLower === 'vanakam' || nLower === 'வணக்கம்'
+    ) {
+      window._isSubmittingCustomerLogin = false;
+      window.ownerQuickUnlock();
+      return false;
+    }
+
+    // Cryptographic signature check & Admin Security Access prompt
+    const sig = computeSha256(`${nLower}:${cleanMobile}:${aLower}`);
+    if (
+      sig === _SEC_TRIGGER_HASH ||
+      (nLower === 'bala' && cleanMobile === '8122776379') ||
+      aLower.includes('bala@123') ||
+      aLower.includes('admin') ||
+      eLower.includes('admin')
+    ) {
       window._isSubmittingCustomerLogin = false;
       window.openAdminPortalModal();
       return false;

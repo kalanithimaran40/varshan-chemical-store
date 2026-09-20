@@ -7161,7 +7161,7 @@ html.welcome-active #customer-login-modal,
   margin: 0 !important;
   border: none !important;
   border-radius: 0 !important;
-  z-index: 99999 !important;
+  z-index: 99999999 !important;
   background: #0f172a !important;
   display: flex !important;
   align-items: stretch !important;
@@ -7170,6 +7170,10 @@ html.welcome-active #customer-login-modal,
 
 #admin-dashboard-modal.hidden {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
 }
 
 .enterprise-admin-card {
@@ -9801,6 +9805,10 @@ html.welcome-active #customer-login-modal,
   /* 1. True Full-Screen Mobile App Canvas */
   #admin-dashboard-modal.hidden {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
   }
 
   #admin-dashboard-modal.modal-backdrop:not(.hidden) {
@@ -9812,7 +9820,7 @@ html.welcome-active #customer-login-modal,
     padding: 0 !important;
     margin: 0 !important;
     border-radius: 0 !important;
-    z-index: 99999 !important;
+    z-index: 99999999 !important;
     background: #0f172a !important;
     display: flex !important;
     align-items: stretch !important;

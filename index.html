@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Philosopher:wght@700&family=Playfair+Display:wght@700;800;900&family=Syne:wght@700;800&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20.0">
+  <link rel="stylesheet" href="style.css?v=21.0">
 </head>
 <body class="welcome-active">
 
@@ -267,8 +267,8 @@
         }
       }
     }
-    // Stay for 10 full seconds (10000ms)
-    setTimeout(dismissWelcomeScreen, 10000);
+    // Stay for 5 full seconds (5000ms) as requested by user
+    setTimeout(dismissWelcomeScreen, 5000);
   </script>
 
   <!-- ====================================================
@@ -1783,13 +1783,13 @@
         <div class="admin-input-group">
           <label for="admin-master-passcode">Admin Password *</label>
           <div class="passcode-input-wrap">
-            <input type="password" id="admin-master-passcode" placeholder="Enter admin password" required autocomplete="current-password">
+            <input type="password" id="admin-master-passcode" placeholder="Enter admin password" required autocomplete="current-password" onkeydown="if(event.key==='Enter'||event.keyCode===13){event.preventDefault();handleAdminLoginSubmit(event);}">
             <button type="button" class="btn-toggle-pass-visibility" onclick="toggleAdminPassVisibility()" title="Show/Hide Password">👁️</button>
           </div>
         </div>
         <div id="admin-login-error" class="admin-error-text hidden"></div>
         <div id="admin-lockout-notice" class="admin-lockout-text hidden"></div>
-        <button type="submit" id="btn-admin-submit-action" class="btn-admin-login-submit">
+        <button type="button" id="btn-admin-submit-action" class="btn-admin-login-submit" onclick="handleAdminLoginSubmit(event)">
           <span>🔐 Verify Password &amp; Open Admin Panel</span>
         </button>
 
@@ -3273,7 +3273,7 @@
   <div id="toast-box" class="toast-popup hidden"></div>
 
   <!-- Main Application Script (High Priority, Zero External Blocking) -->
-  <script src="app.js?v=20.0"></script>
+  <script src="app.js?v=21.0"></script>
 </body>
 </html>
 
