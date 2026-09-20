@@ -590,9 +590,13 @@ window.openCustomerLoginModal = function() {
     modal.classList.remove('hidden');
     modal.style.setProperty('display', 'flex', 'important');
     modal.style.zIndex = '99999';
-    setTimeout(() => {
-      document.getElementById('standaloneUserName')?.focus();
-    }, 100);
+    modal.scrollTop = 0;
+    const isTouch = ('ontouchstart' in window) || (window.innerWidth <= 768);
+    if (!isTouch) {
+      setTimeout(() => {
+        document.getElementById('standaloneUserName')?.focus();
+      }, 120);
+    }
   }
   window.syncModalScrollLock();
 };
@@ -602,6 +606,7 @@ function closeCustomerLoginModal() {
   if (modal) {
     modal.classList.add('hidden');
     modal.style.setProperty('display', 'none', 'important');
+    modal.scrollTop = 0;
   }
   if (typeof window.syncModalScrollLock === 'function') {
     window.syncModalScrollLock();
@@ -5313,6 +5318,16 @@ window.submitCustomerLoginForm = function(e) {
 
   if (standaloneForm) {
     standaloneForm.addEventListener('submit', window.submitCustomerLoginForm);
+
+    // Auto-scroll inputs cleanly into center view when mobile virtual keyboard opens
+    const formInputs = standaloneForm.querySelectorAll('input');
+    formInputs.forEach(inp => {
+      inp.addEventListener('focus', () => {
+        setTimeout(() => {
+          inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+      });
+    });
   }
 
   const standaloneSubmitBtn = document.getElementById('standalone-btn-submit-login');

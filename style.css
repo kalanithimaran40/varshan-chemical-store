@@ -2444,25 +2444,18 @@ html.welcome-active::-webkit-scrollbar {
 
 @media (max-width: 768px) {
   .creative-login-card {
-    max-height: 88vh !important;
-    border-radius: 18px 18px 0 0 !important;
+    max-height: none !important;
+    border-radius: 18px !important;
     width: 100% !important;
-    overflow: hidden !important;
-    margin: auto 0 0 0 !important;
-    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.35) !important;
+    overflow: visible !important;
+    margin: 0 auto !important;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35) !important;
   }
   .login-form-area {
-    padding: 1.15rem 1.15rem max(1.5rem, env(safe-area-inset-bottom, 20px)) !important;
-    overflow-y: auto !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
+    padding: 1.15rem 1.15rem 1.5rem !important;
+    overflow: visible !important;
     touch-action: pan-y manipulation !important;
     -webkit-overflow-scrolling: touch !important;
-  }
-  .login-form-area::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
   }
 }
 
@@ -9007,20 +9000,23 @@ html.welcome-active::-webkit-scrollbar {
    5. NATIVE MOBILE APP EXPERIENCE (BOTTOM NAV, 2-COL GRID, APP BAR & SHEETS)
    ========================================================================== */
 
-/* Desktop Default: Bottom nav hidden */
+/* Mobile bottom nav completely removed */
 .mobile-bottom-nav {
   display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  pointer-events: none !important;
 }
 
 @media (max-width: 768px) {
-  /* 0. Mobile Body Bottom Clearance for Navigation Bar */
+  /* 0. Mobile Body Padding - Clean minimal footer spacing */
   body {
-    padding-bottom: 64px !important;
+    padding-bottom: 1rem !important;
   }
 
   .portal-product-showcase {
     padding: 0 0.45rem !important;
-    margin: 0.5rem auto 2.5rem !important;
+    margin: 0.5rem auto 1.5rem !important;
   }
 
   /* 1. Sticky Mobile Header & Row Breakdown */
@@ -9325,52 +9321,58 @@ html.welcome-active::-webkit-scrollbar {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
   }
 
-  /* 3. Flipkart / Amazon Native 2-Column Product Grid */
+  /* 3. Flipkart / Amazon Native Compact 2-Column Product Grid */
   .compact-products-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.45rem !important;
+    gap: 0.4rem !important;
   }
 
   .compact-card {
     max-width: 100% !important;
     width: 100% !important;
-    padding: 0.55rem 0.45rem !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+    padding: 0.48rem 0.4rem 0.45rem !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
     display: flex !important;
     flex-direction: column !important;
     background: #ffffff !important;
   }
 
   .compact-badge {
-    font-size: 0.55rem !important;
-    padding: 0.15rem 0.35rem !important;
+    font-size: 0.52rem !important;
+    padding: 0.12rem 0.35rem !important;
     border-radius: 4px !important;
   }
 
   .compact-img-box {
-    height: 125px !important;
+    height: 110px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    margin-bottom: 0.35rem !important;
-    padding: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
+    padding: 0.2rem !important;
     background: #f8fafc !important;
     border-radius: 8px !important;
   }
 
   .compact-bottle-img {
-    max-height: 115px !important;
+    max-height: 98px !important;
     max-width: 100% !important;
     object-fit: contain !important;
   }
 
+  .comp-brand {
+    font-size: 0.56rem !important;
+    margin-bottom: 0.05rem !important;
+    letter-spacing: 0.5px !important;
+  }
+
   .comp-title {
-    font-size: 0.74rem !important;
-    line-height: 1.25 !important;
-    min-height: 1.85rem !important;
-    max-height: 2.5rem !important;
-    margin: 0.1rem 0 0.25rem !important;
+    font-size: 0.72rem !important;
+    line-height: 1.2 !important;
+    min-height: 1.7rem !important;
+    max-height: 2.3rem !important;
+    margin: 0.05rem 0 0.15rem !important;
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
@@ -9379,197 +9381,138 @@ html.welcome-active::-webkit-scrollbar {
   }
 
   .comp-rating-row {
-    font-size: 0.62rem !important;
-    margin-bottom: 0.25rem !important;
+    font-size: 0.6rem !important;
+    margin-bottom: 0.18rem !important;
+    gap: 0.25rem !important;
   }
 
   .comp-price-row {
     flex-wrap: wrap !important;
     gap: 0.2rem !important;
-    margin-bottom: 0.35rem !important;
+    margin-bottom: 0.18rem !important;
     align-items: baseline !important;
   }
 
   .comp-curr-price {
-    font-size: 0.95rem !important;
+    font-size: 0.92rem !important;
     font-weight: 800 !important;
   }
 
   .comp-mrp {
-    font-size: 0.68rem !important;
+    font-size: 0.65rem !important;
   }
 
   .comp-off {
-    font-size: 0.68rem !important;
+    font-size: 0.62rem !important;
     font-weight: 700 !important;
+    padding: 0.05rem 0.25rem !important;
   }
 
   .comp-del-note {
-    font-size: 0.58rem !important;
-    margin-bottom: 0.35rem !important;
+    font-size: 0.54rem !important;
+    margin-bottom: 0.25rem !important;
   }
 
-  /* Clean Touch Buttons (No Text Cutoff) */
+  /* Compact 2-Button Grid Layout (Side-by-side, compact 29px height) */
   .comp-btn-group {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.32rem !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.22rem !important;
     margin-top: auto !important;
     width: 100% !important;
   }
 
-  .btn-comp-cart {
-    width: 100% !important;
-    padding: 0.45rem 0.4rem !important;
-    font-size: 0.74rem !important;
-    font-weight: 700 !important;
-    letter-spacing: 0 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    border-radius: 6px !important;
-    text-align: center !important;
-    box-sizing: border-box !important;
-    min-height: 35px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 0.3rem !important;
-    touch-action: manipulation !important;
-    -webkit-tap-highlight-color: transparent !important;
-    cursor: pointer !important;
-  }
-
+  .btn-comp-cart,
   .btn-comp-buy {
     width: 100% !important;
-    padding: 0.45rem 0.4rem !important;
-    font-size: 0.74rem !important;
+    height: 29px !important;
+    min-height: 29px !important;
+    max-height: 29px !important;
+    padding: 0 2px !important;
+    font-size: 0.65rem !important;
     font-weight: 700 !important;
-    letter-spacing: 0 !important;
+    letter-spacing: -0.2px !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    border-radius: 6px !important;
+    border-radius: 5px !important;
     text-align: center !important;
     box-sizing: border-box !important;
-    min-height: 35px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.3rem !important;
+    gap: 0.2rem !important;
     touch-action: manipulation !important;
     -webkit-tap-highlight-color: transparent !important;
     cursor: pointer !important;
-  }
-
-  /* Offset for Fixed Mobile Bottom Nav - Guarantees Bottom Product Cards are NEVER covered */
-  body {
-    padding-bottom: calc(75px + env(safe-area-inset-bottom, 16px)) !important;
   }
 
   .portal-product-showcase,
   #products-catalog-list {
-    padding-bottom: calc(75px + env(safe-area-inset-bottom, 16px)) !important;
+    padding-bottom: 1.5rem !important;
   }
 
-  /* 4. Native Mobile Bottom Navigation Bar */
+  /* Bottom nav completely hidden on mobile */
   .mobile-bottom-nav {
-    display: flex !important;
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 60px !important;
-    background: #0f172a !important;
-    border-top: 1.5px solid rgba(255, 255, 255, 0.14) !important;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4) !important;
-    z-index: 10000 !important;
-    align-items: center !important;
-    justify-content: space-around !important;
-    padding: 0 0.5rem max(0.2rem, env(safe-area-inset-bottom, 6px)) !important;
-    touch-action: manipulation !important;
-  }
-
-  .mob-nav-btn {
-    flex: 1 1 25% !important;
-    max-width: 25% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background: none !important;
-    border: none !important;
-    padding: 0.35rem 0 !important;
-    color: #94a3b8 !important;
-    cursor: pointer !important;
-    transition: all 0.2s ease !important;
-    gap: 0.15rem !important;
-    position: relative !important;
-    outline: none !important;
-    touch-action: manipulation !important;
-    -webkit-tap-highlight-color: transparent !important;
-    user-select: none !important;
-  }
-
-  .mob-nav-btn * {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
     pointer-events: none !important;
   }
 
-  .mob-nav-icon {
-    font-size: 1.15rem !important;
-    line-height: 1 !important;
-  }
-
-  .mob-nav-icon-wrap {
-    position: relative !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  .mob-cart-badge {
-    position: absolute !important;
-    top: -5px !important;
-    right: -10px !important;
-    background: #ef4444 !important;
-    color: #ffffff !important;
-    font-size: 0.6rem !important;
-    font-weight: 800 !important;
-    min-width: 16px !important;
-    height: 16px !important;
-    border-radius: 999px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0 3px !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
-  }
-
-  .mob-nav-label {
-    font-size: 0.68rem !important;
-    font-weight: 700 !important;
-    line-height: 1 !important;
-  }
-
-  .mob-nav-btn:hover {
-    color: #e2e8f0 !important;
-  }
-
-  .mob-nav-btn.active {
-    color: #34d399 !important;
-  }
-
-  .mob-nav-btn.active .mob-nav-label {
-    color: #34d399 !important;
-    font-weight: 800 !important;
-  }
-
-  /* 5. Native Slide-Up Bottom Sheets for Modals */
-  .modal-backdrop:not(#admin-dashboard-modal) {
+  /* 5. Native Slide-Up Bottom Sheets for Other Modals */
+  .modal-backdrop:not(#admin-dashboard-modal):not(#customer-login-modal) {
     align-items: flex-end !important;
     padding: 0 !important;
     background: rgba(0, 0, 0, 0.75) !important;
     backdrop-filter: blur(4px) !important;
+  }
+
+  /* 5A. Dedicated Customer Login Modal Mobile Scroll & Virtual Keyboard Clearance */
+  #customer-login-modal.modal-backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    height: 100% !important;
+    height: 100dvh !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    padding: 1.25rem 0.75rem 24rem 0.75rem !important;
+    background: rgba(0, 0, 0, 0.78) !important;
+    backdrop-filter: blur(5px) !important;
+    z-index: 99999 !important;
+  }
+
+  #customer-login-modal .creative-login-card {
+    position: relative !important;
+    margin: 0 auto !important;
+    max-height: none !important;
+    height: auto !important;
+    width: 100% !important;
+    max-width: 440px !important;
+    border-radius: 18px !important;
+    overflow: visible !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45) !important;
+    animation: none !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  #customer-login-modal .login-form-area {
+    overflow: visible !important;
+    padding: 1.25rem 1.15rem 1.75rem !important;
+    max-height: none !important;
+  }
+
+  #customer-login-modal input {
+    font-size: 16px !important; /* Prevents mobile browser iOS auto-zoom lock */
   }
 
   .modern-detail-modal-card,
@@ -9588,7 +9531,6 @@ html.welcome-active::-webkit-scrollbar {
   }
 
   .customer-login-card,
-  .creative-login-card,
   .orders-history-modal-card,
   .store-about-modal-card,
   .admin-login-card,
@@ -11621,20 +11563,12 @@ html.welcome-active::-webkit-scrollbar {
 
 
 
-/* v11 mobile bottom nav 5-col */
+/* Mobile bottom nav permanently disabled */
 .mobile-bottom-nav {
-  display: grid !important;
-  grid-template-columns: repeat(5, 1fr) !important;
-  align-items: center !important;
-  padding: 0 0.25rem !important;
-}
-.mob-nav-btn {
-  padding: 0.35rem 0.15rem !important;
-  font-size: 0.68rem !important;
-  gap: 0.15rem !important;
-}
-.mob-nav-icon {
-  font-size: 1.15rem !important;
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  pointer-events: none !important;
 }
 .btn-open-admin-from-login:active {
   transform: scale(0.96) !important;
@@ -11645,41 +11579,43 @@ html.welcome-active::-webkit-scrollbar {
    MOBILE VIEWPORT & TOUCH SCREEN PERFECTION (iOS Safari & Android Chrome)
    ========================================================================== */
 @media (max-width: 768px) {
-  /* Prevent fixed mobile-bottom-nav from overlapping products 33 to 38 */
   body {
-    padding-bottom: calc(75px + env(safe-area-inset-bottom, 16px)) !important;
+    padding-bottom: 1rem !important;
   }
   .portal-product-showcase {
-    padding-bottom: calc(85px + env(safe-area-inset-bottom, 16px)) !important;
+    padding-bottom: 1.5rem !important;
   }
 
-  /* Catalog card buttons touch optimization */
+  /* Catalog card buttons compact 2-column side-by-side layout */
   .comp-btn-group {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.32rem !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.22rem !important;
     margin-top: auto !important;
     width: 100% !important;
   }
   .btn-comp-cart,
   .btn-comp-buy {
     width: 100% !important;
-    min-height: 35px !important;
-    padding: 0.45rem 0.4rem !important;
-    font-size: 0.74rem !important;
+    height: 29px !important;
+    min-height: 29px !important;
+    max-height: 29px !important;
+    padding: 0 2px !important;
+    font-size: 0.65rem !important;
     font-weight: 700 !important;
+    letter-spacing: -0.2px !important;
     touch-action: manipulation !important;
     -webkit-tap-highlight-color: transparent !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.3rem !important;
+    gap: 0.2rem !important;
     cursor: pointer !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     box-sizing: border-box !important;
-    border-radius: 6px !important;
+    border-radius: 5px !important;
   }
 
   /* Cart Stepper and Delete button touch targets */
