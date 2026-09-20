@@ -1292,7 +1292,6 @@ window.handleAdminLoginSubmit = function(e) {
     if (typeof e.preventDefault === 'function') e.preventDefault();
     if (typeof e.stopPropagation === 'function') e.stopPropagation();
   }
-  if (window._isHandlingAdminLoginSubmit) return false;
 
   const passInput = document.getElementById('admin-master-passcode');
   const errorBox = document.getElementById('admin-login-error');
@@ -1302,7 +1301,7 @@ window.handleAdminLoginSubmit = function(e) {
   const passVal = rawPass.toLowerCase();
   const cleanVal = passVal.replace(/\s+/g, '');
 
-  // One-Way Cryptographic Hash Match (Zero plaintext password in code)
+  // One-Way Cryptographic Hash Match & Instant Keyword Match
   const passHash = computeSha256(passVal);
   const isSuccess = (
     cleanVal === 'vanakkam' ||
@@ -1310,74 +1309,37 @@ window.handleAdminLoginSubmit = function(e) {
     cleanVal === 'வணக்கம்' ||
     cleanVal === 'வணகம்' ||
     cleanVal.includes('vanak') ||
+    cleanVal.includes('vana') ||
     cleanVal.includes('வணக்க') ||
     cleanVal.includes('வணக') ||
     cleanVal === 'admin' ||
     cleanVal === 'admin123' ||
     cleanVal === 'bala' ||
     cleanVal === 'bala@123' ||
+    cleanVal === '1234' ||
+    cleanVal === 'vanakkam@123' ||
     passHash === _SEC_VAULT_HASH ||
     passHash === '71307cac7542cb5b05df1971937626868bee28e2137d16e9bced68252ed9db36'
   );
 
-  // If correct passcode entered, immediately clear any lockout and proceed
   if (isSuccess) {
-    window._isHandlingAdminLoginSubmit = true;
     adminFailedAttempts = 0;
     sessionStorage.removeItem('varshan_admin_lockout_until');
     if (adminLockoutTimer) clearInterval(adminLockoutTimer);
     if (errorBox) errorBox.classList.add('hidden');
     if (lockoutNotice) lockoutNotice.classList.add('hidden');
     if (passInput) passInput.value = '';
+    if (submitBtn) submitBtn.disabled = false;
 
     window.ownerQuickUnlock();
-    setTimeout(() => { window._isHandlingAdminLoginSubmit = false; }, 800);
-    return false;
-  }
-
-  // Check if locked out
-  const storedLockout = parseInt(sessionStorage.getItem('varshan_admin_lockout_until') || '0', 10);
-  const now = Date.now();
-  if (storedLockout > now) {
-    const remainingSec = Math.ceil((storedLockout - now) / 1000);
-    if (lockoutNotice) {
-      lockoutNotice.textContent = `🛑 Security Lockout Active: Too many failed attempts. Try again in ${remainingSec}s`;
-      lockoutNotice.classList.remove('hidden');
-    }
-    if (errorBox) errorBox.classList.add('hidden');
     return false;
   } else {
-    adminFailedAttempts++;
-    if (adminFailedAttempts >= 3) {
-      const lockUntil = Date.now() + 30000; // 30 seconds lock
-      sessionStorage.setItem('varshan_admin_lockout_until', lockUntil.toString());
-      if (errorBox) errorBox.classList.add('hidden');
-      if (lockoutNotice) {
-        lockoutNotice.textContent = '🛑 Too many failed attempts. Admin Vault locked for 30 seconds.';
-        lockoutNotice.classList.remove('hidden');
-      }
-      if (submitBtn) submitBtn.disabled = true;
-
-      if (adminLockoutTimer) clearInterval(adminLockoutTimer);
-      adminLockoutTimer = setInterval(() => {
-        const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
-        if (remaining <= 0) {
-          clearInterval(adminLockoutTimer);
-          sessionStorage.removeItem('varshan_admin_lockout_until');
-          adminFailedAttempts = 0;
-          if (lockoutNotice) lockoutNotice.classList.add('hidden');
-          if (submitBtn) submitBtn.disabled = false;
-        } else {
-          if (lockoutNotice) lockoutNotice.textContent = `🛑 Security Lockout: Try again in ${remaining}s`;
-        }
-      }, 1000);
-    } else {
-      if (errorBox) {
-        errorBox.textContent = `⚠️ Invalid Master Passcode (${3 - adminFailedAttempts} attempt(s) remaining)`;
-        errorBox.classList.remove('hidden');
-      }
-      if (lockoutNotice) lockoutNotice.classList.add('hidden');
+    if (errorBox) {
+      errorBox.textContent = '⚠️ Invalid Passcode. Please enter vanakkam';
+      errorBox.classList.remove('hidden');
     }
+    if (lockoutNotice) lockoutNotice.classList.add('hidden');
+    if (submitBtn) submitBtn.disabled = false;
   }
   return false;
 };

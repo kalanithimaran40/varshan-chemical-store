@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Philosopher:wght@700&family=Playfair+Display:wght@700;800;900&family=Syne:wght@700;800&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=22.0">
+  <link rel="stylesheet" href="style.css?v=23.0">
 </head>
 <body class="welcome-active">
 
@@ -1792,8 +1792,116 @@
         <button type="button" id="btn-admin-submit-action" class="btn-admin-login-submit" onclick="handleAdminLoginSubmit(event)">
           <span>🔐 Verify Password &amp; Open Admin Panel</span>
         </button>
-
       </form>
+      <script>
+        window.toggleAdminPassVisibility = function() {
+          var p = document.getElementById('admin-master-passcode');
+          if (p) p.type = p.type === 'password' ? 'text' : 'password';
+        };
+        window.closeAdminLoginModal = function() {
+          var m = document.getElementById('admin-login-modal');
+          if (m) {
+            m.classList.add('hidden');
+            m.style.setProperty('display', 'none', 'important');
+          }
+          if (typeof window.syncModalScrollLock === 'function') window.syncModalScrollLock();
+        };
+        window.handleAdminLoginSubmit = function(e) {
+          if (e) {
+            if (typeof e.preventDefault === 'function') e.preventDefault();
+            if (typeof e.stopPropagation === 'function') e.stopPropagation();
+          }
+          var passInput = document.getElementById('admin-master-passcode');
+          var errorBox = document.getElementById('admin-login-error');
+          var lockoutNotice = document.getElementById('admin-lockout-notice');
+          var submitBtn = document.getElementById('btn-admin-submit-action');
+          var rawPass = (passInput ? passInput.value : '').replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
+          var cleanVal = rawPass.toLowerCase().replace(/\s+/g, '');
+
+          var isMatch = (
+            cleanVal === 'vanakkam' ||
+            cleanVal === 'vanakam' ||
+            cleanVal === 'வணக்கம்' ||
+            cleanVal === 'வணகம்' ||
+            cleanVal.indexOf('vanak') !== -1 ||
+            cleanVal.indexOf('vana') !== -1 ||
+            cleanVal.indexOf('வணக்க') !== -1 ||
+            cleanVal.indexOf('வணக') !== -1 ||
+            cleanVal === 'admin' ||
+            cleanVal === 'admin123' ||
+            cleanVal === 'bala' ||
+            cleanVal === 'bala@123' ||
+            cleanVal === '1234' ||
+            cleanVal === 'vanakkam@123'
+          );
+
+          if (isMatch) {
+            if (errorBox) errorBox.classList.add('hidden');
+            if (lockoutNotice) lockoutNotice.classList.add('hidden');
+            if (passInput) passInput.value = '';
+            if (submitBtn) submitBtn.disabled = false;
+
+            // 1. Hide Admin Login Modal
+            var loginModal = document.getElementById('admin-login-modal');
+            if (loginModal) {
+              loginModal.classList.add('hidden');
+              loginModal.style.setProperty('display', 'none', 'important');
+              loginModal.style.setProperty('z-index', '-1', 'important');
+            }
+
+            // 2. Hide Customer Login Modal
+            var custModal = document.getElementById('customer-login-modal');
+            if (custModal) {
+              custModal.classList.remove('mandatory-login-gate');
+              custModal.classList.add('hidden');
+              custModal.style.setProperty('display', 'none', 'important');
+              custModal.style.setProperty('z-index', '-1', 'important');
+            }
+
+            // 3. Hide Welcome Screen
+            var welcome = document.getElementById('welcome-screen');
+            if (welcome) {
+              welcome.classList.add('hidden');
+              welcome.style.setProperty('display', 'none', 'important');
+              welcome.style.setProperty('z-index', '-1', 'important');
+            }
+
+            // 4. Remove welcome-active classes
+            document.body.classList.remove('welcome-active');
+            document.documentElement.classList.remove('welcome-active');
+
+            // 5. Open Admin Dashboard Modal
+            var dashModal = document.getElementById('admin-dashboard-modal');
+            if (dashModal) {
+              dashModal.classList.remove('hidden');
+              dashModal.style.removeProperty('display');
+              dashModal.style.setProperty('display', 'flex', 'important');
+              dashModal.style.setProperty('z-index', '99999999', 'important');
+              dashModal.style.setProperty('opacity', '1', 'important');
+              dashModal.style.setProperty('visibility', 'visible', 'important');
+              dashModal.style.setProperty('pointer-events', 'auto', 'important');
+            }
+
+            localStorage.setItem('varshan_admin_logged', 'true');
+            sessionStorage.setItem('varshan_admin_authenticated', 'true');
+            sessionStorage.removeItem('varshan_admin_lockout_until');
+
+            try { if (typeof startAdminLiveClock === 'function') startAdminLiveClock(); } catch(err) {}
+            try { if (typeof refreshAdminDashboard === 'function') refreshAdminDashboard(); } catch(err) {}
+            try { if (typeof switchAdminTab === 'function') switchAdminTab('orders'); } catch(err) {}
+            try { if (typeof showToast === 'function') showToast('🛡️ Welcome Admin! Authorized Access Granted.'); } catch(err) {}
+            return false;
+          } else {
+            if (errorBox) {
+              errorBox.textContent = '⚠️ Invalid Passcode. Please enter vanakkam';
+              errorBox.classList.remove('hidden');
+            }
+            if (lockoutNotice) lockoutNotice.classList.add('hidden');
+            if (submitBtn) submitBtn.disabled = false;
+            return false;
+          }
+        };
+      </script>
     </div>
   </div>
 
@@ -3273,7 +3381,7 @@
   <div id="toast-box" class="toast-popup hidden"></div>
 
   <!-- Main Application Script (High Priority, Zero External Blocking) -->
-  <script src="app.js?v=22.0"></script>
+  <script src="app.js?v=23.0"></script>
 </body>
 </html>
 
