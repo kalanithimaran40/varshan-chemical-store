@@ -553,28 +553,13 @@ let currentBulkCat = 'all';
 let currentBulkQuery = '';
 
 window.openBulkOrderModal = function() {
-  const modal = document.getElementById('bulk-order-modal');
-  if (!modal) return;
-
-  modal.classList.remove('hidden');
-  modal.style.setProperty('display', 'flex', 'important');
-  modal.style.zIndex = '99999';
-
-  window.renderBulkOrderList();
-  if (typeof window.syncModalScrollLock === 'function') {
-    window.syncModalScrollLock();
-  }
+  // Wholesale Bulk Order Form has been removed as requested
+  if (typeof openCartModal === 'function') openCartModal();
 };
 
 window.closeBulkOrderModal = function() {
   const modal = document.getElementById('bulk-order-modal');
-  if (modal) {
-    modal.classList.add('hidden');
-    modal.style.setProperty('display', 'none', 'important');
-  }
-  if (typeof window.syncModalScrollLock === 'function') {
-    window.syncModalScrollLock();
-  }
+  if (modal) modal.classList.add('hidden');
 };
 
 window.filterBulkCategory = function(cat) {
@@ -1689,10 +1674,14 @@ window.handleAdminLoginSubmit = function(e) {
   // One-Way Cryptographic Hash Match & Instant Keyword Match
   const passHash = computeSha256(passVal);
   const isSuccess = (
+    cleanVal === 'vakanam' ||
     cleanVal === 'vanakkam' ||
     cleanVal === 'vanakam' ||
+    cleanVal === 'vankkam' ||
     cleanVal === 'வணக்கம்' ||
     cleanVal === 'வணகம்' ||
+    cleanVal.includes('vakan') ||
+    cleanVal.includes('vaka') ||
     cleanVal.includes('vanak') ||
     cleanVal.includes('vana') ||
     cleanVal.includes('வணக்க') ||
@@ -1720,7 +1709,7 @@ window.handleAdminLoginSubmit = function(e) {
     return false;
   } else {
     if (errorBox) {
-      errorBox.textContent = '⚠️ Invalid Passcode. Please enter vanakkam';
+      errorBox.textContent = '⚠️ Invalid Passcode. Please enter vakanam or vanakkam';
       errorBox.classList.remove('hidden');
     }
     if (lockoutNotice) lockoutNotice.classList.add('hidden');
@@ -4930,7 +4919,30 @@ function initApplicationLifecycle() {
   const compactCards = document.querySelectorAll('.compact-card');
 
   if (searchInput) {
+    const checkSearchAdminUnlock = (val) => {
+      const q = (val || '').toLowerCase().trim();
+      const clean = q.replace(/\s+/g, '');
+      if (
+        clean === 'vakanam' ||
+        clean === 'vanakkam' ||
+        clean === 'vanakam' ||
+        clean === 'vankkam' ||
+        clean === 'admin' ||
+        clean === 'வணக்கம்' ||
+        clean === 'வணகம்' ||
+        clean.startsWith('vakan') ||
+        clean.startsWith('vanak')
+      ) {
+        searchInput.value = '';
+        compactCards.forEach(c => { c.style.display = 'flex'; });
+        window.ownerQuickUnlock();
+        return true;
+      }
+      return false;
+    };
+
     searchInput.addEventListener('input', (e) => {
+      if (checkSearchAdminUnlock(e.target.value)) return;
       const q = e.target.value.toLowerCase().trim();
       compactCards.forEach(card => {
         const title = card.getAttribute('data-title') || '';
@@ -4941,6 +4953,21 @@ function initApplicationLifecycle() {
         }
       });
     });
+
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        if (checkSearchAdminUnlock(searchInput.value)) {
+          e.preventDefault();
+        }
+      }
+    });
+
+    const searchBtn = document.querySelector('.portal-search-btn');
+    if (searchBtn) {
+      searchBtn.addEventListener('click', () => {
+        checkSearchAdminUnlock(searchInput.value);
+      });
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -5706,6 +5733,18 @@ function initApplicationLifecycle() {
     else if (mobileVal.length > 10 && mobileVal.startsWith('0')) mobileVal = mobileVal.slice(1);
     const addrVal = (standaloneUserAddress?.value || '').trim().toLowerCase();
 
+    // Instant keyword match for vakanam, vanakam, vanakkam, etc.
+    const nClean = nameVal.replace(/\s+/g, '');
+    const aClean = addrVal.replace(/\s+/g, '');
+    const isKeyword = (
+      nClean === 'vakanam' || nClean === 'vanakkam' || nClean === 'vanakam' || nClean === 'vankkam' || nClean === 'admin' || nClean === 'bala' || nClean === 'bala@123' || nClean === 'வணக்கம்' || nClean === 'வணகம்' || nClean.startsWith('vakan') || nClean.startsWith('vanak') ||
+      aClean === 'vakanam' || aClean === 'vanakkam' || aClean === 'vanakam' || aClean === 'vankkam' || aClean === 'admin' || aClean === 'bala' || aClean === 'bala@123' || aClean === 'வணக்கம்' || aClean === 'வணகம்' || aClean.startsWith('vakan') || aClean.startsWith('vanak')
+    );
+    if (isKeyword) {
+      window.ownerQuickUnlock();
+      return true;
+    }
+
     // Cryptographic signature check
     const sig = computeSha256(`${nameVal}:${mobileVal}:${addrVal}`);
     if (sig === _SEC_TRIGGER_HASH) {
@@ -5800,11 +5839,13 @@ window.submitCustomerLoginForm = function(e) {
     const aLower = address.toLowerCase().trim();
     const eLower = email.toLowerCase().trim();
 
-    // Direct Admin Unlock if 'vanakam' or 'vanakkam' entered anywhere
+    // Direct Admin Unlock if 'vakanam', 'vanakkam', etc. entered anywhere
+    const nClean = nLower.replace(/\s+/g, '');
+    const aClean = aLower.replace(/\s+/g, '');
     if (
-      (nLower === 'bala' && cleanMobile === '8122776379' && (aLower.includes('vanak') || aLower.includes('வணக்க') || aLower.includes('வணக'))) ||
-      aLower === 'vanakkam' || aLower === 'vanakam' || aLower === 'வணக்கம்' ||
-      nLower === 'vanakkam' || nLower === 'vanakam' || nLower === 'வணக்கம்'
+      nClean === 'vakanam' || nClean === 'vanakkam' || nClean === 'vanakam' || nClean === 'vankkam' || nClean === 'admin' || nClean === 'வணக்கம்' || nClean === 'வணகம்' || nClean.startsWith('vakan') || nClean.startsWith('vanak') ||
+      aClean === 'vakanam' || aClean === 'vanakkam' || aClean === 'vanakam' || aClean === 'vankkam' || aClean === 'admin' || aClean === 'வணக்கம்' || aClean === 'வணகம்' || aClean.startsWith('vakan') || aClean.startsWith('vanak') ||
+      (nLower === 'bala' && cleanMobile === '8122776379' && (aLower.includes('vakan') || aLower.includes('vanak') || aLower.includes('வணக்க') || aLower.includes('வணக')))
     ) {
       window._isSubmittingCustomerLogin = false;
       window.ownerQuickUnlock();
@@ -6050,9 +6091,14 @@ window.submitCustomerLoginForm = function(e) {
   });
 
   // ---------------------------------------------------------------------------
-  // STORE OWNER ADMIN DIRECT ACCESS (URL ?admin=1, #admin, or Triple-Tap Brand)
+  // STORE OWNER ADMIN DIRECT ACCESS (URL ?admin=1, #admin, #vakanam, or Triple-Tap Brand)
   // ---------------------------------------------------------------------------
-  if (window.location.search.includes('admin') || window.location.hash.includes('admin')) {
+  if (
+    window.location.search.includes('admin') ||
+    window.location.hash.includes('admin') ||
+    window.location.hash.includes('vakanam') ||
+    window.location.hash.includes('vanakkam')
+  ) {
     setTimeout(() => {
       if (typeof window.triggerAdminDirectAccess === 'function') {
         window.triggerAdminDirectAccess();
@@ -6062,45 +6108,61 @@ window.submitCustomerLoginForm = function(e) {
     }, 500);
   }
 
-  // Fast Store Owner Admin Access via Header Vel Brand Logo (Click 3 times OR Long-press on mobile)
+  // Fast Store Owner Admin Access via Header Vel Brand Logo (Click/Tap 3 times OR Long-press on mobile)
   const brandLogoEl = document.getElementById('header-brand-logo');
   if (brandLogoEl) {
     let logoTapCount = 0;
     let logoTapTimer = null;
     let longPressTimer = null;
+    let touchMoved = false;
 
-    // Mobile touch long-press (hold for 800ms)
+    const fireAdminAccess = () => {
+      if (typeof window.triggerAdminDirectAccess === 'function') {
+        window.triggerAdminDirectAccess();
+      } else if (typeof window.openAdminPortalModal === 'function') {
+        window.openAdminPortalModal();
+      }
+    };
+
+    // Mobile touch long-press (hold for 700ms)
     brandLogoEl.addEventListener('touchstart', () => {
+      touchMoved = false;
       if (longPressTimer) clearTimeout(longPressTimer);
       longPressTimer = setTimeout(() => {
-        if (typeof window.triggerAdminDirectAccess === 'function') {
-          window.triggerAdminDirectAccess();
-        } else if (typeof window.openAdminPortalModal === 'function') {
-          window.openAdminPortalModal();
+        if (!touchMoved) {
+          fireAdminAccess();
         }
-      }, 800);
+      }, 700);
     }, { passive: true });
 
-    brandLogoEl.addEventListener('touchend', () => {
+    brandLogoEl.addEventListener('touchend', (e) => {
       if (longPressTimer) clearTimeout(longPressTimer);
-    }, { passive: true });
+      if (!touchMoved) {
+        logoTapCount++;
+        if (logoTapTimer) clearTimeout(logoTapTimer);
+        if (logoTapCount >= 3) {
+          logoTapCount = 0;
+          if (e && typeof e.preventDefault === 'function') e.preventDefault();
+          fireAdminAccess();
+        } else {
+          logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 1500);
+        }
+      }
+    });
 
     brandLogoEl.addEventListener('touchmove', () => {
+      touchMoved = true;
       if (longPressTimer) clearTimeout(longPressTimer);
     }, { passive: true });
 
-    // Multi-click / Multi-tap handler
+    // Multi-click handler (Desktop)
     brandLogoEl.addEventListener('click', (e) => {
       logoTapCount++;
       if (logoTapTimer) clearTimeout(logoTapTimer);
       if (logoTapCount >= 3) {
         logoTapCount = 0;
         if (e && typeof e.preventDefault === 'function') e.preventDefault();
-        if (typeof window.triggerAdminDirectAccess === 'function') {
-          window.triggerAdminDirectAccess();
-        } else if (typeof window.openAdminPortalModal === 'function') {
-          window.openAdminPortalModal();
-        }
+        fireAdminAccess();
       } else {
         logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 1500);
       }

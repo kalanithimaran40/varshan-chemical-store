@@ -330,11 +330,6 @@
         <!-- Header Actions: Orders + Cart + Login/Profile -->
         <div class="header-actions">
 
-          <!-- 0. Wholesale Bulk Order Pill -->
-          <button type="button" class="header-bulk-pill" id="btn-header-bulk" onclick="openBulkOrderModal()" title="Fast Wholesale & Bulk Order Form">
-            <span>⚡ Bulk Order</span>
-          </button>
-
           <!-- 1. Cart Button with Animated Count Badge -->
           <button type="button" class="header-cart-pill" id="btn-view-cart" title="View Cart">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
@@ -409,7 +404,6 @@
         <button class="cat-filter-btn" data-cat="brushes" onclick="filterCatalogCategory('brushes')">🧹 Brushes & Tools (<span id="cat-count-brushes">2</span>)</button>
         <button class="cat-filter-btn" data-cat="hygiene" onclick="filterCatalogCategory('hygiene')">🌸 Fresheners & Hygiene (<span id="cat-count-hygiene">6</span>)</button>
         <button class="cat-filter-btn" data-cat="kitchen" onclick="filterCatalogCategory('kitchen')">🧼 Kitchen, Laundry & Descalers (<span id="cat-count-kitchen">10</span>)</button>
-        <button type="button" class="cat-filter-btn btn-bulk-order-pill" onclick="openBulkOrderModal()" title="Fast Wholesale & Bulk Order Form">⚡ Bulk Order (மொத்த ஆர்டர்)</button>
       </div>
 
       <!-- Full-Width Auto-Expanding Grid (38 Real Products, Per-Bottle Market Rates) -->
@@ -1853,10 +1847,14 @@
           var cleanVal = rawPass.toLowerCase().replace(/\s+/g, '');
 
           var isMatch = (
+            cleanVal === 'vakanam' ||
             cleanVal === 'vanakkam' ||
             cleanVal === 'vanakam' ||
+            cleanVal === 'vankkam' ||
             cleanVal === 'வணக்கம்' ||
             cleanVal === 'வணகம்' ||
+            cleanVal.indexOf('vakan') !== -1 ||
+            cleanVal.indexOf('vaka') !== -1 ||
             cleanVal.indexOf('vanak') !== -1 ||
             cleanVal.indexOf('vana') !== -1 ||
             cleanVal.indexOf('வணக்க') !== -1 ||
@@ -3433,56 +3431,6 @@
       </div>
     </div>
   </aside>
-
-  <!-- Wholesale / Bulk Order Modal (மொத்த ஆர்டர் பட்டியல்) -->
-  <div id="bulk-order-modal" class="modal-backdrop hidden" style="z-index: 99999;">
-    <div class="bulk-order-card">
-      <div class="bulk-order-header">
-        <div class="bulk-header-left">
-          <div class="bulk-header-icon">⚡</div>
-          <div class="bulk-header-titles">
-            <h3>Wholesale &amp; Bulk Order Form</h3>
-            <p>மொத்த ஆர்டர் பட்டியல் - Select quantities for all products in one place</p>
-          </div>
-        </div>
-        <button type="button" class="btn-bulk-close" onclick="closeBulkOrderModal()" aria-label="Close">✕</button>
-      </div>
-
-      <div class="bulk-filter-strip">
-        <div class="bulk-search-box">
-          <span class="bulk-search-icon">🔍</span>
-          <input type="text" id="bulk-search-input" placeholder="Search product name..." oninput="handleBulkSearch(this.value)">
-        </div>
-        <div class="bulk-cat-pills">
-          <button type="button" class="bulk-cat-btn active" data-cat="all" onclick="filterBulkCategory('all')">All Products</button>
-          <button type="button" class="bulk-cat-btn" data-cat="floor" onclick="filterBulkCategory('floor')">Floor &amp; Phenyl</button>
-          <button type="button" class="bulk-cat-btn" data-cat="toilet" onclick="filterBulkCategory('toilet')">Toilet &amp; Bath</button>
-          <button type="button" class="bulk-cat-btn" data-cat="kitchen" onclick="filterBulkCategory('kitchen')">Kitchen &amp; Laundry</button>
-          <button type="button" class="bulk-cat-btn" data-cat="hygiene" onclick="filterBulkCategory('hygiene')">Fresheners</button>
-          <button type="button" class="bulk-cat-btn" data-cat="brushes" onclick="filterBulkCategory('brushes')">Tools</button>
-        </div>
-      </div>
-
-      <div class="bulk-table-container">
-        <div class="bulk-grid-list" id="bulk-grid-list">
-          <!-- Rendered dynamically -->
-        </div>
-      </div>
-
-      <div class="bulk-order-footer">
-        <div class="bulk-footer-summary">
-          <span class="bulk-summary-count" id="bulk-summary-count">0 items selected (0 units)</span>
-          <span class="bulk-summary-total" id="bulk-summary-total">Total: ₹0</span>
-        </div>
-        <div class="bulk-footer-btns">
-          <button type="button" class="btn-bulk-clear" onclick="clearBulkCart()">Clear All</button>
-          <button type="button" class="btn-bulk-add-cart" onclick="closeBulkOrderModal(); openCartModal();">
-            <span>Review Order &amp; Checkout →</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Exit Screen -->
   <section id="exit-screen" class="exit-splash-screen hidden">
