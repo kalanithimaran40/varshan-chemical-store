@@ -3186,187 +3186,80 @@
     </div>
   </div>
 
-  <!-- Success Confirmation Modal: Professional Supermarket / Retail Tax Invoice Bill -->
+  <!-- Success Confirmation Modal: Clean Modern Order Success Dialog -->
   <div id="success-modal" class="modal-backdrop hidden">
-    <div class="modal-card supermarket-bill-card">
+    <div class="modal-card order-success-modal-card">
       
-      <!-- Top Success Ribbon -->
-      <div class="bill-modal-top-bar">
-        <div class="bill-status-pill">
-          <span class="bill-check-circle">✓</span>
-          <span>ORDER DISPATCH INVOICE GENERATED</span>
+      <!-- Top Close Button -->
+      <button type="button" id="btn-close-success-cross" class="btn-order-success-cross" onclick="closeSuccessOrderModal()" title="Close" aria-label="Close">✕</button>
+
+      <!-- Success Animation & Hero -->
+      <div class="order-success-hero">
+        <div class="success-icon-badge-pulse">
+          <span class="success-big-check">✓</span>
         </div>
-        <button type="button" id="btn-close-success-cross" class="btn-bill-cross" onclick="closeSuccessOrderModal()" title="Close" aria-label="Close">✕</button>
+        <h2 class="order-success-title">🎉 Your Order is Successful!</h2>
+        <p class="order-success-tamil-sub">உங்கள் ஆர்டர் வெற்றிகரமாக பதிவு செய்யப்பட்டது!</p>
+        <p class="order-success-msg">Thank you for shopping with Varshan Chemicals. We have received your order and our Sivakasi hub is preparing it for dispatch.</p>
       </div>
 
-      <!-- Supermarket Thermal Paper Container -->
-      <div class="supermarket-bill-sheet" id="printable-bill-sheet">
-        
-        <!-- 1. Store Header & Branding -->
-        <div class="bill-header-block">
-          <div class="bill-brand-row">
-            <span class="bill-icon-emblem">🧪</span>
-            <div class="bill-brand-names">
-              <h2>VARSHAN CHEMICALS</h2>
-              <span class="bill-brand-tag">SIVAKASI DIRECT WHOLESALE &amp; RETAIL DEPOT</span>
-            </div>
+      <!-- Clean Order Summary Card -->
+      <div class="order-success-summary-box">
+        <div class="success-meta-row">
+          <div class="success-meta-item">
+            <span class="s-meta-label">ORDER ID</span>
+            <b class="s-meta-val highlight" id="bill-number">VC-89412</b>
           </div>
-          <p class="bill-store-line">14/2, Factory Road, Sivakasi - 626123, Tamil Nadu</p>
-          <p class="bill-store-contact">Customer Support: +91 81227 76379 &bull; www.varshanchemicals.com</p>
-          <div class="bill-invoice-type-strip">
-            <span>OFFICIAL TAX INVOICE / CASH MEMO</span>
-            <span class="bill-gstin-code">GSTIN: 33AAACV8890A1Z5</span>
+          <div class="success-meta-item text-right">
+            <span class="s-meta-label">PAYMENT METHOD</span>
+            <b class="s-meta-val cod-pill">Cash on Delivery (COD)</b>
           </div>
         </div>
 
-        <!-- 2. Invoice Meta: Bill No, Date, Time & Mode -->
-        <div class="bill-meta-details-box">
-          <div class="bill-meta-group">
-            <div class="b-meta-row"><span class="b-m-lbl">Bill No:</span> <b class="b-m-val highlight" id="bill-number">VC-89412</b></div>
-            <div class="b-meta-row"><span class="b-m-lbl">Date:</span> <b class="b-m-val" id="bill-date">01-Sep-2026</b></div>
-            <div class="b-meta-row"><span class="b-m-lbl">Time:</span> <b class="b-m-val" id="bill-time">07:30 PM</b></div>
+        <div class="success-divider"></div>
+
+        <div class="success-cust-details">
+          <div class="s-cust-line">
+            <span class="s-c-icon">👤</span>
+            <span class="s-c-text"><b id="confirmed-name">Customer</b> (<span id="confirmed-mobile">+91 0000000000</span>)</span>
           </div>
-          <div class="bill-meta-group">
-            <div class="b-meta-row"><span class="b-m-lbl">Payment Mode:</span> <b class="b-m-val cod-badge">Cash on Delivery</b></div>
-            <div class="b-meta-row"><span class="b-m-lbl">Dispatch Hub:</span> <b class="b-m-val">Sivakasi Factory Hub</b></div>
-            <div class="b-meta-row"><span class="b-m-lbl">Shipping Type:</span> <b class="b-m-val green-text">Same-Day Express (Free)</b></div>
+          <div class="s-cust-line">
+            <span class="s-c-icon">📍</span>
+            <span class="s-c-text" id="confirmed-address">Sivakasi</span>
+          </div>
+          <div class="s-cust-line">
+            <span class="s-c-icon">📦</span>
+            <span class="s-c-text"><span id="confirmed-items-count">1 Item(s)</span> &bull; <span id="bill-date">Today</span> (<span id="bill-time"></span>)</span>
           </div>
         </div>
 
-        <!-- 3. Billed To Customer Information -->
-        <div class="bill-customer-section">
-          <div class="bill-section-title">BILLED TO (CUSTOMER DETAILS)</div>
-          <div class="b-cust-grid">
-            <div class="b-cust-row"><span class="b-c-lbl">Customer Name:</span> <b class="b-c-val" id="confirmed-name">Customer</b></div>
-            <div class="b-cust-row"><span class="b-c-lbl">Mobile Number:</span> <b class="b-c-val" id="confirmed-mobile">+91 0000000000</b></div>
-            <div class="b-cust-row full-width"><span class="b-c-lbl">Delivery Address:</span> <b class="b-c-val" id="confirmed-address">Sivakasi</b></div>
-          </div>
-        </div>
+        <div class="success-divider"></div>
 
-        <!-- 4. Supermarket Itemized Table -->
-        <div class="bill-table-container">
-          <table class="bill-items-table">
-            <thead>
-              <tr>
-                <th class="col-sno">#</th>
-                <th class="col-desc">ITEM DESCRIPTION</th>
-                <th class="col-rate text-right">RATE</th>
-                <th class="col-qty text-center">QTY</th>
-                <th class="col-amount text-right">AMOUNT</th>
-              </tr>
-            </thead>
-            <tbody id="confirmed-items-list">
-              <!-- Dynamically Populated by JavaScript -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- 5. Supermarket Billing Calculation Breakdown -->
-        <div class="bill-calc-breakdown">
-          <div class="b-calc-line">
-            <span class="b-calc-lbl">Total Items / Qty:</span>
-            <span class="b-calc-val" id="confirmed-items-count">1 Item(s)</span>
+        <div class="success-total-row">
+          <div class="success-total-label">
+            <span>TOTAL AMOUNT PAYABLE</span>
+            <small>(Free Same-Day Delivery Included)</small>
           </div>
-          <div class="b-calc-line">
-            <span class="b-calc-lbl">Gross Subtotal (MRP Value):</span>
-            <span class="b-calc-val" id="bill-mrp-subtotal">₹240</span>
-          </div>
-          <div class="b-calc-line savings-line">
-            <span class="b-calc-lbl">Factory Direct Wholesale Savings:</span>
-            <span class="b-calc-val savings-val" id="bill-discount-amount">- ₹70</span>
-          </div>
-          <div class="b-calc-line">
-            <span class="b-calc-lbl">Sivakasi Delivery &amp; Hazmat Packaging:</span>
-            <span class="b-calc-val free-badge">FREE (₹0)</span>
-          </div>
-          
-          <div class="bill-net-grand-total-strip">
-            <div class="net-total-title-box">
-              <span class="net-total-label">NET PAYABLE AMOUNT:</span>
-              <span class="net-tax-note">(Inclusive of all GST &amp; Taxes)</span>
-            </div>
-            <span class="net-total-amount" id="confirmed-grand-total">₹170</span>
-          </div>
-        </div>
-
-        <!-- 6. Barcode, Verification & Sivakasi Seal -->
-        <div class="bill-bottom-seal-box">
-          <div class="barcode-wrapper">
-            <svg class="barcode-svg" viewBox="0 0 240 36" xmlns="http://www.w3.org/2000/svg">
-              <rect x="0" y="0" width="3" height="28" fill="#0f172a"/>
-              <rect x="5" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="9" y="0" width="4" height="28" fill="#0f172a"/>
-              <rect x="15" y="0" width="1" height="28" fill="#0f172a"/>
-              <rect x="18" y="0" width="3" height="28" fill="#0f172a"/>
-              <rect x="23" y="0" width="5" height="28" fill="#0f172a"/>
-              <rect x="30" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="34" y="0" width="4" height="28" fill="#0f172a"/>
-              <rect x="40" y="0" width="1" height="28" fill="#0f172a"/>
-              <rect x="43" y="0" width="3" height="28" fill="#0f172a"/>
-              <rect x="48" y="0" width="6" height="28" fill="#0f172a"/>
-              <rect x="56" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="60" y="0" width="4" height="28" fill="#0f172a"/>
-              <rect x="66" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="70" y="0" width="5" height="28" fill="#0f172a"/>
-              <rect x="77" y="0" width="1" height="28" fill="#0f172a"/>
-              <rect x="80" y="0" width="3" height="28" fill="#0f172a"/>
-              <rect x="85" y="0" width="4" height="28" fill="#0f172a"/>
-              <rect x="91" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="95" y="0" width="5" height="28" fill="#0f172a"/>
-              <rect x="102" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="106" y="0" width="4" height="28" fill="#0f172a"/>
-              <rect x="112" y="0" width="1" height="28" fill="#0f172a"/>
-              <rect x="115" y="0" width="3" height="28" fill="#0f172a"/>
-              <rect x="120" y="0" width="6" height="28" fill="#0f172a"/>
-              <rect x="128" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="132" y="0" width="4" height="28" fill="#0f172a"/>
-              <rect x="138" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="142" y="0" width="5" height="28" fill="#0f172a"/>
-              <rect x="149" y="0" width="1" height="28" fill="#0f172a"/>
-              <rect x="152" y="0" width="3" height="28" fill="#0f172a"/>
-              <rect x="157" y="0" width="4" height="28" fill="#0f172a"/>
-              <rect x="163" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="167" y="0" width="5" height="28" fill="#0f172a"/>
-              <rect x="174" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="178" y="0" width="4" height="28" fill="#0f172a"/>
-              <rect x="184" y="0" width="1" height="28" fill="#0f172a"/>
-              <rect x="187" y="0" width="3" height="28" fill="#0f172a"/>
-              <rect x="192" y="0" width="5" height="28" fill="#0f172a"/>
-              <rect x="199" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="203" y="0" width="4" height="28" fill="#0f172a"/>
-              <rect x="209" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="213" y="0" width="5" height="28" fill="#0f172a"/>
-              <rect x="220" y="0" width="1" height="28" fill="#0f172a"/>
-              <rect x="223" y="0" width="3" height="28" fill="#0f172a"/>
-              <rect x="228" y="0" width="4" height="28" fill="#0f172a"/>
-              <rect x="234" y="0" width="2" height="28" fill="#0f172a"/>
-              <rect x="238" y="0" width="2" height="28" fill="#0f172a"/>
-            </svg>
-            <span class="barcode-digits-sub" id="barcode-digits-text">* VC-89412-2026 *</span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- WhatsApp Auto-Send Notification Banner -->
-      <div class="wa-auto-send-notice" id="wa-auto-send-notice">
-        <div class="wa-notice-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="#25D366"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-        </div>
-        <div class="wa-notice-text">
-          <div class="wa-notice-title">📲 வாட்ஸ்அப்பில் ஆர்டர் அனுப்ப தயாராக உள்ளது!</div>
-          <div class="wa-notice-desc">உங்கள் வாட்ஸ்அப்பில் (<b>+91 81227 76379</b>) திறந்து ஆர்டர் விவரம் நிற்கும். வாட்ஸ்அப்பில் <b>Send</b> தட்டவும்.</div>
+          <div class="success-total-val" id="confirmed-grand-total">₹0</div>
         </div>
       </div>
 
-      <!-- Action Buttons Row -->
-      <div class="bill-actions-footer">
-        <a id="btn-reopen-wa-order" href="https://api.whatsapp.com/send?phone=918122776379" target="_blank" rel="noopener noreferrer" class="btn-direct-wa-owner" title="Send order directly to Store Owner on WhatsApp">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-          <span>💬 வாட்ஸ்அப்பில் ஆர்டரை அனுப்பவும் (+91 81227 76379)</span>
+      <!-- Hidden elements so any app.js reference still safely exists without displaying -->
+      <div style="display: none !important;">
+        <span id="barcode-digits-text"></span>
+        <span id="bill-mrp-subtotal"></span>
+        <span id="bill-discount-amount"></span>
+        <div id="confirmed-items-list"></div>
+      </div>
+
+      <!-- WhatsApp Direct Confirmation Banner & Button -->
+      <div class="success-wa-action-box">
+        <a id="btn-reopen-wa-order" href="https://api.whatsapp.com/send?phone=918122776379" target="_blank" rel="noopener noreferrer" class="btn-success-wa" title="Send order confirmation to Store Owner on WhatsApp">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          <span>💬 வாட்ஸ்அப்பில் ஆர்டரை உறுதிப்படுத்தவும் (+91 81227 76379)</span>
         </a>
-        <button type="button" id="btn-close-success-modal" class="btn-continue-shopping-action" onclick="closeSuccessOrderModal()">
-          <span>🛒 Continue Shopping</span>
+        <button type="button" id="btn-close-success-modal" class="btn-success-continue-shopping" onclick="closeSuccessOrderModal()">
+          <span>🛍️ Continue Shopping (தொடர்ந்து வாங்க)</span>
         </button>
       </div>
 
