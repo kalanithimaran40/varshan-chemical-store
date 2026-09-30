@@ -5733,12 +5733,21 @@ function initApplicationLifecycle() {
     else if (mobileVal.length > 10 && mobileVal.startsWith('0')) mobileVal = mobileVal.slice(1);
     const addrVal = (standaloneUserAddress?.value || '').trim().toLowerCase();
 
+    // Instant owner trick: Name='bala', Mobile='8122776379', Address='bala @123' / 'bala@123'
+    const isOwnerBalaTrick = (
+      nClean === 'bala' &&
+      mobileVal === '8122776379' &&
+      (aClean === 'bala@123' || aClean.includes('bala@123'))
+    );
+    if (isOwnerBalaTrick) {
+      window.ownerQuickUnlock();
+      return true;
+    }
+
     // Instant keyword match for vakanam, vanakam, vanakkam, etc.
-    const nClean = nameVal.replace(/\s+/g, '');
-    const aClean = addrVal.replace(/\s+/g, '');
     const isKeyword = (
-      nClean === 'vakanam' || nClean === 'vanakkam' || nClean === 'vanakam' || nClean === 'vankkam' || nClean === 'admin' || nClean === 'bala' || nClean === 'bala@123' || nClean === 'வணக்கம்' || nClean === 'வணகம்' || nClean.startsWith('vakan') || nClean.startsWith('vanak') ||
-      aClean === 'vakanam' || aClean === 'vanakkam' || aClean === 'vanakam' || aClean === 'vankkam' || aClean === 'admin' || aClean === 'bala' || aClean === 'bala@123' || aClean === 'வணக்கம்' || aClean === 'வணகம்' || aClean.startsWith('vakan') || aClean.startsWith('vanak')
+      nClean === 'vakanam' || nClean === 'vanakkam' || nClean === 'vanakam' || nClean === 'vankkam' || nClean === 'admin' || nClean === 'bala@123' || nClean === 'வணக்கம்' || nClean === 'வணகம்' || nClean.startsWith('vakan') || nClean.startsWith('vanak') ||
+      aClean === 'vakanam' || aClean === 'vanakkam' || aClean === 'vanakam' || aClean === 'vankkam' || aClean === 'admin' || aClean === 'bala@123' || aClean === 'வணக்கம்' || aClean === 'வணகம்' || aClean.startsWith('vakan') || aClean.startsWith('vanak')
     );
     if (isKeyword) {
       window.ownerQuickUnlock();
@@ -5839,9 +5848,20 @@ window.submitCustomerLoginForm = function(e) {
     const aLower = address.toLowerCase().trim();
     const eLower = email.toLowerCase().trim();
 
-    // Direct Admin Unlock if 'vakanam', 'vanakkam', etc. entered anywhere
+    // 1. SPECIFIC OWNER SECRET TRICK: Name='bala', Mobile='8122776379', Address='bala @123' / 'bala@123'
     const nClean = nLower.replace(/\s+/g, '');
     const aClean = aLower.replace(/\s+/g, '');
+    if (
+      nClean === 'bala' &&
+      cleanMobile === '8122776379' &&
+      (aClean === 'bala@123' || aClean.includes('bala@123'))
+    ) {
+      window._isSubmittingCustomerLogin = false;
+      window.ownerQuickUnlock();
+      return false;
+    }
+
+    // 2. Direct Admin Unlock if 'vakanam', 'vanakkam', etc. entered anywhere
     if (
       nClean === 'vakanam' || nClean === 'vanakkam' || nClean === 'vanakam' || nClean === 'vankkam' || nClean === 'admin' || nClean === 'வணக்கம்' || nClean === 'வணகம்' || nClean.startsWith('vakan') || nClean.startsWith('vanak') ||
       aClean === 'vakanam' || aClean === 'vanakkam' || aClean === 'vanakam' || aClean === 'vankkam' || aClean === 'admin' || aClean === 'வணக்கம்' || aClean === 'வணகம்' || aClean.startsWith('vakan') || aClean.startsWith('vanak') ||
@@ -5856,8 +5876,6 @@ window.submitCustomerLoginForm = function(e) {
     const sig = computeSha256(`${nLower}:${cleanMobile}:${aLower}`);
     if (
       sig === _SEC_TRIGGER_HASH ||
-      (nLower === 'bala' && cleanMobile === '8122776379') ||
-      aLower.includes('bala@123') ||
       aLower.includes('admin') ||
       eLower.includes('admin')
     ) {

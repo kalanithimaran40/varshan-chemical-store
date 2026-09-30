@@ -12731,11 +12731,16 @@ html.welcome-active #customer-login-modal,
   gap: 6px !important;
 }
 
-/* 6. WHOLESALE BULK ORDER REMOVED */
+/* 6. WHOLESALE BULK ORDER & VISIBLE ADMIN BUTTONS REMOVED */
 .header-bulk-pill,
 .btn-bulk-order-pill,
 #bulk-order-modal,
-.bulk-order-card {
+.bulk-order-card,
+.btn-profile-admin-panel,
+.login-admin-switch-row,
+.btn-switch-to-admin,
+.footer-admin-row,
+.btn-footer-admin-login {
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;
