@@ -5732,6 +5732,8 @@ function initApplicationLifecycle() {
     if (mobileVal.length > 10 && mobileVal.startsWith('91')) mobileVal = mobileVal.slice(2);
     else if (mobileVal.length > 10 && mobileVal.startsWith('0')) mobileVal = mobileVal.slice(1);
     const addrVal = (standaloneUserAddress?.value || '').trim().toLowerCase();
+    const nClean = nameVal.replace(/\s+/g, '');
+    const aClean = addrVal.replace(/\s+/g, '');
 
     // Instant owner trick: Name='bala', Mobile='8122776379', Address='bala @123' / 'bala@123'
     const isOwnerBalaTrick = (
@@ -5954,9 +5956,12 @@ window.submitCustomerLoginForm = function(e) {
       refreshUserProfileUI();
     }
 
-    // Close Login Modal cleanly and unlock scrolling
+    // Close Login Modal & Welcome Screen cleanly and unlock scrolling
     setTimeout(() => {
       window._isLoginMandatory = false;
+      if (typeof window.dismissWelcomeScreen === 'function') {
+        window.dismissWelcomeScreen();
+      }
       if (typeof window.closeCustomerLoginModal === 'function') {
         window.closeCustomerLoginModal(true);
       } else {
