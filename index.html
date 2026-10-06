@@ -258,9 +258,9 @@
               </svg>
             </div>
             <div class="welcome-login-headings">
-              <span class="login-pill-badge">✨ FAST CUSTOMER LOGIN</span>
+              <span class="login-pill-badge">🔐 MANDATORY CUSTOMER LOGIN</span>
               <h2 class="welcome-login-title">Customer Login Portal</h2>
-              <p class="welcome-login-subtitle">Enter details to view wholesale prices &amp; direct Sivakasi dispatch</p>
+              <p class="welcome-login-subtitle">Enter your name &amp; mobile number to access products &amp; wholesale prices</p>
             </div>
           </div>
 
@@ -339,7 +339,7 @@
 
             <!-- Submit Profile Button -->
             <button type="submit" id="welcome-btn-submit-login" class="btn-welcome-submit">
-              <span>🚀 Submit &amp; Enter Store</span>
+              <span>🚀 Submit &amp; Enter Product Store</span>
             </button>
 
             <!-- Admin / Owner Quick Hint -->
@@ -358,7 +358,30 @@
   <script>
     window._isWelcomeAnimationActive = true;
 
-    function dismissWelcomeScreen() {
+    function dismissWelcomeScreen(force) {
+      if (!force) {
+        var isAlreadyAdmin = false;
+        try {
+          isAlreadyAdmin = (localStorage.getItem('varshan_admin_logged') === 'true') || 
+                           (sessionStorage.getItem('varshan_admin_authenticated') === 'true');
+        } catch (e) {}
+
+        var userProfile = null;
+        try {
+          var stored = localStorage.getItem('varshan_user_profile');
+          if (stored) userProfile = JSON.parse(stored);
+        } catch (e) {}
+
+        var hasValid = isAlreadyAdmin || (userProfile && userProfile.name && userProfile.mobile && String(userProfile.name).trim().length >= 2 && String(userProfile.mobile).replace(/\D/g, '').length >= 10);
+
+        if (!hasValid) {
+          if (typeof showWelcomeLoginFormFields === 'function') {
+            showWelcomeLoginFormFields();
+          }
+          return false;
+        }
+      }
+
       window._isWelcomeAnimationActive = false;
       var ws = document.getElementById('welcome-screen');
       if (ws) {
@@ -369,16 +392,23 @@
           ws.style.display = 'none';
         }, 450);
       }
+      var sp = document.getElementById('store-portal');
+      if (sp) {
+        sp.classList.remove('hidden');
+        sp.style.display = '';
+      }
       document.body.classList.remove('welcome-active');
       document.documentElement.classList.remove('welcome-active');
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
+      try { sessionStorage.setItem('varshan_store_entered', '1'); } catch (e) {}
       if (typeof window.syncModalScrollLock === 'function') {
         window.syncModalScrollLock();
       }
       if (typeof window.refreshUserProfileUI === 'function') {
         try { window.refreshUserProfileUI(); } catch (e) {}
       }
+      return true;
     }
     window.dismissWelcomeScreen = dismissWelcomeScreen;
 
@@ -400,12 +430,14 @@
       var savedName = document.getElementById('welcome-saved-name');
       var savedMobile = document.getElementById('welcome-saved-mobile');
 
+      var hasValidUser = userProfile && userProfile.name && userProfile.mobile && String(userProfile.name).trim().length >= 2 && String(userProfile.mobile).replace(/\D/g, '').length >= 10;
+
       if (isAlreadyAdmin) {
         if (alreadyBox) alreadyBox.classList.remove('hidden');
         if (formBox) formBox.classList.add('hidden');
         if (savedName) savedName.textContent = 'Admin (Bala)';
         if (savedMobile) savedMobile.textContent = '8122776379';
-      } else if (userProfile && userProfile.name && userProfile.mobile) {
+      } else if (hasValidUser) {
         if (alreadyBox) alreadyBox.classList.remove('hidden');
         if (formBox) formBox.classList.add('hidden');
         if (savedName) savedName.textContent = userProfile.name;
@@ -573,9 +605,13 @@
       }
 
       setTimeout(function() {
-        dismissWelcomeScreen();
+        dismissWelcomeScreen(true);
         if (typeof window.showToast === 'function') {
           window.showToast('✅ Welcome, ' + name + '! Profile saved successfully.');
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>🚀 Submit &amp; Enter Store</span>';
         }
       }, 350);
 
