@@ -211,58 +211,10 @@
           <span class="welcome-label-clean">WELCOME TO</span>
           <h1 class="welcome-brand-heading">VARSHAN CHEMICAL STORE</h1>
           <span class="welcome-location-clean">SIVAKASI</span>
-          <p class="welcome-tagline">Industrial &amp; Household Chemical Solutions &bull; Direct Factory Pricing</p>
         </div>
 
-        <!-- Sivakasi Factory Trust Badges -->
-        <div class="welcome-factory-badges">
-          <span class="w-badge"><span class="w-badge-icon">🌟</span> Sivakasi Direct Dispatch</span>
-          <span class="w-badge"><span class="w-badge-icon">🧪</span> 100% Genuine Quality</span>
-          <span class="w-badge"><span class="w-badge-icon">⚡</span> Wholesale Pricing</span>
-        </div>
-
-      </div>
-
-      <!-- ====================================================
-           RIGHT PANEL: FAST CUSTOMER LOGIN CARD WITH LOGIN IMAGE & FORM
-           ==================================================== -->
-      <div class="welcome-login-panel">
+        <!-- Integrated Divine Luxury Customer Login Card -->
         <div class="welcome-login-card">
-
-          <!-- Login Top Visual & Image Badge -->
-          <div class="welcome-login-header">
-            <div class="welcome-login-img-badge" title="Varshan Chemical Secure Login Portal">
-              <svg viewBox="0 0 80 80" class="login-badge-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="loginFlaskGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#34d399"/>
-                    <stop offset="50%" stop-color="#059669"/>
-                    <stop offset="100%" stop-color="#064e3b"/>
-                  </linearGradient>
-                  <linearGradient id="loginShieldGold" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#fef08a"/>
-                    <stop offset="60%" stop-color="#eab308"/>
-                    <stop offset="100%" stop-color="#92400e"/>
-                  </linearGradient>
-                </defs>
-                <!-- Shield Ring -->
-                <circle cx="40" cy="40" r="36" fill="rgba(6, 78, 59, 0.45)" stroke="url(#loginShieldGold)" stroke-width="2" stroke-dasharray="4 2"/>
-                <!-- Chemical Flask Silhouette -->
-                <path d="M35 22 L45 22 L45 30 L55 48 C57 52 54 56 49 56 L31 56 C26 56 23 52 25 48 L35 30 Z" fill="url(#loginFlaskGrad)" stroke="#fde047" stroke-width="1.8"/>
-                <!-- Bubbles -->
-                <circle cx="36" cy="46" r="2.5" fill="#fef08a" opacity="0.85"/>
-                <circle cx="44" cy="42" r="3" fill="#ffffff" opacity="0.9"/>
-                <circle cx="40" cy="50" r="2" fill="#a7f3d0" opacity="0.8"/>
-                <!-- Sparkle on Flask Neck -->
-                <path d="M40 18 L41 22 L45 23 L41 24 L40 28 L39 24 L35 23 L39 22 Z" fill="#ffffff"/>
-              </svg>
-            </div>
-            <div class="welcome-login-headings">
-              <span class="login-pill-badge">🔐 MANDATORY CUSTOMER LOGIN</span>
-              <h2 class="welcome-login-title">Customer Login Portal</h2>
-              <p class="welcome-login-subtitle">Enter your name &amp; mobile number to access products &amp; wholesale prices</p>
-            </div>
-          </div>
 
           <!-- Existing Logged-in Customer Card (Shown when profile is saved) -->
           <div id="welcome-already-logged-card" class="already-logged-box hidden">
@@ -286,70 +238,43 @@
             
             <!-- 1. Full Name -->
             <div class="welcome-field-group">
-              <label for="welcomeUserName">
-                <span class="w-lbl-icon">👤</span>
-                <span class="w-lbl-text">Your Name</span>
-                <span class="w-req">*</span>
-              </label>
               <div class="w-input-wrap">
-                <input type="text" id="welcomeUserName" placeholder="Enter your full name" required autocomplete="name">
+                <span class="w-icon-prefix">👤</span>
+                <input type="text" id="welcomeUserName" placeholder="Enter Your Name *" required autocomplete="name">
               </div>
               <span class="w-error-msg" id="welcome-name-error">Please enter your name</span>
             </div>
 
             <!-- 2. Contact Mobile Number -->
             <div class="welcome-field-group">
-              <label for="welcomeUserMobile">
-                <span class="w-lbl-icon">📱</span>
-                <span class="w-lbl-text">WhatsApp / Mobile Number</span>
-                <span class="w-req">*</span>
-              </label>
               <div class="w-input-wrap w-mobile-wrap">
                 <span class="w-country-flag">🇮🇳 +91</span>
-                <input type="tel" inputmode="numeric" id="welcomeUserMobile" placeholder="10-digit mobile number" maxlength="15" required autocomplete="tel">
+                <input type="tel" inputmode="numeric" id="welcomeUserMobile" placeholder="10-digit mobile number *" maxlength="15" required autocomplete="tel">
               </div>
               <span class="w-error-msg" id="welcome-mobile-error">Enter a valid 10-digit mobile number</span>
             </div>
 
             <!-- 3. Delivery Address / City / Pincode -->
             <div class="welcome-field-group">
-              <label for="welcomeUserAddress">
-                <span class="w-lbl-icon">📍</span>
-                <span class="w-lbl-text">Delivery Address (Door No, City &amp; Pincode)</span>
-                <span class="w-opt">(Optional)</span>
-              </label>
               <div class="w-input-wrap">
-                <input type="text" id="welcomeUserAddress" placeholder="e.g. 14, Main Road, Sivakasi - 626123">
+                <span class="w-icon-prefix">📍</span>
+                <input type="text" id="welcomeUserAddress" placeholder="Delivery Town / Address (Optional)">
               </div>
               <span class="w-error-msg" id="welcome-address-error">Please enter your delivery city or address</span>
             </div>
 
-            <!-- 4. Email Address (Optional) -->
-            <div class="welcome-field-group">
-              <label for="welcomeUserEmail">
-                <span class="w-lbl-icon">✉️</span>
-                <span class="w-lbl-text">Email Address</span>
-                <span class="w-opt">(Optional)</span>
-              </label>
-              <div class="w-input-wrap">
-                <input type="email" id="welcomeUserEmail" placeholder="e.g. name@gmail.com" autocomplete="email">
-              </div>
-              <span class="w-error-msg" id="welcome-email-error">Enter a valid email address</span>
-            </div>
+            <!-- 4. Email Address (Optional, Hidden) -->
+            <input type="hidden" id="welcomeUserEmail" value="">
 
             <!-- Submit Profile Button -->
             <button type="submit" id="welcome-btn-submit-login" class="btn-welcome-submit">
-              <span>🚀 Submit &amp; Enter Product Store</span>
+              <span>✨ Enter Store 🛒</span>
             </button>
-
-            <!-- Admin / Owner Quick Hint -->
-            <div class="welcome-login-footer">
-              <span>🔐 Admin / Store Owner: Enter authorized credentials to open factory control</span>
-            </div>
 
           </form>
 
         </div>
+
       </div>
 
     </div>
