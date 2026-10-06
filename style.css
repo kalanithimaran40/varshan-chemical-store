@@ -261,20 +261,20 @@ html.welcome-active::-webkit-scrollbar {
 }
 
 /* ==========================================================================
-   UNIFIED SACRED VEL + LUXURY CUSTOMER LOGIN PORTAL
+   CLEAN & NEAT MOBILE LOGIN PORTAL WITH SACRED VEL
    ========================================================================== */
 .welcome-dual-portal {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 480px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: auto;
-  padding: 1rem 1rem 1.8rem;
-  animation: welcomePop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0.8rem 1rem 1.5rem;
+  animation: welcomePop 0.4s ease-out;
   box-sizing: border-box;
 }
 
@@ -290,8 +290,10 @@ html.welcome-active::-webkit-scrollbar {
 }
 
 .welcome-vel-panel .grand-vel-hero-container {
-  margin: 0 0 0.2rem 0;
-  transform: scale(0.92);
+  width: 140px;
+  height: 160px;
+  margin: 0 auto 0.15rem;
+  transform: none;
 }
 
 .welcome-title-container {
@@ -299,49 +301,28 @@ html.welcome-active::-webkit-scrollbar {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin: 0.1rem 0 1rem;
+  margin: 0.1rem 0 0.85rem;
 }
 
-/* Glassmorphism Divine Golden-Emerald Login Card */
+/* Clean, Crisp, Neat White Login Card Frame */
 .welcome-login-card {
   width: 100%;
-  max-width: 440px;
-  background: rgba(4, 47, 36, 0.72);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-radius: 24px;
-  border: 1.8px solid rgba(250, 204, 21, 0.55);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(234, 179, 8, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  padding: 1.4rem 1.35rem 1.25rem;
+  max-width: 380px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.45);
+  padding: 1.35rem 1.25rem 1.15rem;
   position: relative;
-  overflow: hidden;
   box-sizing: border-box;
-  animation: welcomeCardGlow 4s ease-in-out infinite alternate;
-}
-
-@keyframes welcomeCardGlow {
-  0% { box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75), 0 0 25px rgba(234, 179, 8, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15); }
-  100% { box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), 0 0 40px rgba(250, 204, 21, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
-}
-
-.welcome-login-card::before {
-  content: "";
-  position: absolute;
-  top: -50px;
-  right: -50px;
-  width: 140px;
-  height: 140px;
-  background: radial-gradient(circle, rgba(250, 204, 21, 0.2) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
 }
 
 /* Form Fields */
 .welcome-field-group {
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.15rem;
   text-align: left;
 }
 
@@ -349,41 +330,45 @@ html.welcome-active::-webkit-scrollbar {
   position: relative;
   display: flex;
   align-items: center;
-  background: rgba(2, 28, 22, 0.82);
-  border: 1.6px solid rgba(250, 204, 21, 0.38);
-  border-radius: 14px;
-  transition: all 0.25s ease;
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  height: 46px;
+  transition: all 0.2s ease;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .w-input-wrap:focus-within {
-  background: rgba(1, 20, 15, 0.96);
-  border-color: #fde047;
-  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.28), 0 0 18px rgba(250, 204, 21, 0.35);
+  background: #ffffff;
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
 }
 
 .w-input-wrap input {
   width: 100%;
-  padding: 0.8rem 0.95rem;
+  padding: 0.75rem 0.85rem;
   border: none;
   outline: none;
   background: transparent;
-  font-size: 0.94rem;
-  color: #ffffff;
+  font-size: 0.92rem;
+  color: #0f172a;
   font-family: inherit;
   font-weight: 600;
 }
 
 .w-input-wrap input::placeholder {
-  color: rgba(226, 232, 240, 0.65);
+  color: #94a3b8;
   font-weight: 400;
 }
 
 .w-icon-prefix {
-  padding-left: 0.9rem;
-  font-size: 1.1rem;
-  color: #fde047;
+  padding-left: 0.85rem;
+  font-size: 1.05rem;
+  color: #059669;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 .w-mobile-wrap {
@@ -392,73 +377,71 @@ html.welcome-active::-webkit-scrollbar {
 }
 
 .w-country-flag {
-  padding-left: 0.9rem;
+  padding-left: 0.85rem;
   font-size: 0.88rem;
-  font-weight: 800;
-  color: #fde047;
+  font-weight: 700;
+  color: #334155;
   white-space: nowrap;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
 .w-error-msg {
   display: none;
-  font-size: 0.74rem;
-  font-weight: 700;
-  color: #fca5a5;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #ef4444;
   margin-top: 0.2rem;
   padding-left: 0.3rem;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .w-error-msg.visible {
   display: block;
 }
 
-/* Vibrant Royal Gold Shimmer Submit Button */
+/* Simple, Neat, Solid Emerald Green Button */
 .btn-welcome-submit {
   width: 100%;
-  margin-top: 0.6rem;
-  padding: 0.92rem 1.4rem;
-  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 35%, #10b981 100%);
-  color: #022c22;
-  border: 1.8px solid #fef08a;
-  border-radius: 14px;
-  font-size: 1.05rem;
-  font-weight: 900;
+  margin-top: 0.4rem;
+  height: 48px;
+  background: #059669;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  box-shadow: 0 8px 25px rgba(234, 179, 8, 0.45), 0 0 25px rgba(16, 185, 129, 0.4);
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
+  gap: 0.45rem;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
   font-family: inherit;
 }
 
 .btn-welcome-submit:hover {
-  transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 12px 30px rgba(234, 179, 8, 0.6), 0 0 35px rgba(250, 204, 21, 0.65);
-  filter: brightness(1.08);
+  background: #047857;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.45);
 }
 
 .btn-welcome-submit:active {
   transform: translateY(0);
+  background: #065f46;
 }
 
 /* Already Logged In State Box */
 .already-logged-box {
-  background: rgba(2, 44, 34, 0.85);
-  border: 1.6px solid rgba(250, 204, 21, 0.6);
-  border-radius: 18px;
-  padding: 1.15rem;
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: 14px;
+  padding: 1.1rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.85rem;
-  box-shadow: 0 0 25px rgba(250, 204, 21, 0.25);
+  gap: 0.8rem;
 }
 
 .user-greeting-pill {
@@ -469,11 +452,10 @@ html.welcome-active::-webkit-scrollbar {
 }
 
 .user-greeting-pill .user-icon {
-  font-size: 1.8rem;
-  width: 44px;
-  height: 44px;
-  background: rgba(250, 204, 21, 0.2);
-  border: 1.5px solid rgba(250, 204, 21, 0.5);
+  font-size: 1.6rem;
+  width: 42px;
+  height: 42px;
+  background: #dcfce7;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -482,74 +464,75 @@ html.welcome-active::-webkit-scrollbar {
 }
 
 .user-welcome-name {
-  font-size: 1.12rem;
-  font-weight: 800;
-  color: #fef08a;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #065f46;
 }
 
 .user-welcome-sub {
-  font-size: 0.82rem;
-  color: #a7f3d0;
-  font-weight: 600;
+  font-size: 0.8rem;
+  color: #047857;
+  font-weight: 500;
 }
 
 .btn-welcome-enter {
   width: 100%;
-  padding: 0.85rem 1.3rem;
-  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 40%, #10b981 100%);
-  color: #022c22;
-  border: 1.6px solid #fef08a;
-  border-radius: 14px;
-  font-size: 1.02rem;
-  font-weight: 900;
+  height: 46px;
+  background: #059669;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.98rem;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
   transition: all 0.2s ease;
-  letter-spacing: 0.4px;
 }
 
 .btn-welcome-enter:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.08);
+  background: #047857;
+  transform: translateY(-1px);
 }
 
 .btn-welcome-switch-user {
   background: none;
   border: none;
-  color: #fde047;
-  font-size: 0.8rem;
-  font-weight: 700;
+  color: #059669;
+  font-size: 0.78rem;
+  font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
-  padding: 0.25rem;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  padding: 0.2rem;
 }
 
 /* Mobile & Touch Screen Optimizations */
 @media (max-width: 600px) {
   .welcome-dual-portal {
     max-width: 100%;
-    padding: 0.4rem 0.65rem 1.5rem;
+    padding: 0.4rem 0.85rem 1.2rem;
   }
   .welcome-vel-panel .grand-vel-hero-container {
-    transform: scale(0.82);
-    margin: -0.8rem 0 -0.4rem 0;
+    width: 125px;
+    height: 145px;
+    margin: 0 auto;
   }
   .welcome-title-container {
-    margin: 0 0 0.7rem;
+    margin: 0.1rem 0 0.65rem;
   }
   .welcome-login-card {
-    padding: 1.1rem 1rem 1rem;
-    border-radius: 20px;
+    padding: 1.15rem 1rem 1rem;
+    border-radius: 16px;
+  }
+  .w-input-wrap {
+    height: 44px;
   }
   .w-input-wrap input {
-    padding: 0.72rem 0.85rem;
+    padding: 0.7rem 0.8rem;
     font-size: 0.9rem;
   }
   .btn-welcome-submit {
-    padding: 0.85rem 1.1rem;
-    font-size: 0.98rem;
+    height: 46px;
+    font-size: 0.96rem;
   }
 }
 
