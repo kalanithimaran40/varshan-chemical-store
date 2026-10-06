@@ -278,48 +278,155 @@ html.welcome-active::-webkit-scrollbar {
   box-sizing: border-box;
 }
 
-/* Vel Panel Container */
-.welcome-vel-panel {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-
-.welcome-vel-panel .grand-vel-hero-container {
-  width: 140px;
-  height: 160px;
-  margin: 0 auto 0.15rem;
-  transform: none;
-}
-
-.welcome-title-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin: 0.1rem 0 0.85rem;
-}
-
-/* Clean, Crisp, Neat White Login Card Frame */
+/* 1. Unified Mobile Login Card Frame */
 .welcome-login-card {
   width: 100%;
-  max-width: 380px;
+  max-width: 385px;
   background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.45);
-  padding: 1.35rem 1.25rem 1.15rem;
+  border-radius: 20px;
+  border: 1.5px solid rgba(250, 204, 21, 0.45);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 25px rgba(5, 150, 105, 0.22);
+  overflow: hidden;
   position: relative;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 2. Top Card Hero: Sacred Emerald Temple Crest with Vel & Sivakasi Branding */
+.welcome-card-hero {
+  position: relative;
+  background: radial-gradient(circle at 50% 25%, #064e3b 0%, #032e23 60%, #011a14 100%);
+  padding: 0.95rem 1rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  border-bottom: 1.5px solid rgba(250, 204, 21, 0.35);
+  box-shadow: inset 0 -6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Sacred Vel Hero Showpiece inside Card Hero */
+.welcome-card-hero .grand-vel-hero-container {
+  width: 110px !important;
+  height: 125px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative;
+  transform: none !important;
+}
+
+.welcome-card-hero .vel-sunburst-rays {
+  width: 130px !important;
+  height: 130px !important;
+  position: absolute;
+}
+
+.welcome-card-hero .vel-halo-outer {
+  width: 122px !important;
+  height: 122px !important;
+  position: absolute;
+}
+
+.welcome-card-hero .vel-halo-inner {
+  width: 98px !important;
+  height: 98px !important;
+  position: absolute;
+}
+
+.welcome-card-hero .vel-masterpiece-wrapper {
+  width: 92px !important;
+  height: 112px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative;
+  z-index: 5;
+  animation: velHeroGlowFloat 2.8s ease-in-out infinite alternate !important;
+}
+
+@keyframes velHeroGlowFloat {
+  0% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.85)) drop-shadow(0 0 16px rgba(245, 158, 11, 0.5));
+  }
+  100% {
+    transform: translateY(-3px) scale(1.02);
+    filter: drop-shadow(0 0 15px rgba(253, 224, 71, 1)) drop-shadow(0 0 28px rgba(245, 158, 11, 0.75));
+  }
+}
+
+.welcome-card-hero .grand-vel-svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Typography inside Card Hero */
+.welcome-card-hero .welcome-title-container {
+  margin: 0.25rem 0 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+}
+
+.welcome-card-hero .welcome-label-clean {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem !important;
+  font-weight: 700;
+  letter-spacing: 3.2px !important;
+  color: #a7f3d0 !important;
+  text-transform: uppercase;
+  margin-bottom: 0.12rem;
+  text-shadow: 0 0 8px rgba(167, 243, 208, 0.4);
+  line-height: 1.2;
+}
+
+.welcome-card-hero .welcome-brand-heading {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.02rem, 4vw, 1.24rem) !important;
+  font-weight: 900;
+  letter-spacing: 1.2px !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+  background: linear-gradient(135deg, #ffffff 0%, #fef08a 25%, #fde047 50%, #f59e0b 80%, #fbbf24 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.8)) !important;
+  text-transform: uppercase;
+  margin: 0.1rem 0 !important;
+  animation: textGoldShine 5s ease-in-out infinite alternate;
+}
+
+.welcome-card-hero .welcome-location-clean {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem !important;
+  font-weight: 800;
+  letter-spacing: 4px !important;
+  color: #fde047 !important;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
+  margin-top: 0.1rem;
+  line-height: 1.2;
+}
+
+/* 3. Card Form Body (Pure Clean White, High Legibility, Crisp Mobile Form) */
+.welcome-card-body {
+  padding: 1.15rem 1.15rem 1rem;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 /* Form Fields */
 .welcome-field-group {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.68rem;
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
@@ -332,8 +439,8 @@ html.welcome-active::-webkit-scrollbar {
   align-items: center;
   background: #f8fafc;
   border: 1.5px solid #cbd5e1;
-  border-radius: 12px;
-  height: 46px;
+  border-radius: 11px;
+  height: 44px;
   transition: all 0.2s ease;
   overflow: hidden;
   box-sizing: border-box;
@@ -347,7 +454,7 @@ html.welcome-active::-webkit-scrollbar {
 
 .w-input-wrap input {
   width: 100%;
-  padding: 0.75rem 0.85rem;
+  padding: 0.7rem 0.8rem;
   border: none;
   outline: none;
   background: transparent;
@@ -363,8 +470,8 @@ html.welcome-active::-webkit-scrollbar {
 }
 
 .w-icon-prefix {
-  padding-left: 0.85rem;
-  font-size: 1.05rem;
+  padding-left: 0.8rem;
+  font-size: 1rem;
   color: #059669;
   flex-shrink: 0;
   display: flex;
@@ -377,7 +484,7 @@ html.welcome-active::-webkit-scrollbar {
 }
 
 .w-country-flag {
-  padding-left: 0.85rem;
+  padding-left: 0.8rem;
   font-size: 0.88rem;
   font-weight: 700;
   color: #334155;
@@ -390,7 +497,7 @@ html.welcome-active::-webkit-scrollbar {
   font-size: 0.72rem;
   font-weight: 600;
   color: #ef4444;
-  margin-top: 0.2rem;
+  margin-top: 0.15rem;
   padding-left: 0.3rem;
 }
 
@@ -398,23 +505,23 @@ html.welcome-active::-webkit-scrollbar {
   display: block;
 }
 
-/* Simple, Neat, Solid Emerald Green Button */
+/* Simple, Solid, High-End Emerald Green Button */
 .btn-welcome-submit {
   width: 100%;
-  margin-top: 0.4rem;
-  height: 48px;
+  margin-top: 0.35rem;
+  height: 46px;
   background: #059669;
   color: #ffffff;
   border: none;
-  border-radius: 12px;
-  font-size: 1rem;
+  border-radius: 11px;
+  font-size: 0.98rem;
   font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.32);
   transition: all 0.2s ease;
   letter-spacing: 0.3px;
   font-family: inherit;
@@ -423,12 +530,21 @@ html.welcome-active::-webkit-scrollbar {
 .btn-welcome-submit:hover {
   background: #047857;
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.45);
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.42);
 }
 
 .btn-welcome-submit:active {
   transform: translateY(0);
   background: #065f46;
+}
+
+.welcome-card-footer {
+  text-align: center;
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.2px;
 }
 
 /* Already Logged In State Box */
@@ -509,30 +625,51 @@ html.welcome-active::-webkit-scrollbar {
 @media (max-width: 600px) {
   .welcome-dual-portal {
     max-width: 100%;
-    padding: 0.4rem 0.85rem 1.2rem;
-  }
-  .welcome-vel-panel .grand-vel-hero-container {
-    width: 125px;
-    height: 145px;
-    margin: 0 auto;
-  }
-  .welcome-title-container {
-    margin: 0.1rem 0 0.65rem;
+    padding: 0.4rem 0.65rem 0.8rem;
   }
   .welcome-login-card {
-    padding: 1.15rem 1rem 1rem;
-    border-radius: 16px;
+    max-width: 100%;
+    border-radius: 18px;
+  }
+  .welcome-card-hero {
+    padding: 0.8rem 0.85rem 0.7rem;
+  }
+  .welcome-card-hero .grand-vel-hero-container {
+    width: 98px !important;
+    height: 112px !important;
+  }
+  .welcome-card-hero .vel-sunburst-rays {
+    width: 118px !important;
+    height: 118px !important;
+  }
+  .welcome-card-hero .vel-halo-outer {
+    width: 110px !important;
+    height: 110px !important;
+  }
+  .welcome-card-hero .vel-halo-inner {
+    width: 88px !important;
+    height: 88px !important;
+  }
+  .welcome-card-hero .vel-masterpiece-wrapper {
+    width: 82px !important;
+    height: 100px !important;
+  }
+  .welcome-card-hero .welcome-brand-heading {
+    font-size: 1.05rem !important;
+    white-space: nowrap !important;
+  }
+  .welcome-card-body {
+    padding: 1rem 0.95rem 0.9rem;
   }
   .w-input-wrap {
-    height: 44px;
+    height: 42px;
   }
   .w-input-wrap input {
-    padding: 0.7rem 0.8rem;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
   }
   .btn-welcome-submit {
-    height: 46px;
-    font-size: 0.96rem;
+    height: 44px;
+    font-size: 0.94rem;
   }
 }
 
@@ -892,66 +1029,12 @@ html.welcome-active::-webkit-scrollbar {
 /* Mobile Responsive Welcome Screen (Zero Viewport / Frame Overflow) */
 @media (max-width: 600px) {
   .welcome-screen {
-    padding: 0.75rem 0.5rem 2.5rem !important;
+    padding: 0.5rem 0.5rem 1rem !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
     display: flex !important;
-    align-items: flex-start !important;
-  }
-  .welcome-card {
-    max-width: 100vw !important;
-    width: 100% !important;
-    padding: 0.5rem !important;
-    box-sizing: border-box !important;
-    transform: scale(0.92);
-  }
-  .grand-vel-hero-container {
-    width: 170px !important;
-    height: 195px !important;
-    margin: 0.1rem 0 !important;
-  }
-  .vel-sunburst-rays {
-    width: 185px !important;
-    height: 185px !important;
-  }
-  .vel-halo-outer {
-    width: 175px !important;
-    height: 175px !important;
-  }
-  .vel-halo-inner {
-    width: 145px !important;
-    height: 145px !important;
-  }
-  .vel-masterpiece-wrapper {
-    width: 145px !important;
-    height: 175px !important;
-  }
-  .divine-bg-aura {
-    width: 280px !important;
-    height: 280px !important;
-  }
-  .welcome-title-container {
-    width: 100% !important;
-    max-width: 92vw !important;
-    margin-top: 0.2rem !important;
-  }
-  .welcome-brand-heading {
-    font-size: clamp(1.05rem, 5vw, 1.45rem) !important;
-    letter-spacing: 1px !important;
-    white-space: normal !important;
-    max-width: 90vw !important;
-    line-height: 1.25 !important;
-    text-align: center !important;
-    word-break: normal !important;
-    margin: 0.1rem auto !important;
-  }
-  .welcome-label-clean {
-    font-size: 0.78rem !important;
-    letter-spacing: 3px !important;
-  }
-  .welcome-location-clean {
-    font-size: 0.8rem !important;
-    letter-spacing: 4px !important;
+    justify-content: center !important;
+    align-items: center !important;
   }
 }
 
