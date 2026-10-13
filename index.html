@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Philosopher:wght@700&family=Playfair+Display:wght@700;800;900&family=Syne:wght@700;800&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=26.0">
+  <link rel="stylesheet" href="style.css?v=27.0">
   <script>
     window._isWelcomeAnimationActive = true;
     window._isLoginMandatory = true;
@@ -253,175 +253,145 @@
 <body class="welcome-active">
 
   <!-- ====================================================
-       1. MANDATORY WELCOME LOGIN SCREEN (MAJESTIC LORD MURUGAN SACRED VEL + LOGIN FORM)
+       1. MANDATORY WELCOME LOGIN SCREEN (UNIFIED CARD WITH SACRED VEL + CLEAN LOGIN FORM)
        ==================================================== -->
   <section id="welcome-screen" class="welcome-screen">
-    <!-- Divine ambient background aura & floating sparkles -->
+    <!-- Subtle ambient background aura -->
     <div class="divine-bg-aura"></div>
-    <div class="divine-sparkles-layer">
-      <span class="d-sparkle sp1"></span>
-      <span class="d-sparkle sp2"></span>
-      <span class="d-sparkle sp3"></span>
-      <span class="d-sparkle sp4"></span>
-      <span class="d-sparkle sp5"></span>
-      <span class="d-sparkle sp6"></span>
-    </div>
 
-    <div class="welcome-card">
+    <!-- Unified Login Frame (Enclosing Vel, Brand Header & Form) -->
+    <div class="welcome-login-frame">
 
-      <!-- MAJESTIC SACRED VEL HERO SHOWPIECE -->
-      <div class="grand-vel-hero-container">
-        <div class="vel-sunburst-rays"></div>
-        <div class="vel-halo-outer"></div>
-        <div class="vel-halo-inner"></div>
+      <!-- Compact Sacred Vel Emblem Inside Frame -->
+      <div class="vel-emblem-container">
+        <div class="vel-emblem-glow"></div>
+        <svg viewBox="0 0 200 240" class="vel-card-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gold24kGradUnified" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="15%" stop-color="#fef08a"/>
+              <stop offset="35%" stop-color="#fde047"/>
+              <stop offset="55%" stop-color="#eab308"/>
+              <stop offset="75%" stop-color="#ca8a04"/>
+              <stop offset="90%" stop-color="#92400e"/>
+              <stop offset="100%" stop-color="#78350f"/>
+            </linearGradient>
+            <linearGradient id="bladeCenterShineUnified" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#d97706" stop-opacity="0.3"/>
+              <stop offset="50%" stop-color="#ffffff" stop-opacity="0.95"/>
+              <stop offset="100%" stop-color="#d97706" stop-opacity="0.3"/>
+            </linearGradient>
+            <linearGradient id="peacockTealGradUnified" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#059669"/>
+              <stop offset="50%" stop-color="#0d9488"/>
+              <stop offset="100%" stop-color="#0284c7"/>
+            </linearGradient>
+          </defs>
 
-        <div class="vel-masterpiece-wrapper">
-          <svg viewBox="0 0 200 240" class="grand-vel-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="gold24kGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ffffff"/>
-                <stop offset="15%" stop-color="#fef08a"/>
-                <stop offset="35%" stop-color="#fde047"/>
-                <stop offset="55%" stop-color="#eab308"/>
-                <stop offset="75%" stop-color="#ca8a04"/>
-                <stop offset="90%" stop-color="#92400e"/>
-                <stop offset="100%" stop-color="#78350f"/>
-              </linearGradient>
-              <linearGradient id="bladeCenterShine" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#d97706" stop-opacity="0.3"/>
-                <stop offset="50%" stop-color="#ffffff" stop-opacity="0.95"/>
-                <stop offset="100%" stop-color="#d97706" stop-opacity="0.3"/>
-              </linearGradient>
-              <linearGradient id="peacockTealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#059669"/>
-                <stop offset="50%" stop-color="#0d9488"/>
-                <stop offset="100%" stop-color="#0284c7"/>
-              </linearGradient>
-            </defs>
+          <!-- Left Peacock Feather -->
+          <g opacity="0.95">
+            <path d="M72 135 C52 130, 36 112, 38 90 C40 76, 52 74, 62 84 C70 92, 74 115, 78 132 Z" fill="url(#peacockTealGradUnified)" stroke="#fbbf24" stroke-width="1"/>
+            <ellipse cx="48" cy="92" rx="9" ry="12" fill="#0284c7" stroke="#fde047" stroke-width="1.5"/>
+            <ellipse cx="48" cy="92" rx="5" ry="7" fill="#fbbf24"/>
+            <circle cx="48" cy="92" r="3" fill="#1e1b4b"/>
+          </g>
 
-            <!-- Left Feather -->
-            <g class="peacock-feather left-feather" opacity="0.95">
-              <path d="M72 135 C52 130, 36 112, 38 90 C40 76, 52 74, 62 84 C70 92, 74 115, 78 132 Z" fill="url(#peacockTealGrad)" stroke="#fbbf24" stroke-width="1"/>
-              <ellipse cx="48" cy="92" rx="9" ry="12" fill="#0284c7" stroke="#fde047" stroke-width="1.5"/>
-              <ellipse cx="48" cy="92" rx="5" ry="7" fill="#fbbf24"/>
-              <circle cx="48" cy="92" r="3" fill="#1e1b4b"/>
-            </g>
+          <!-- Right Peacock Feather -->
+          <g opacity="0.95">
+            <path d="M128 135 C148 130, 164 112, 162 90 C160 76, 148 74, 138 84 C130 92, 126 115, 122 132 Z" fill="url(#peacockTealGradUnified)" stroke="#fbbf24" stroke-width="1"/>
+            <ellipse cx="152" cy="92" rx="9" ry="12" fill="#0284c7" stroke="#fde047" stroke-width="1.5"/>
+            <ellipse cx="152" cy="92" rx="5" ry="7" fill="#fbbf24"/>
+            <circle cx="152" cy="92" r="3" fill="#1e1b4b"/>
+          </g>
 
-            <!-- Right Feather -->
-            <g class="peacock-feather right-feather" opacity="0.95">
-              <path d="M128 135 C148 130, 164 112, 162 90 C160 76, 148 74, 138 84 C130 92, 126 115, 122 132 Z" fill="url(#peacockTealGrad)" stroke="#fbbf24" stroke-width="1"/>
-              <ellipse cx="152" cy="92" rx="9" ry="12" fill="#0284c7" stroke="#fde047" stroke-width="1.5"/>
-              <ellipse cx="152" cy="92" rx="5" ry="7" fill="#fbbf24"/>
-              <circle cx="152" cy="92" r="3" fill="#1e1b4b"/>
-            </g>
+          <!-- Main Vel Blade -->
+          <path d="M100 16 C84 42, 54 68, 54 104 C54 132, 76 142, 90 146 L90 215 C90 220, 94 224, 100 224 C106 224, 110 220, 110 215 L110 146 C124 142, 146 132, 146 104 C146 68, 116 42, 100 16 Z" 
+                fill="url(#gold24kGradUnified)" stroke="#fffbeb" stroke-width="2.2" />
 
-            <!-- Main Vel Blade -->
-            <path d="M100 16 C84 42, 54 68, 54 104 C54 132, 76 142, 90 146 L90 215 C90 220, 94 224, 100 224 C106 224, 110 220, 110 215 L110 146 C124 142, 146 132, 146 104 C146 68, 116 42, 100 16 Z" 
-                  fill="url(#gold24kGrad)" stroke="#fffbeb" stroke-width="2.2" class="vel-main-blade" />
+          <!-- Center Spine -->
+          <path d="M100 20 L100 146" stroke="url(#bladeCenterShineUnified)" stroke-width="3" stroke-linecap="round" />
 
-            <!-- Center Spine -->
-            <path d="M100 20 L100 146" stroke="url(#bladeCenterShine)" stroke-width="3.2" stroke-linecap="round" class="vel-center-laser" />
+          <!-- Three Sacred Vibhuti Stripes -->
+          <g>
+            <line x1="74" y1="84" x2="126" y2="84" stroke="#ffffff" stroke-width="4.2" stroke-linecap="round" />
+            <line x1="70" y1="94" x2="130" y2="94" stroke="#ffffff" stroke-width="4.2" stroke-linecap="round" />
+            <line x1="74" y1="104" x2="126" y2="104" stroke="#ffffff" stroke-width="4.2" stroke-linecap="round" />
+          </g>
 
-            <!-- Three Vibhuti Stripes -->
-            <g class="sacred-vibhuti-group">
-              <line x1="74" y1="84" x2="126" y2="84" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" />
-              <line x1="70" y1="94" x2="130" y2="94" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" />
-              <line x1="74" y1="104" x2="126" y2="104" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" />
-            </g>
+          <!-- Sacred Red Kumkum Tilak -->
+          <circle cx="100" cy="94" r="6.2" fill="#dc2626" stroke="#fef08a" stroke-width="1.5" />
 
-            <!-- Red Kumkum Tilak -->
-            <circle cx="100" cy="94" r="6.5" fill="#dc2626" stroke="#fef08a" stroke-width="1.6" />
+          <!-- Lotus Base -->
+          <ellipse cx="100" cy="146" rx="16" ry="6" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5"/>
 
-            <!-- Lotus Base -->
-            <ellipse cx="100" cy="146" rx="16" ry="6" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5"/>
-
-            <!-- Shaft rings -->
-            <rect x="94" y="152" width="12" height="64" fill="url(#gold24kGrad)" rx="2.5" stroke="#fef08a" stroke-width="1"/>
-            <circle cx="100" cy="220" r="7" fill="url(#gold24kGrad)" stroke="#fef08a" stroke-width="1.5"/>
-          </svg>
-        </div>
+          <!-- Shaft and Base -->
+          <rect x="94" y="152" width="12" height="64" fill="url(#gold24kGradUnified)" rx="2.5" stroke="#fef08a" stroke-width="1"/>
+          <circle cx="100" cy="220" r="7" fill="url(#gold24kGradUnified)" stroke="#fef08a" stroke-width="1.5"/>
+        </svg>
       </div>
 
-      <!-- Welcome Typography -->
-      <div class="welcome-title-container">
-        <span class="welcome-label-clean">WELCOME TO</span>
-        <h1 class="welcome-brand-heading">VARSHAN CHEMICAL STORE</h1>
-        <span class="welcome-location-clean">SIVAKASI</span>
+      <!-- Clean Elegant Brand Typography Inside Frame -->
+      <div class="vel-card-header">
+        <span class="vel-card-sublabel">WELCOME TO</span>
+        <h1 class="vel-card-title">VARSHAN CHEMICAL STORE</h1>
+        <span class="vel-card-location">SIVAKASI</span>
       </div>
 
-      <!-- Vel Gateway Login Box -->
-      <div class="vel-gateway-login-box">
-        
-        <!-- 1. LOGIN FORM FOR NEW / LOGGED-OUT USERS -->
-        <div id="vel-login-form-wrapper">
-          <div class="vel-login-badge-header">
-            <span>✨ SECURE CUSTOMER LOGIN</span>
+      <!-- 1. LOGIN FORM FOR NEW / LOGGED-OUT USERS -->
+      <div id="vel-login-form-wrapper" class="vel-form-wrapper">
+        <form id="vel-gateway-form" onsubmit="event.preventDefault(); submitVelGatewayLogin(event); return false;" novalidate>
+          
+          <!-- Full Name -->
+          <div class="vel-input-group">
+            <label for="vel-user-name">
+              <span>👤</span> Your Name <span class="vel-req">*</span>
+            </label>
+            <div class="vel-input-wrapper">
+              <input type="text" id="vel-user-name" placeholder="Enter your full name" required autocomplete="name">
+            </div>
+            <span class="vel-field-error hidden" id="vel-name-error">Please enter your name</span>
           </div>
-          <p class="vel-login-tagline">Please fill your details below to enter the chemical store &amp; view direct factory prices.</p>
 
-          <form id="vel-gateway-form" onsubmit="event.preventDefault(); submitVelGatewayLogin(event); return false;" novalidate>
-            
-            <!-- Full Name -->
-            <div class="vel-input-group">
-              <label for="vel-user-name">
-                <span>👤</span> Your Name <span class="vel-req">*</span>
-              </label>
-              <div class="vel-input-wrapper">
-                <input type="text" id="vel-user-name" placeholder="Enter your full name" required autocomplete="name">
-              </div>
-              <span class="vel-field-error hidden" id="vel-name-error">Please enter your name</span>
+          <!-- WhatsApp / Mobile -->
+          <div class="vel-input-group">
+            <label for="vel-user-mobile">
+              <span>📱</span> WhatsApp / Mobile Number <span class="vel-req">*</span>
+            </label>
+            <div class="vel-mobile-wrapper">
+              <span class="vel-flag-prefix">🇮🇳 +91</span>
+              <input type="tel" id="vel-user-mobile" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" required autocomplete="tel" oninput="this.value=this.value.replace(/\D/g,'');">
             </div>
+            <span class="vel-field-error hidden" id="vel-mobile-error">Enter a valid 10-digit mobile number</span>
+          </div>
 
-            <!-- WhatsApp / Mobile -->
-            <div class="vel-input-group">
-              <label for="vel-user-mobile">
-                <span>📱</span> WhatsApp / Mobile Number <span class="vel-req">*</span>
-              </label>
-              <div class="vel-mobile-wrapper">
-                <span class="vel-flag-prefix">🇮🇳 +91</span>
-                <input type="tel" id="vel-user-mobile" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" required autocomplete="tel" oninput="this.value=this.value.replace(/\D/g,'');">
-              </div>
-              <span class="vel-field-error hidden" id="vel-mobile-error">Enter a valid 10-digit mobile number</span>
+          <!-- City / Address (Optional) -->
+          <div class="vel-input-group">
+            <label for="vel-user-city">
+              <span>📍</span> Delivery City / Town <span class="vel-opt">(Optional)</span>
+            </label>
+            <div class="vel-input-wrapper">
+              <input type="text" id="vel-user-city" placeholder="e.g. Sivakasi, Madurai, Virudhunagar">
             </div>
+          </div>
 
-            <!-- City / Address -->
-            <div class="vel-input-group">
-              <label for="vel-user-city">
-                <span>📍</span> Delivery City / Town <span class="vel-opt">(Optional)</span>
-              </label>
-              <div class="vel-input-wrapper">
-                <input type="text" id="vel-user-city" placeholder="e.g. Sivakasi, Madurai, Virudhunagar">
-              </div>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" id="btn-vel-login-enter" class="btn-vel-entrance-submit" onclick="submitVelGatewayLogin(event)">
-              <span>🚀 Login &amp; Enter Store</span>
-            </button>
-
-            <div class="vel-gateway-footer-row">
-              <button type="button" class="btn-vel-admin-direct" onclick="if(typeof openAdminPortalModal==='function')openAdminPortalModal();">🔒 Admin / Staff Access</button>
-              <span class="vel-trust-guarantee">🛡️ Direct Sivakasi Factory Supply &bull; Wholesale &amp; Retail</span>
-            </div>
-
-          </form>
-        </div>
-
-        <!-- 2. RETURNING USER PROFILE BOX -->
-        <div id="vel-returning-user-wrapper" class="vel-returning-user-wrapper hidden">
-          <div class="returning-avatar-circle" id="vel-returning-avatar">V</div>
-          <span class="returning-greet-tag">WELCOME BACK</span>
-          <h3 class="returning-user-name" id="vel-returning-name">Customer</h3>
-          <p class="returning-user-phone" id="vel-returning-phone">+91 9876543210</p>
-          <button type="button" class="btn-vel-entrance-submit" onclick="enterStoreAsCurrentUser()">
-            <span id="btn-vel-continue-text">CONTINUE TO STORE →</span>
+          <!-- Submit Button -->
+          <button type="submit" id="btn-vel-login-enter" class="btn-vel-entrance-submit" onclick="submitVelGatewayLogin(event)">
+            <span>🚀 Login &amp; Enter Store</span>
           </button>
-          <button type="button" class="btn-vel-switch-user" onclick="switchVelGatewayUser()">Switch User / Login with different number</button>
-          <div class="vel-gateway-footer-row">
-            <button type="button" class="btn-vel-admin-direct" onclick="if(typeof openAdminPortalModal==='function')openAdminPortalModal();">🔒 Admin / Staff Access</button>
-          </div>
-        </div>
 
+        </form>
+      </div>
+
+      <!-- 2. RETURNING USER PROFILE BOX -->
+      <div id="vel-returning-user-wrapper" class="vel-returning-user-wrapper hidden">
+        <div class="returning-avatar-circle" id="vel-returning-avatar">V</div>
+        <span class="returning-greet-tag">WELCOME BACK</span>
+        <h3 class="returning-user-name" id="vel-returning-name">Customer</h3>
+        <p class="returning-user-phone" id="vel-returning-phone">+91 9876543210</p>
+        <button type="button" class="btn-vel-entrance-submit" onclick="enterStoreAsCurrentUser()">
+          <span id="btn-vel-continue-text">CONTINUE TO STORE →</span>
+        </button>
+        <button type="button" class="btn-vel-switch-user" onclick="switchVelGatewayUser()">Switch User / Login with different number</button>
       </div>
 
     </div>
