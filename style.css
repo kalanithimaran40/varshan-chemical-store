@@ -12871,183 +12871,313 @@ html.welcome-active #customer-login-modal,
 
 
 /* ==========================================================================
-   UNIFIED CLEAN LORD MURUGAN VEL LOGIN FRAME & FORM STYLES
+   FORMAL EXECUTIVE LOGIN PORTAL (DUAL-PANE CORPORATE STORE ENTRANCE)
    ========================================================================== */
-.welcome-login-frame {
-  width: 100%;
-  max-width: 420px;
-  background: rgba(3, 28, 21, 0.94);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(251, 191, 36, 0.45);
-  border-radius: 22px;
-  padding: 1.6rem 1.45rem 1.5rem 1.45rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(251, 191, 36, 0.15);
+.formal-login-portal {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999999 !important;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  background: radial-gradient(ellipse at 70% 20%, #0d3829 0%, #06281e 45%, #021711 80%, #010c08 100%);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.formal-login-portal.fade-out {
+  opacity: 0 !important;
+  transform: scale(1.02);
+  pointer-events: none !important;
+}
+
+.formal-login-portal.hidden {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.formal-portal-backdrop {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 15% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(251, 191, 36, 0.08) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+/* Grand Dual-Pane Container */
+.formal-portal-card {
+  width: 100%;
+  max-width: 920px;
+  min-height: 540px;
+  background: rgba(3, 26, 19, 0.95);
+  border: 1.5px solid rgba(251, 191, 36, 0.4);
+  border-radius: 24px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85), 0 0 45px rgba(251, 191, 36, 0.12);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  overflow: hidden;
   position: relative;
   z-index: 10;
   margin: auto;
   box-sizing: border-box;
-  animation: velFrameFadeIn 0.35s ease-out;
+  animation: portalSlideUp 0.45s ease-out;
 }
 
-@keyframes velFrameFadeIn {
-  from { opacity: 0; transform: translateY(10px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes portalSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Compact Sacred Vel Emblem inside Frame */
-.vel-emblem-container {
+/* -------------------------------------------------------------
+   LEFT PANE: BRAND & REPUTATION SHOWCASE
+   ------------------------------------------------------------- */
+.portal-brand-pane {
+  background: linear-gradient(145deg, rgba(6, 46, 34, 0.95) 0%, rgba(2, 24, 18, 0.98) 100%);
+  border-right: 1px solid rgba(251, 191, 36, 0.25);
+  padding: 2.5rem 2.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: relative;
-  width: 74px;
-  height: 88px;
-  margin-bottom: 0.35rem;
+  box-sizing: border-box;
+}
+
+.portal-brand-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.portal-vel-badge {
+  width: 48px;
+  height: 54px;
+  border-radius: 12px;
+  background: rgba(4, 38, 28, 0.85);
+  border: 1.2px solid rgba(251, 191, 36, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 12px rgba(251, 191, 36, 0.2);
+  flex-shrink: 0;
 }
 
-.vel-emblem-glow {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle, rgba(253, 224, 71, 0.35) 0%, rgba(245, 158, 11, 0.12) 50%, transparent 75%);
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(6px);
+.portal-vel-svg {
+  width: 32px;
+  height: 38px;
 }
 
-.vel-card-svg {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 2;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 10px rgba(251, 191, 36, 0.35));
-}
-
-/* Clean Brand Typography inside Frame */
-.vel-card-header {
+.portal-brand-meta {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 1.15rem;
-}
-
-.vel-card-sublabel {
-  font-family: 'Cinzel', serif;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 3.5px;
-  color: #a7f3d0;
-  text-transform: uppercase;
-  margin-bottom: 0.15rem;
-}
-
-.vel-card-title {
-  font-family: 'Cinzel', serif;
-  font-size: 1.25rem;
-  font-weight: 900;
-  letter-spacing: 1.4px;
-  line-height: 1.25;
-  margin: 0;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, #ffffff 0%, #fef08a 30%, #f59e0b 70%, #d97706 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
-}
-
-.vel-card-location {
-  font-family: 'Cinzel', serif;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 5px;
-  color: #fde047;
-  text-transform: uppercase;
-  margin-top: 0.15rem;
-}
-
-.vel-form-wrapper {
-  width: 100%;
-}
-
-.vel-input-group {
-  margin-bottom: 0.7rem;
   text-align: left;
 }
 
-.vel-input-group label {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: #a7f3d0;
-  margin-bottom: 0.3rem;
+.portal-brand-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #fef08a;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
-.vel-req {
+.portal-brand-sub {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #6ee7b7;
+  text-transform: uppercase;
+}
+
+.portal-brand-body {
+  margin: 1.8rem 0;
+  text-align: left;
+}
+
+.portal-hero-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: #ffffff;
+  margin: 0 0 0.75rem 0;
+  background: linear-gradient(135deg, #ffffff 0%, #fef08a 40%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.portal-hero-tagline {
+  font-size: 0.85rem;
+  color: #d1fae5;
+  line-height: 1.55;
+  margin: 0 0 1.6rem 0;
+  opacity: 0.9;
+}
+
+.portal-feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.portal-feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  background: rgba(2, 28, 20, 0.65);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 12px;
+  padding: 0.7rem 0.9rem;
+}
+
+.portal-feature-list .f-icon {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.portal-feature-list strong {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.15rem;
+}
+
+.portal-feature-list span {
+  display: block;
+  font-size: 0.73rem;
+  color: #94a3b8;
+  line-height: 1.35;
+}
+
+.portal-brand-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.75rem;
+  color: #a7f3d0;
+  font-weight: 600;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(251, 191, 36, 0.2);
+}
+
+.portal-live-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: liveDotPulse 1.6s infinite alternate;
+}
+
+@keyframes liveDotPulse {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  100% { transform: scale(1.3); opacity: 1; }
+}
+
+/* -------------------------------------------------------------
+   RIGHT PANE: FORMAL SIGN IN FORM
+   ------------------------------------------------------------- */
+.portal-form-pane {
+  background: rgba(2, 20, 15, 0.97);
+  padding: 2.5rem 2.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.form-pane-inner {
+  width: 100%;
+}
+
+.form-pane-header {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-pane-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.35rem 0;
+  letter-spacing: 0.8px;
+}
+
+.form-pane-subtitle {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.formal-field {
+  margin-bottom: 1.15rem;
+  text-align: left;
+}
+
+.formal-field label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #a7f3d0;
+  margin-bottom: 0.35rem;
+}
+
+.formal-field .req {
   color: #f87171;
   font-weight: 800;
 }
 
-.vel-opt {
+.formal-field .opt {
   color: #94a3b8;
-  font-size: 0.7rem;
   font-weight: 500;
+  font-size: 0.72rem;
 }
 
-.vel-input-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.vel-input-wrapper input {
-  width: 100%;
-  height: 42px;
-  background: rgba(2, 22, 17, 0.85);
-  border: 1.4px solid rgba(16, 185, 129, 0.45);
-  border-radius: 10px;
-  padding: 0 0.85rem;
-  color: #ffffff;
-  font-size: 0.92rem;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-}
-
-.vel-input-wrapper input:focus {
-  border-color: #fde047;
-  background: rgba(2, 26, 20, 0.95);
-  box-shadow: 0 0 10px rgba(253, 224, 71, 0.35);
-  outline: none;
-}
-
-.vel-mobile-wrapper {
+.formal-input-wrap {
   display: flex;
   align-items: center;
-  width: 100%;
-  height: 42px;
-  background: rgba(2, 22, 17, 0.85);
-  border: 1.4px solid rgba(16, 185, 129, 0.45);
-  border-radius: 10px;
+  background: rgba(1, 14, 11, 0.9);
+  border: 1.4px solid rgba(16, 185, 129, 0.4);
+  border-radius: 11px;
   overflow: hidden;
+  transition: all 0.22s ease;
+  height: 44px;
   box-sizing: border-box;
-  transition: all 0.2s ease;
 }
 
-.vel-mobile-wrapper:focus-within {
+.formal-input-wrap:focus-within {
   border-color: #fde047;
-  box-shadow: 0 0 10px rgba(253, 224, 71, 0.35);
+  background: rgba(1, 20, 15, 0.95);
+  box-shadow: 0 0 12px rgba(253, 224, 71, 0.3);
 }
 
-.vel-flag-prefix {
+.input-prefix-icon {
+  padding: 0 0.8rem;
+  font-size: 0.95rem;
+  opacity: 0.8;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0 0.65rem;
+}
+
+.mobile-country-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0 0.75rem;
   background: rgba(5, 150, 105, 0.25);
   border-right: 1px solid rgba(16, 185, 129, 0.35);
   color: #fde047;
@@ -13057,19 +13187,20 @@ html.welcome-active #customer-login-modal,
   white-space: nowrap;
 }
 
-.vel-mobile-wrapper input {
+.formal-input-wrap input {
   flex: 1;
   height: 100%;
   background: transparent;
   border: none;
-  padding: 0 0.8rem;
+  padding: 0 0.85rem;
   color: #ffffff;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
+  font-size: 0.92rem;
+  outline: none;
+  font-family: inherit;
 }
 
-.vel-mobile-wrapper input:focus {
-  outline: none;
+.formal-input-wrap input::placeholder {
+  color: rgba(148, 163, 184, 0.6);
 }
 
 .vel-field-error {
@@ -13077,7 +13208,7 @@ html.welcome-active #customer-login-modal,
   color: #fca5a5;
   font-size: 0.72rem;
   font-weight: 600;
-  margin-top: 0.22rem;
+  margin-top: 0.3rem;
   text-align: left;
 }
 
@@ -13085,108 +13216,116 @@ html.welcome-active #customer-login-modal,
   display: none !important;
 }
 
-.btn-vel-entrance-submit {
+/* Formal Primary Button */
+.btn-formal-enter-store {
   width: 100%;
-  height: 46px;
-  border-radius: 999px;
+  height: 48px;
+  border-radius: 12px;
   border: none;
-  background: linear-gradient(135deg, #f59e0b 0%, #eab308 28%, #10b981 72%, #059669 100%);
-  color: #022018;
+  background: linear-gradient(135deg, #10b981 0%, #059669 45%, #d97706 100%);
+  color: #ffffff;
   font-family: 'Outfit', sans-serif;
-  font-weight: 900;
-  font-size: 0.92rem;
-  letter-spacing: 0.6px;
-  box-shadow: 0 6px 20px rgba(234, 179, 8, 0.35), 0 0 14px rgba(16, 185, 129, 0.25);
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  margin-top: 0.9rem;
-  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  gap: 0.6rem;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35), 0 0 15px rgba(217, 119, 6, 0.2);
+  transition: all 0.22s ease;
+  margin-top: 0.8rem;
   -webkit-tap-highlight-color: transparent;
 }
 
-.btn-vel-entrance-submit:hover {
+.btn-formal-enter-store:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(234, 179, 8, 0.45), 0 0 18px rgba(16, 185, 129, 0.35);
-  filter: brightness(1.05);
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.45), 0 0 20px rgba(217, 119, 6, 0.3);
+  filter: brightness(1.06);
 }
 
-.btn-vel-entrance-submit:active {
-  transform: scale(0.97);
+.btn-formal-enter-store:active {
+  transform: scale(0.98);
 }
 
-/* Returning User Box */
-.vel-returning-user-wrapper {
+.formal-security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* Returning User Block */
+.returning-profile-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 0.35rem 0;
-  width: 100%;
+  padding: 1rem 0;
 }
 
 .returning-avatar-circle {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: linear-gradient(135deg, #f59e0b 0%, #10b981 100%);
-  border: 2px solid #fde047;
-  box-shadow: 0 0 16px rgba(253, 224, 71, 0.4);
+  border: 2.5px solid #fde047;
+  box-shadow: 0 0 20px rgba(253, 224, 71, 0.45);
   color: #022018;
   font-family: 'Cinzel', serif;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.65rem;
 }
 
-.returning-greet-tag {
-  display: inline-block;
+.returning-status-badge {
   font-size: 0.68rem;
   font-weight: 800;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.8px;
   color: #34d399;
   background: rgba(5, 150, 105, 0.2);
   border: 1px solid rgba(52, 211, 153, 0.4);
   border-radius: 999px;
-  padding: 0.2rem 0.65rem;
-  margin-bottom: 0.35rem;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .returning-user-name {
   font-family: 'Cinzel', serif;
-  font-size: 1.28rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: #ffffff;
-  margin: 0 0 0.15rem 0;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  margin: 0 0 0.2rem 0;
 }
 
 .returning-user-phone {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: #a7f3d0;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.4rem;
 }
 
-.btn-vel-switch-user {
+.btn-formal-switch-user {
   background: transparent;
   border: none;
   color: #94a3b8;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 0.75rem;
-  padding: 0.3rem 0.6rem;
+  margin-top: 0.9rem;
   text-decoration: underline;
   transition: color 0.2s;
 }
 
-.btn-vel-switch-user:hover {
+.btn-formal-switch-user:hover {
   color: #fde047;
 }
 
@@ -13195,22 +13334,33 @@ html.welcome-active #customer-login-modal,
   z-index: 1000000000 !important;
 }
 
-/* Mobile Responsive */
-@media (max-width: 480px) {
-  .welcome-login-frame {
-    padding: 1.35rem 1.15rem 1.25rem 1.15rem;
-    max-width: 92vw;
-    border-radius: 18px;
+/* -------------------------------------------------------------
+   RESPONSIVE LAYOUT (MOBILE & TABLETS)
+   ------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .formal-portal-card {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    min-height: auto;
   }
-  .vel-emblem-container {
-    width: 64px;
-    height: 76px;
+  .portal-brand-pane {
+    border-right: none;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.25);
+    padding: 1.8rem 1.5rem;
   }
-  .vel-card-title {
-    font-size: 1.12rem !important;
+  .portal-brand-body {
+    margin: 1.2rem 0 0.8rem 0;
   }
-  .btn-vel-entrance-submit {
-    height: 44px;
-    font-size: 0.88rem;
+  .portal-feature-list {
+    display: none; /* Keep mobile view compact & clean */
+  }
+  .portal-hero-heading {
+    font-size: 1.35rem;
+  }
+  .portal-hero-tagline {
+    margin-bottom: 0.5rem;
+  }
+  .portal-form-pane {
+    padding: 1.8rem 1.5rem 2rem 1.5rem;
   }
 }
