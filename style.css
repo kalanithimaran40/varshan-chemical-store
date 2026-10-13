@@ -12871,344 +12871,232 @@ html.welcome-active #customer-login-modal,
 
 
 /* ==========================================================================
-   FORMAL EXECUTIVE LOGIN PORTAL (DUAL-PANE CORPORATE STORE ENTRANCE)
+   AMAZON & FLIPKART STYLE E-COMMERCE AUTHENTICATION PORTAL
    ========================================================================== */
-.formal-login-portal {
+.ecom-login-screen {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
   z-index: 99999999 !important;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
+  justify-content: flex-start;
+  padding: 28px 16px 40px;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
-  background: radial-gradient(ellipse at 70% 20%, #0d3829 0%, #06281e 45%, #021711 80%, #010c08 100%);
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f6f8 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  box-sizing: border-box;
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
-.formal-login-portal.fade-out {
+.ecom-login-screen.fade-out {
   opacity: 0 !important;
   transform: scale(1.02);
   pointer-events: none !important;
 }
 
-.formal-login-portal.hidden {
+.ecom-login-screen.hidden {
   display: none !important;
   pointer-events: none !important;
 }
 
-.formal-portal-backdrop {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    radial-gradient(circle at 15% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 15%, rgba(251, 191, 36, 0.08) 0%, transparent 40%);
-  pointer-events: none;
+/* -------------------------------------------------------------
+   AMAZON STYLE BRAND HEADER
+   ------------------------------------------------------------- */
+.ecom-brand-header {
+  margin-bottom: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Grand Dual-Pane Container */
-.formal-portal-card {
+.ecom-brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.ecom-brand-vel-icon {
+  width: 36px;
+  height: 42px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.ecom-brand-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.ecom-brand-name {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #0f1111;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+}
+
+.ecom-brand-domain {
+  color: #059669;
+  font-weight: 800;
+}
+
+.ecom-brand-subtitle {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #565959;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* -------------------------------------------------------------
+   AMAZON.IN SIGNATURE AUTH CARD
+   ------------------------------------------------------------- */
+.ecom-auth-card {
   width: 100%;
-  max-width: 920px;
-  min-height: 540px;
-  background: rgba(3, 26, 19, 0.95);
-  border: 1.5px solid rgba(251, 191, 36, 0.4);
-  border-radius: 24px;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85), 0 0 45px rgba(251, 191, 36, 0.12);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  overflow: hidden;
-  position: relative;
-  z-index: 10;
-  margin: auto;
+  max-width: 390px;
+  background: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  padding: 26px 30px;
   box-sizing: border-box;
-  animation: portalSlideUp 0.45s ease-out;
+  margin: 0 auto;
+  animation: ecomCardSlide 0.3s ease-out;
 }
 
-@keyframes portalSlideUp {
-  from { opacity: 0; transform: translateY(16px); }
+@keyframes ecomCardSlide {
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* -------------------------------------------------------------
-   LEFT PANE: BRAND & REPUTATION SHOWCASE
-   ------------------------------------------------------------- */
-.portal-brand-pane {
-  background: linear-gradient(145deg, rgba(6, 46, 34, 0.95) 0%, rgba(2, 24, 18, 0.98) 100%);
-  border-right: 1px solid rgba(251, 191, 36, 0.25);
-  padding: 2.5rem 2.2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  box-sizing: border-box;
-}
-
-.portal-brand-top {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.portal-vel-badge {
-  width: 48px;
-  height: 54px;
-  border-radius: 12px;
-  background: rgba(4, 38, 28, 0.85);
-  border: 1.2px solid rgba(251, 191, 36, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 12px rgba(251, 191, 36, 0.2);
-  flex-shrink: 0;
-}
-
-.portal-vel-svg {
-  width: 32px;
-  height: 38px;
-}
-
-.portal-brand-meta {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
-.portal-brand-title {
-  font-family: 'Cinzel', serif;
-  font-size: 1.05rem;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: #fef08a;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
-}
-
-.portal-brand-sub {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  color: #6ee7b7;
-  text-transform: uppercase;
-}
-
-.portal-brand-body {
-  margin: 1.8rem 0;
-  text-align: left;
-}
-
-.portal-hero-heading {
-  font-family: 'Cinzel', serif;
-  font-size: 1.55rem;
-  font-weight: 800;
-  line-height: 1.3;
-  color: #ffffff;
-  margin: 0 0 0.75rem 0;
-  background: linear-gradient(135deg, #ffffff 0%, #fef08a 40%, #f59e0b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.portal-hero-tagline {
-  font-size: 0.85rem;
-  color: #d1fae5;
-  line-height: 1.55;
-  margin: 0 0 1.6rem 0;
-  opacity: 0.9;
-}
-
-.portal-feature-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.portal-feature-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  background: rgba(2, 28, 20, 0.65);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  border-radius: 12px;
-  padding: 0.7rem 0.9rem;
-}
-
-.portal-feature-list .f-icon {
-  font-size: 1.15rem;
-  flex-shrink: 0;
-  margin-top: 0.1rem;
-}
-
-.portal-feature-list strong {
-  display: block;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 0.15rem;
-}
-
-.portal-feature-list span {
-  display: block;
-  font-size: 0.73rem;
-  color: #94a3b8;
-  line-height: 1.35;
-}
-
-.portal-brand-footer {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-size: 0.75rem;
-  color: #a7f3d0;
-  font-weight: 600;
-  padding-top: 1rem;
-  border-top: 1px dashed rgba(251, 191, 36, 0.2);
-}
-
-.portal-live-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 8px #10b981;
-  animation: liveDotPulse 1.6s infinite alternate;
-}
-
-@keyframes liveDotPulse {
-  0% { transform: scale(0.85); opacity: 0.6; }
-  100% { transform: scale(1.3); opacity: 1; }
-}
-
-/* -------------------------------------------------------------
-   RIGHT PANE: FORMAL SIGN IN FORM
-   ------------------------------------------------------------- */
-.portal-form-pane {
-  background: rgba(2, 20, 15, 0.97);
-  padding: 2.5rem 2.2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  box-sizing: border-box;
-}
-
-.form-pane-inner {
+.ecom-form-wrapper {
   width: 100%;
 }
 
-.form-pane-header {
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.form-pane-title {
-  font-family: 'Cinzel', serif;
-  font-size: 1.45rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin: 0 0 0.35rem 0;
-  letter-spacing: 0.8px;
-}
-
-.form-pane-subtitle {
-  font-size: 0.82rem;
-  color: #94a3b8;
-  margin: 0;
-  line-height: 1.45;
-}
-
-.formal-field {
-  margin-bottom: 1.15rem;
-  text-align: left;
-}
-
-.formal-field label {
-  display: block;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #a7f3d0;
-  margin-bottom: 0.35rem;
-}
-
-.formal-field .req {
-  color: #f87171;
-  font-weight: 800;
-}
-
-.formal-field .opt {
-  color: #94a3b8;
+.ecom-auth-heading {
+  font-size: 1.85rem;
   font-weight: 500;
-  font-size: 0.72rem;
+  color: #0f1111;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+  text-align: left;
+  letter-spacing: -0.3px;
 }
 
-.formal-input-wrap {
-  display: flex;
-  align-items: center;
-  background: rgba(1, 14, 11, 0.9);
-  border: 1.4px solid rgba(16, 185, 129, 0.4);
-  border-radius: 11px;
-  overflow: hidden;
-  transition: all 0.22s ease;
-  height: 44px;
-  box-sizing: border-box;
+.ecom-auth-subtext {
+  font-size: 0.84rem;
+  color: #565959;
+  margin: 0 0 20px 0;
+  line-height: 1.4;
+  text-align: left;
 }
 
-.formal-input-wrap:focus-within {
-  border-color: #fde047;
-  background: rgba(1, 20, 15, 0.95);
-  box-shadow: 0 0 12px rgba(253, 224, 71, 0.3);
+/* -------------------------------------------------------------
+   INPUT FIELD GROUPS
+   ------------------------------------------------------------- */
+.ecom-field-group {
+  margin-bottom: 15px;
+  text-align: left;
 }
 
-.input-prefix-icon {
-  padding: 0 0.8rem;
-  font-size: 0.95rem;
-  opacity: 0.8;
-  display: flex;
-  align-items: center;
-}
-
-.mobile-country-tag {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0 0.75rem;
-  background: rgba(5, 150, 105, 0.25);
-  border-right: 1px solid rgba(16, 185, 129, 0.35);
-  color: #fde047;
-  font-weight: 800;
+.ecom-field-label {
+  display: block;
   font-size: 0.82rem;
-  height: 100%;
-  white-space: nowrap;
+  font-weight: 700;
+  color: #0f1111;
+  margin-bottom: 6px;
 }
 
-.formal-input-wrap input {
-  flex: 1;
-  height: 100%;
-  background: transparent;
-  border: none;
-  padding: 0 0.85rem;
-  color: #ffffff;
+.ecom-optional {
+  font-weight: 400;
+  color: #6b7280;
+  font-size: 0.74rem;
+  margin-left: 4px;
+}
+
+.ecom-input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #888c8c;
+  border-radius: 6px;
+  padding: 0 12px;
   font-size: 0.92rem;
+  color: #0f1111;
+  background: #ffffff;
   outline: none;
+  box-sizing: border-box;
   font-family: inherit;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.formal-input-wrap input::placeholder {
-  color: rgba(148, 163, 184, 0.6);
+.ecom-input:focus {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.22);
+}
+
+.ecom-input::placeholder {
+  color: #767676;
+  font-size: 0.88rem;
+}
+
+.ecom-phone-input-row {
+  display: flex;
+  align-items: center;
+  border: 1px solid #888c8c;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #ffffff;
+  height: 40px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ecom-phone-input-row:focus-within {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.22);
+}
+
+.ecom-country-code {
+  padding: 0 10px;
+  background: #f0f2f2;
+  border-right: 1px solid #d5d9d9;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #333333;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.ecom-phone-input {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.ecom-field-hint {
+  display: block;
+  font-size: 0.72rem;
+  color: #565959;
+  margin-top: 5px;
 }
 
 .vel-field-error {
   display: block;
-  color: #fca5a5;
-  font-size: 0.72rem;
+  color: #c40000;
+  font-size: 0.75rem;
   font-weight: 600;
-  margin-top: 0.3rem;
+  margin-top: 5px;
   text-align: left;
 }
 
@@ -13216,117 +13104,244 @@ html.welcome-active #customer-login-modal,
   display: none !important;
 }
 
-/* Formal Primary Button */
-.btn-formal-enter-store {
+/* -------------------------------------------------------------
+   AMAZON HIGH-CONVERSION PRIMARY BUTTON
+   ------------------------------------------------------------- */
+.ecom-btn-primary {
   width: 100%;
-  height: 48px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(135deg, #10b981 0%, #059669 45%, #d97706 100%);
-  color: #ffffff;
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.96rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  height: 42px;
+  background: #ffd814;
+  border: 1px solid #fcd200;
+  border-radius: 8px;
+  color: #0f1111;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35), 0 0 15px rgba(217, 119, 6, 0.2);
-  transition: all 0.22s ease;
-  margin-top: 0.8rem;
+  box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
+  transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  margin-top: 10px;
   -webkit-tap-highlight-color: transparent;
 }
 
-.btn-formal-enter-store:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.45), 0 0 20px rgba(217, 119, 6, 0.3);
-  filter: brightness(1.06);
+.ecom-btn-primary:hover {
+  background: #f7ca00;
+  border-color: #f2c200;
+  box-shadow: 0 3px 6px rgba(213, 217, 217, 0.7);
 }
 
-.btn-formal-enter-store:active {
-  transform: scale(0.98);
+.ecom-btn-primary:active {
+  background: #f0b800;
+  border-color: #008296;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) inset;
 }
 
-.formal-security-note {
+/* -------------------------------------------------------------
+   TERMS, BENEFITS & SUPPORT
+   ------------------------------------------------------------- */
+.ecom-terms-notice {
+  font-size: 0.75rem;
+  color: #565959;
+  line-height: 1.45;
+  margin: 16px 0 14px 0;
+  text-align: left;
+}
+
+.ecom-link {
+  color: #007185;
+  text-decoration: none;
+}
+
+.ecom-link:hover {
+  text-decoration: underline;
+  color: #c7511f;
+}
+
+.ecom-benefits-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin: 12px 0 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  text-align: left;
+}
+
+.ecom-benefit-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  font-size: 0.7rem;
-  color: #94a3b8;
-  margin-top: 1rem;
-  text-align: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: #334155;
+  font-weight: 500;
 }
 
-/* Returning User Block */
-.returning-profile-card {
+.ecom-benefit-icon {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.ecom-divider-row {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 18px 0 12px 0;
+  color: #767676;
+  font-size: 0.72rem;
+}
+
+.ecom-divider-row::before,
+.ecom-divider-row::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.ecom-divider-row span {
+  padding: 0 10px;
+}
+
+.ecom-support-row {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  padding: 1rem 0;
+  font-size: 0.75rem;
+  color: #565959;
+  gap: 4px;
 }
 
-.returning-avatar-circle {
-  width: 64px;
-  height: 64px;
+.ecom-wa-link {
+  color: #059669;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ecom-wa-link:hover {
+  text-decoration: underline;
+  color: #047857;
+}
+
+/* -------------------------------------------------------------
+   AMAZON RETURNING USER CARD
+   ------------------------------------------------------------- */
+.ecom-returning-wrapper {
+  text-align: left;
+}
+
+.ecom-returning-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.ecom-returning-avatar {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #f59e0b 0%, #10b981 100%);
-  border: 2.5px solid #fde047;
-  box-shadow: 0 0 20px rgba(253, 224, 71, 0.45);
-  color: #022018;
-  font-family: 'Cinzel', serif;
-  font-size: 1.7rem;
-  font-weight: 900;
+  background: #ecfdf5;
+  color: #059669;
+  border: 2px solid #a7f3d0;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.65rem;
-}
-
-.returning-status-badge {
-  font-size: 0.68rem;
+  font-size: 1.35rem;
   font-weight: 800;
-  letter-spacing: 1.8px;
-  color: #34d399;
-  background: rgba(5, 150, 105, 0.2);
-  border: 1px solid rgba(52, 211, 153, 0.4);
-  border-radius: 999px;
-  padding: 0.25rem 0.75rem;
-  margin-bottom: 0.5rem;
+  flex-shrink: 0;
 }
 
-.returning-user-name {
-  font-family: 'Cinzel', serif;
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin: 0 0 0.2rem 0;
+.ecom-returning-info {
+  display: flex;
+  flex-direction: column;
 }
 
-.returning-user-phone {
-  font-size: 0.88rem;
-  color: #a7f3d0;
+.ecom-returning-welcome {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.ecom-returning-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 2px 0;
+}
+
+.ecom-returning-phone {
+  font-size: 0.82rem;
+  color: #059669;
   font-weight: 600;
-  margin-bottom: 1.4rem;
 }
 
-.btn-formal-switch-user {
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  font-size: 0.8rem;
+.ecom-btn-secondary {
+  width: 100%;
+  height: 38px;
+  background: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  color: #0f1111;
+  font-family: inherit;
+  font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 0.9rem;
-  text-decoration: underline;
-  transition: color 0.2s;
+  margin-top: 10px;
+  transition: all 0.18s ease;
 }
 
-.btn-formal-switch-user:hover {
-  color: #fde047;
+.ecom-btn-secondary:hover {
+  background: #f7fafe;
+  border-color: #007185;
+  color: #007185;
+}
+
+/* -------------------------------------------------------------
+   AMAZON / FLIPKART FOOTER
+   ------------------------------------------------------------- */
+.ecom-auth-footer {
+  width: 100%;
+  max-width: 440px;
+  margin-top: 24px;
+  text-align: center;
+}
+
+.ecom-footer-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e7e7e7 20%, #e7e7e7 80%, transparent);
+  margin-bottom: 16px;
+}
+
+.ecom-footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 10px;
+}
+
+.ecom-footer-link {
+  font-size: 0.72rem;
+  color: #007185;
+  text-decoration: none;
+}
+
+.ecom-footer-link:hover {
+  text-decoration: underline;
+  color: #c7511f;
+}
+
+.ecom-copyright {
+  font-size: 0.68rem;
+  color: #565959;
+  margin: 0;
 }
 
 /* Ensure Admin Login Modal has highest z-index over Welcome Screen */
@@ -13334,33 +13349,14 @@ html.welcome-active #customer-login-modal,
   z-index: 1000000000 !important;
 }
 
-/* -------------------------------------------------------------
-   RESPONSIVE LAYOUT (MOBILE & TABLETS)
-   ------------------------------------------------------------- */
-@media (max-width: 860px) {
-  .formal-portal-card {
-    grid-template-columns: 1fr;
-    max-width: 480px;
-    min-height: auto;
+@media (max-width: 480px) {
+  .ecom-login-screen {
+    padding: 16px 12px 32px;
+    background: #ffffff;
   }
-  .portal-brand-pane {
-    border-right: none;
-    border-bottom: 1px solid rgba(251, 191, 36, 0.25);
-    padding: 1.8rem 1.5rem;
-  }
-  .portal-brand-body {
-    margin: 1.2rem 0 0.8rem 0;
-  }
-  .portal-feature-list {
-    display: none; /* Keep mobile view compact & clean */
-  }
-  .portal-hero-heading {
-    font-size: 1.35rem;
-  }
-  .portal-hero-tagline {
-    margin-bottom: 0.5rem;
-  }
-  .portal-form-pane {
-    padding: 1.8rem 1.5rem 2rem 1.5rem;
+  .ecom-auth-card {
+    border: none;
+    box-shadow: none;
+    padding: 12px 6px;
   }
 }

@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Philosopher:wght@700&family=Playfair+Display:wght@700;800;900&family=Syne:wght@700;800&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=28.0">
+  <link rel="stylesheet" href="style.css?v=29.0">
   <script>
     window._isWelcomeAnimationActive = true;
     window._isLoginMandatory = true;
@@ -253,174 +253,142 @@
 <body class="welcome-active">
 
   <!-- ====================================================
-       1. FORMAL EXECUTIVE CUSTOMER LOGIN PORTAL (DUAL-PANE STORE ENTRANCE)
+       1. AMAZON & FLIPKART STYLE E-COMMERCE LOGIN PORTAL
        ==================================================== -->
-  <section id="welcome-screen" class="formal-login-portal">
-    <!-- Ambient Backdrop Layer -->
-    <div class="formal-portal-backdrop"></div>
-
-    <!-- Grand Executive Dual-Pane Portal Container -->
-    <div class="formal-portal-card">
-
-      <!-- LEFT PANE: BRAND SHOWCASE & FACTORY PRESTIGE -->
-      <div class="portal-brand-pane">
-        <div class="brand-pane-inner">
-          
-          <!-- Top Badge & Emblem -->
-          <div class="portal-brand-top">
-            <div class="portal-vel-badge">
-              <svg viewBox="0 0 100 115" class="portal-vel-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="emblemGoldFormal" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff"/>
-                    <stop offset="25%" stop-color="#fef08a"/>
-                    <stop offset="55%" stop-color="#f59e0b"/>
-                    <stop offset="85%" stop-color="#d97706"/>
-                    <stop offset="100%" stop-color="#92400e"/>
-                  </linearGradient>
-                </defs>
-                <circle cx="50" cy="52" r="42" stroke="rgba(253, 224, 71, 0.45)" stroke-width="1.4" stroke-dasharray="3 3"/>
-                <path d="M50 8 C40 23, 25 38, 25 58 C25 73, 38 78, 45 80 L45 98 C45 101, 47 103, 50 103 C53 103, 55 101, 55 98 L55 80 C62 78, 75 73, 75 58 C75 38, 60 23, 50 8 Z" fill="url(#emblemGoldFormal)" stroke="#fffbeb" stroke-width="1.8"/>
-                <line x1="50" y1="12" x2="50" y2="80" stroke="#ffffff" stroke-width="2" opacity="0.95"/>
-                <line x1="36" y1="46" x2="64" y2="46" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
-                <line x1="34" y1="52" x2="66" y2="52" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
-                <line x1="36" y1="58" x2="64" y2="58" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
-                <circle cx="50" cy="52" r="4" fill="#dc2626" stroke="#fef08a" stroke-width="1.2"/>
-              </svg>
-            </div>
-            <div class="portal-brand-meta">
-              <span class="portal-brand-title">VARSHAN CHEMICALS</span>
-              <span class="portal-brand-sub">SIVAKASI &bull; TAMIL NADU</span>
-            </div>
-          </div>
-
-          <!-- Headline & Narrative -->
-          <div class="portal-brand-body">
-            <h2 class="portal-hero-heading">Direct Factory Chemical Store</h2>
-            <p class="portal-hero-tagline">
-              South India's manufacturer-direct cleaning chemical supplier for hotels, hospitals, industries and homes.
-            </p>
-
-            <!-- Value Proposition Pills -->
-            <ul class="portal-feature-list">
-              <li>
-                <span class="f-icon">🏭</span>
-                <div>
-                  <strong>Sivakasi Factory Direct</strong>
-                  <span>Formulated and packaged at source with zero middlemen</span>
-                </div>
-              </li>
-              <li>
-                <span class="f-icon">🧪</span>
-                <div>
-                  <strong>Certified Laboratory Formulations</strong>
-                  <span>99.9% disinfection, safe handling &amp; extended shelf life</span>
-                </div>
-              </li>
-              <li>
-                <span class="f-icon">🚚</span>
-                <div>
-                  <strong>Fast Doorstep Dispatch &amp; COD</strong>
-                  <span>Direct cash on delivery across Tamil Nadu</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Live Status Footer -->
-          <div class="portal-brand-footer">
-            <span class="portal-live-indicator"></span>
-            <span>Live Factory Inventory &bull; Direct Dispatch Active</span>
-          </div>
-
+  <section id="welcome-screen" class="ecom-login-screen">
+    
+    <!-- Top Brand Header (Amazon-like Centered Logo) -->
+    <header class="ecom-brand-header">
+      <div class="ecom-brand-badge">
+        <svg viewBox="0 0 100 115" class="ecom-brand-vel-icon" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="velGoldEcom" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fef08a"/>
+              <stop offset="50%" stop-color="#f59e0b"/>
+              <stop offset="100%" stop-color="#b45309"/>
+            </linearGradient>
+          </defs>
+          <path d="M50 8 C40 23, 25 38, 25 58 C25 73, 38 78, 45 80 L45 98 C45 101, 47 103, 50 103 C53 103, 55 101, 55 98 L55 80 C62 78, 75 73, 75 58 C75 38, 60 23, 50 8 Z" fill="url(#velGoldEcom)" stroke="#d97706" stroke-width="2"/>
+          <line x1="50" y1="12" x2="50" y2="80" stroke="#ffffff" stroke-width="2.5" opacity="0.9"/>
+          <line x1="36" y1="50" x2="64" y2="50" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="3.5" fill="#dc2626"/>
+        </svg>
+        <div class="ecom-brand-text">
+          <span class="ecom-brand-name">VARSHAN<span class="ecom-brand-domain">.in</span></span>
+          <span class="ecom-brand-subtitle">CHEMICAL STORE &bull; SIVAKASI</span>
         </div>
       </div>
+    </header>
 
-      <!-- RIGHT PANE: FORMAL SIGN IN FORM -->
-      <div class="portal-form-pane">
-        <div class="form-pane-inner">
+    <!-- Main Auth Container (Amazon.in Signature White Card) -->
+    <div class="ecom-auth-card">
 
-          <!-- 1. LOGIN FORM WRAPPER -->
-          <div id="vel-login-form-wrapper" class="formal-form-block">
-            <div class="form-pane-header">
-              <h3 class="form-pane-title">Customer Sign In</h3>
-              <p class="form-pane-subtitle">Enter your name and phone number to unlock the live product catalog.</p>
-            </div>
+      <!-- 1. LOGIN FORM WRAPPER -->
+      <div id="vel-login-form-wrapper" class="ecom-form-wrapper">
+        <h1 class="ecom-auth-heading">Sign in</h1>
+        <p class="ecom-auth-subtext">Access factory prices &amp; direct Sivakasi dispatch</p>
 
-            <form id="vel-gateway-form" class="formal-gateway-form" onsubmit="event.preventDefault(); submitVelGatewayLogin(event); return false;" novalidate>
-              
-              <!-- Full Name -->
-              <div class="formal-field">
-                <label for="vel-user-name">Your Full Name <span class="req">*</span></label>
-                <div class="formal-input-wrap">
-                  <span class="input-prefix-icon">👤</span>
-                  <input type="text" id="vel-user-name" placeholder="Enter your full name" required autocomplete="name">
-                </div>
-                <span class="vel-field-error hidden" id="vel-name-error">Please enter your full name</span>
-              </div>
-
-              <!-- Mobile Number -->
-              <div class="formal-field">
-                <label for="vel-user-mobile">WhatsApp / Mobile Number <span class="req">*</span></label>
-                <div class="formal-input-wrap">
-                  <span class="mobile-country-tag">🇮🇳 +91</span>
-                  <input type="tel" id="vel-user-mobile" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" required autocomplete="tel" oninput="this.value=this.value.replace(/\D/g,'');">
-                </div>
-                <span class="vel-field-error hidden" id="vel-mobile-error">Enter a valid 10-digit mobile number</span>
-              </div>
-
-              <!-- Delivery City -->
-              <div class="formal-field">
-                <label for="vel-user-city">Delivery City / Town <span class="opt">(Optional)</span></label>
-                <div class="formal-input-wrap">
-                  <span class="input-prefix-icon">📍</span>
-                  <input type="text" id="vel-user-city" placeholder="e.g. Sivakasi, Madurai, Virudhunagar">
-                </div>
-              </div>
-
-              <!-- Submit Button -->
-              <button type="submit" id="btn-vel-login-enter" class="btn-formal-enter-store" onclick="submitVelGatewayLogin(event)">
-                <span>Sign In &amp; View Catalog</span>
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </button>
-
-              <div class="formal-security-note">
-                <span class="sec-lock">🔒</span>
-                <span>Your details are safely stored on this device to streamline orders.</span>
-              </div>
-
-            </form>
+        <form id="vel-gateway-form" class="ecom-form" onsubmit="event.preventDefault(); submitVelGatewayLogin(event); return false;" novalidate>
+          
+          <!-- Your Name -->
+          <div class="ecom-field-group">
+            <label for="vel-user-name" class="ecom-field-label">Your Name</label>
+            <input type="text" id="vel-user-name" class="ecom-input" placeholder="First and last name" required autocomplete="name">
+            <span class="vel-field-error hidden" id="vel-name-error">Please enter your full name</span>
           </div>
 
-          <!-- 2. RETURNING USER PROFILE BLOCK -->
-          <div id="vel-returning-user-wrapper" class="formal-returning-block hidden">
-            <div class="returning-profile-card">
-              <div class="returning-avatar-circle" id="vel-returning-avatar">V</div>
-              <span class="returning-status-badge">SAVED PROFILE</span>
-              <h3 class="returning-user-name" id="vel-returning-name">Customer</h3>
-              <p class="returning-user-phone" id="vel-returning-phone">+91 9876543210</p>
-              
-              <button type="button" class="btn-formal-enter-store" onclick="enterStoreAsCurrentUser()">
-                <span id="btn-vel-continue-text">Continue to Products</span>
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </button>
+          <!-- Mobile Number -->
+          <div class="ecom-field-group">
+            <label for="vel-user-mobile" class="ecom-field-label">Mobile Number</label>
+            <div class="ecom-phone-input-row">
+              <span class="ecom-country-code">IN +91</span>
+              <input type="tel" id="vel-user-mobile" class="ecom-input ecom-phone-input" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" required autocomplete="tel" oninput="this.value=this.value.replace(/\D/g,'');">
+            </div>
+            <span class="vel-field-error hidden" id="vel-mobile-error">Enter a valid 10-digit mobile number</span>
+            <span class="ecom-field-hint">We will use this to confirm your order on WhatsApp</span>
+          </div>
 
-              <button type="button" class="btn-formal-switch-user" onclick="switchVelGatewayUser()">
-                Sign in with a different mobile number
-              </button>
+          <!-- Delivery City (Optional) -->
+          <div class="ecom-field-group">
+            <label for="vel-user-city" class="ecom-field-label">Delivery City / Town <span class="ecom-optional">(Optional)</span></label>
+            <input type="text" id="vel-user-city" class="ecom-input" placeholder="e.g. Sivakasi, Madurai, Virudhunagar">
+          </div>
+
+          <!-- Amazon/Flipkart Primary Continue Button -->
+          <button type="submit" id="btn-vel-login-enter" class="ecom-btn-primary" onclick="submitVelGatewayLogin(event)">
+            <span>Continue</span>
+          </button>
+
+          <!-- Conditions of Use & Privacy -->
+          <p class="ecom-terms-notice">
+            By continuing, you agree to Varshan Chemicals' <a href="javascript:void(0)" class="ecom-link">Conditions of Use</a> and <a href="javascript:void(0)" class="ecom-link">Privacy Notice</a>.
+          </p>
+
+          <!-- Factory Benefits List (Clean Amazon Bulletins) -->
+          <div class="ecom-benefits-box">
+            <div class="ecom-benefit-row">
+              <span class="ecom-benefit-icon">🏭</span>
+              <span class="ecom-benefit-text">Direct Sivakasi Factory Wholesale Pricing</span>
+            </div>
+            <div class="ecom-benefit-row">
+              <span class="ecom-benefit-icon">🚚</span>
+              <span class="ecom-benefit-text">Doorstep Delivery &amp; Cash on Delivery (COD)</span>
+            </div>
+            <div class="ecom-benefit-row">
+              <span class="ecom-benefit-icon">🧪</span>
+              <span class="ecom-benefit-text">Certified Formulations (Commercial &amp; Household)</span>
             </div>
           </div>
 
+          <!-- Divider -->
+          <div class="ecom-divider-row">
+            <span>Direct Sivakasi Manufacturer</span>
+          </div>
+
+          <div class="ecom-support-row">
+            <span>Need bulk order assistance?</span>
+            <a href="https://wa.me/919442054188?text=Hello%20Varshan%20Chemicals" target="_blank" class="ecom-wa-link">
+              WhatsApp: +91 94420 54188
+            </a>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- 2. RETURNING USER PROFILE BLOCK (Amazon Switch Account Style) -->
+      <div id="vel-returning-user-wrapper" class="ecom-returning-wrapper hidden">
+        <div class="ecom-returning-header">
+          <div class="ecom-returning-avatar" id="vel-returning-avatar">V</div>
+          <div class="ecom-returning-info">
+            <span class="ecom-returning-welcome">Welcome back,</span>
+            <h3 class="ecom-returning-name" id="vel-returning-name">Customer</h3>
+            <span class="ecom-returning-phone" id="vel-returning-phone">+91 9876543210</span>
+          </div>
         </div>
+
+        <button type="button" class="ecom-btn-primary" onclick="enterStoreAsCurrentUser()">
+          <span id="btn-vel-continue-text">Continue to Store</span>
+        </button>
+
+        <button type="button" class="ecom-btn-secondary" onclick="switchVelGatewayUser()">
+          Sign in with a different mobile number
+        </button>
       </div>
 
     </div>
+
+    <!-- Amazon / Flipkart Style Footer -->
+    <footer class="ecom-auth-footer">
+      <div class="ecom-footer-divider"></div>
+      <div class="ecom-footer-links">
+        <a href="javascript:void(0)" class="ecom-footer-link">Conditions of Use</a>
+        <a href="javascript:void(0)" class="ecom-footer-link">Privacy Notice</a>
+        <a href="javascript:void(0)" class="ecom-footer-link">Help &amp; Support</a>
+        <a href="javascript:void(0)" class="ecom-footer-link">Sivakasi Factory Direct</a>
+      </div>
+      <p class="ecom-copyright">&copy; 2026, Varshan Chemicals &bull; Sivakasi, Tamil Nadu. All rights reserved.</p>
+    </footer>
+
   </section>
 
   <!-- ====================================================
