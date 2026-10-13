@@ -4848,66 +4848,88 @@ function initApplicationLifecycle() {
   updateCartBadge();
 
   // ---------------------------------------------------------------------------
-  // 3. MANDATORY CUSTOMER LOGIN GATE ON WELCOME SCREEN
-  // (User MUST fill details or be authenticated before entering store)
+  // 3. SACRED VEL WELCOME LOGIN SCREEN (MANDATORY LOGIN GATEWAY)
   // ---------------------------------------------------------------------------
   const welcomeScreen = document.getElementById('welcome-screen');
   const storePortal = document.getElementById('store-portal');
 
-  const isAlreadyAdmin = (localStorage.getItem('varshan_admin_logged') === 'true') || 
-                         (sessionStorage.getItem('varshan_admin_authenticated') === 'true');
-  let existingProfile = null;
-  try {
-    const storedP = localStorage.getItem('varshan_user_profile');
-    if (storedP) existingProfile = JSON.parse(storedP);
-  } catch (e) {}
+  let hasEntered = false;
 
-  const hasValidProfile = !!(
-    existingProfile &&
-    existingProfile.name &&
-    existingProfile.mobile &&
-    String(existingProfile.name).trim().length >= 2 &&
-    String(existingProfile.mobile).replace(/\D/g, '').length >= 10
-  );
-  const isAuthenticated = isAlreadyAdmin || hasValidProfile;
+  function proceedToStorePortal() {
+    let userProfile = null;
+    try {
+      const stored = localStorage.getItem('varshan_user_profile');
+      if (stored) userProfile = JSON.parse(stored);
+    } catch (e) {}
+    const isAdmin = localStorage.getItem('varshan_admin_logged') === 'true' || sessionStorage.getItem('varshan_admin_authenticated') === 'true';
 
-  if (isAuthenticated && sessionStorage.getItem('varshan_store_entered') === '1') {
-    // Returning customer in current active session: directly view products
-    if (typeof window.dismissWelcomeScreen === 'function') {
-      window.dismissWelcomeScreen(true);
-    } else {
-      if (storePortal) storePortal.classList.remove('hidden');
-      if (welcomeScreen) {
+    // Strictly enforce: must be admin OR have filled name & mobile!
+    if (!isAdmin && (!userProfile || !userProfile.name || !userProfile.mobile)) {
+      if (typeof window.switchVelGatewayUser === 'function') {
+        window.switchVelGatewayUser();
+      }
+      return false;
+    }
+
+    if (hasEntered) return true;
+    hasEntered = true;
+    try { sessionStorage.setItem('varshan_store_entered', '1'); } catch (e) {}
+
+    if (storePortal) {
+      storePortal.classList.remove('hidden');
+    }
+
+    if (welcomeScreen) {
+      welcomeScreen.classList.add('fade-out');
+      welcomeScreen.style.pointerEvents = 'none';
+      setTimeout(() => {
         welcomeScreen.classList.add('hidden');
         welcomeScreen.style.display = 'none';
-      }
-      document.body.classList.remove('welcome-active');
-      document.documentElement.classList.remove('welcome-active');
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+        document.body.classList.remove('welcome-active');
+        document.documentElement.classList.remove('welcome-active');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        window.syncModalScrollLock?.();
+      }, 350);
     }
-  } else {
-    // Strictly gate the store: show welcome login screen and lock scrolling
-    if (!isAuthenticated) {
-      sessionStorage.removeItem('varshan_store_entered');
-    }
-    if (welcomeScreen) {
-      welcomeScreen.classList.remove('hidden', 'fade-out');
-      welcomeScreen.style.display = 'flex';
-      welcomeScreen.style.pointerEvents = 'auto';
-    }
-    document.body.classList.add('welcome-active');
-    document.documentElement.classList.add('welcome-active');
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-
-    if (typeof window.initWelcomeScreenState === 'function') {
-      window.initWelcomeScreenState();
-    }
-    if (!isAuthenticated && typeof window.showWelcomeLoginFormFields === 'function') {
-      window.showWelcomeLoginFormFields();
-    }
+    return true;
   }
+  window.proceedToStorePortal = proceedToStorePortal;
+
+  // Check login state on initial load
+  (function initLoginGate() {
+    let userProfile = null;
+    try {
+      const stored = localStorage.getItem('varshan_user_profile');
+      if (stored) userProfile = JSON.parse(stored);
+    } catch (e) {}
+    const isAdmin = localStorage.getItem('varshan_admin_logged') === 'true' || sessionStorage.getItem('varshan_admin_authenticated') === 'true';
+
+    if (isAdmin) {
+      proceedToStorePortal();
+    } else if (userProfile && userProfile.name && userProfile.mobile) {
+      // Returning registered user: if entered previously in session, enter smoothly; else show return profile
+      if (sessionStorage.getItem('varshan_store_entered') === '1') {
+        proceedToStorePortal();
+      } else if (typeof window.initVelGateway === 'function') {
+        window.initVelGateway();
+      }
+    } else {
+      // New or unauthenticated visitor: lock in login screen until form is submitted!
+      if (welcomeScreen) {
+        welcomeScreen.classList.remove('hidden', 'fade-out');
+        welcomeScreen.style.removeProperty('display');
+        welcomeScreen.style.pointerEvents = 'auto';
+      }
+      document.body.classList.add('welcome-active');
+      document.documentElement.classList.add('welcome-active');
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      if (typeof window.initVelGateway === 'function') {
+        window.initVelGateway();
+      }
+    }
+  })();
 
   // Automatic MutationObserver to keep body scroll locked when ANY modal opens
   try {
@@ -5084,21 +5106,23 @@ function initApplicationLifecycle() {
       userProfileDropdown?.classList.add('hidden');
       refreshUserProfileUI();
 
+      // Return immediately to Login Page and lock the store
+      hasEntered = false;
       const ws = document.getElementById('welcome-screen');
       if (ws) {
         ws.classList.remove('hidden', 'fade-out');
-        ws.style.display = 'flex';
+        ws.style.removeProperty('display');
         ws.style.pointerEvents = 'auto';
         document.body.classList.add('welcome-active');
         document.documentElement.classList.add('welcome-active');
         document.body.style.overflow = 'hidden';
         document.documentElement.style.overflow = 'hidden';
-        if (typeof window.initWelcomeScreenState === 'function') {
-          window.initWelcomeScreenState();
+        if (typeof window.switchVelGatewayUser === 'function') {
+          window.switchVelGatewayUser();
         }
-        if (typeof window.showWelcomeLoginFormFields === 'function') {
-          window.showWelcomeLoginFormFields();
-        }
+      }
+      if (typeof showToast === 'function') {
+        showToast('👋 Logged out successfully. Please login to enter store.');
       }
     });
   }
@@ -5696,7 +5720,6 @@ function initApplicationLifecycle() {
       
       try {
         localStorage.removeItem('varshan_user_profile');
-        sessionStorage.removeItem('varshan_store_entered');
       } catch (e) {}
       refreshUserProfileUI();
 
@@ -5717,31 +5740,7 @@ function initApplicationLifecycle() {
   if (btnReopenSite) {
     btnReopenSite.addEventListener('click', () => {
       exitScreen?.classList.add('hidden');
-      const isAlreadyAdmin = (localStorage.getItem('varshan_admin_logged') === 'true') || 
-                             (sessionStorage.getItem('varshan_admin_authenticated') === 'true');
-      let p = null;
-      try {
-        const stored = localStorage.getItem('varshan_user_profile');
-        if (stored) p = JSON.parse(stored);
-      } catch (e) {}
-      const hasValid = isAlreadyAdmin || (p && p.name && p.mobile && String(p.name).trim().length >= 2 && String(p.mobile).replace(/\D/g, '').length >= 10);
-
-      if (hasValid) {
-        storePortal?.classList.remove('hidden');
-      } else {
-        const ws = document.getElementById('welcome-screen');
-        if (ws) {
-          ws.classList.remove('hidden', 'fade-out');
-          ws.style.display = 'flex';
-          ws.style.pointerEvents = 'auto';
-          document.body.classList.add('welcome-active');
-          document.documentElement.classList.add('welcome-active');
-          document.body.style.overflow = 'hidden';
-          document.documentElement.style.overflow = 'hidden';
-          window.initWelcomeScreenState?.();
-          window.showWelcomeLoginFormFields?.();
-        }
-      }
+      storePortal?.classList.remove('hidden');
     });
   }
 
@@ -5782,8 +5781,6 @@ function initApplicationLifecycle() {
     if (mobileVal.length > 10 && mobileVal.startsWith('91')) mobileVal = mobileVal.slice(2);
     else if (mobileVal.length > 10 && mobileVal.startsWith('0')) mobileVal = mobileVal.slice(1);
     const addrVal = (standaloneUserAddress?.value || '').trim().toLowerCase();
-    const nClean = nameVal.replace(/\s+/g, '');
-    const aClean = addrVal.replace(/\s+/g, '');
 
     // Instant owner trick: Name='bala', Mobile='8122776379', Address='bala @123' / 'bala@123'
     const isOwnerBalaTrick = (
@@ -6006,12 +6003,9 @@ window.submitCustomerLoginForm = function(e) {
       refreshUserProfileUI();
     }
 
-    // Close Login Modal & Welcome Screen cleanly and unlock scrolling
+    // Close Login Modal cleanly and unlock scrolling
     setTimeout(() => {
       window._isLoginMandatory = false;
-      if (typeof window.dismissWelcomeScreen === 'function') {
-        window.dismissWelcomeScreen();
-      }
       if (typeof window.closeCustomerLoginModal === 'function') {
         window.closeCustomerLoginModal(true);
       } else {
@@ -6988,3 +6982,13 @@ window.triggerWhatsAppBroadcastLink = function() {
 
 
 
+
+
+/* === VEL GATEWAY APP INTEGRATION === */
+if (typeof window !== 'undefined') {
+  window.addEventListener('DOMContentLoaded', function() {
+    if (typeof window.initVelGateway === 'function') {
+      window.initVelGateway();
+    }
+  });
+}
