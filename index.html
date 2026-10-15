@@ -102,6 +102,8 @@
         return;
       }
 
+      try { sessionStorage.setItem('varshan_store_entered', '1'); } catch (e) {}
+
       var ws = document.getElementById('welcome-screen');
       window._isWelcomeAnimationActive = false;
       window._isLoginMandatory = false;
@@ -112,7 +114,7 @@
         setTimeout(function() {
           ws.classList.add('hidden');
           ws.style.setProperty('display', 'none', 'important');
-        }, 400);
+        }, 280);
       }
 
       document.body.classList.remove('welcome-active');
@@ -120,11 +122,22 @@
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
 
+      if (typeof window.proceedToStorePortal === 'function') {
+        window.proceedToStorePortal();
+      }
       if (typeof window.refreshUserProfileUI === 'function') window.refreshUserProfileUI();
       if (typeof window.syncModalScrollLock === 'function') window.syncModalScrollLock();
       if (typeof window.showToast === 'function') {
         window.showToast('🎉 Welcome back, ' + userProfile.name + '! Factory catalog ready.');
       }
+
+      // Smooth direct navigation to product showcase
+      setTimeout(function() {
+        var target = document.getElementById('products-catalog-list') || document.querySelector('.category-filter-bar') || document.getElementById('store-portal');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 120);
     };
 
     window.submitVelGatewayLogin = function(e) {
@@ -132,6 +145,8 @@
         if (typeof e.preventDefault === 'function') e.preventDefault();
         if (typeof e.stopPropagation === 'function') e.stopPropagation();
       }
+
+      if (window._isVelSubmitting) return false;
 
       var nameInput = document.getElementById('vel-user-name');
       var mobileInput = document.getElementById('vel-user-mobile');
@@ -188,6 +203,8 @@
 
       if (!isValid) return false;
 
+      window._isVelSubmitting = true;
+
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span>✓ Logged In! Opening Storefront...</span>';
@@ -203,6 +220,7 @@
 
       try {
         localStorage.setItem('varshan_user_profile', JSON.stringify(userProfile));
+        sessionStorage.setItem('varshan_store_entered', '1');
       } catch (err) {}
 
       // Sync with customer-login-modal inputs
@@ -224,7 +242,7 @@
           setTimeout(function() {
             ws.classList.add('hidden');
             ws.style.setProperty('display', 'none', 'important');
-          }, 400);
+          }, 280);
         }
 
         document.body.classList.remove('welcome-active');
@@ -232,12 +250,24 @@
         document.body.style.overflow = '';
         document.documentElement.style.overflow = '';
 
+        if (typeof window.proceedToStorePortal === 'function') {
+          window.proceedToStorePortal();
+        }
         if (typeof window.refreshUserProfileUI === 'function') window.refreshUserProfileUI();
         if (typeof window.syncModalScrollLock === 'function') window.syncModalScrollLock();
         if (typeof window.showToast === 'function') {
           window.showToast('🎉 Welcome to Varshan Chemicals, ' + name + '! Direct factory catalog unlocked.');
         }
-      }, 400);
+
+        // DIRECT GO TO PRODUCT PAGE / CATALOG!
+        setTimeout(function() {
+          var target = document.getElementById('products-catalog-list') || document.querySelector('.category-filter-bar') || document.getElementById('store-portal');
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          window._isVelSubmitting = false;
+        }, 120);
+      }, 300);
 
       return false;
     };
@@ -257,25 +287,38 @@
        ==================================================== -->
   <section id="welcome-screen" class="modern-auth-screen">
     
+    <!-- Ambient Background Light Atmosphere -->
+    <div class="auth-ambient-glow auth-glow-emerald" aria-hidden="true"></div>
+    <div class="auth-ambient-glow auth-glow-cyan" aria-hidden="true"></div>
+    <div class="auth-ambient-glow auth-glow-gold" aria-hidden="true"></div>
+    <div class="auth-mesh-grid" aria-hidden="true"></div>
+
     <!-- Central Auth Card Container (Mobile-Perfect Frame) -->
     <div class="modern-auth-container">
       
       <!-- Brand Header -->
       <header class="modern-auth-header">
         <div class="modern-brand-badge">
-          <div class="brand-icon-pod">
+          <div class="brand-icon-pod" title="Varshan Chemicals Sacred Vel Emblem">
             <svg viewBox="0 0 100 115" class="brand-vel-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <linearGradient id="brandVelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#38bdf8"/>
-                  <stop offset="50%" stop-color="#2563eb"/>
-                  <stop offset="100%" stop-color="#1e40af"/>
+                <linearGradient id="brandVelGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="25%" stop-color="#fef08a"/>
+                  <stop offset="55%" stop-color="#f59e0b"/>
+                  <stop offset="85%" stop-color="#d97706"/>
+                  <stop offset="100%" stop-color="#92400e"/>
                 </linearGradient>
               </defs>
-              <path d="M50 8 C40 23, 25 38, 25 58 C25 73, 38 78, 45 80 L45 98 C45 101, 47 103, 50 103 C53 103, 55 101, 55 98 L55 80 C62 78, 75 73, 75 58 C75 38, 60 23, 50 8 Z" fill="url(#brandVelGrad)" stroke="#1d4ed8" stroke-width="1.8"/>
-              <line x1="50" y1="12" x2="50" y2="80" stroke="#ffffff" stroke-width="2.5" opacity="0.95"/>
-              <line x1="36" y1="50" x2="64" y2="50" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
-              <circle cx="50" cy="50" r="3.5" fill="#f59e0b"/>
+              <circle cx="50" cy="52" r="42" stroke="rgba(253, 224, 71, 0.45)" stroke-width="1.2" stroke-dasharray="3 3"/>
+              <path d="M50 8 C40 23, 25 38, 25 58 C25 73, 38 78, 45 80 L45 98 C45 101, 47 103, 50 103 C53 103, 55 101, 55 98 L55 80 C62 78, 75 73, 75 58 C75 38, 60 23, 50 8 Z" fill="url(#brandVelGoldGrad)" stroke="#fffbeb" stroke-width="1.6"/>
+              <line x1="50" y1="12" x2="50" y2="80" stroke="#ffffff" stroke-width="2" opacity="0.95"/>
+              <line x1="36" y1="46" x2="64" y2="46" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="34" y1="52" x2="66" y2="52" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="36" y1="58" x2="64" y2="58" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="50" cy="52" r="3.8" fill="#dc2626" stroke="#fef08a" stroke-width="1"/>
+              <circle cx="50" cy="8" r="2.2" fill="#ffffff"/>
+              <path d="M50 2 L51.5 6.5 L56 8 L51.5 9.5 L50 14 L48.5 9.5 L44 8 L48.5 6.5 Z" fill="#ffffff"/>
             </svg>
           </div>
           <div class="brand-text-col">
@@ -285,33 +328,57 @@
         </div>
       </header>
 
+      <!-- Trust Badges Strip (3 Instant Value Points) -->
+      <div class="auth-trust-badges">
+        <span class="auth-trust-pill"><span class="pill-dot">●</span> Factory Direct Pricing</span>
+        <span class="auth-trust-pill"><span class="pill-dot">●</span> 38+ Formulations</span>
+        <span class="auth-trust-pill"><span class="pill-dot">●</span> Sivakasi Dispatch</span>
+      </div>
+
       <!-- Main Login Card (Expanded & Mobile-Framed) -->
       <div class="modern-card-frame">
 
         <!-- 1. LOGIN FORM WRAPPER -->
         <div id="vel-login-form-wrapper" class="auth-flow-block">
           <div class="card-title-group">
-            <h1 class="card-main-heading">Customer Login</h1>
-            <p class="card-sub-heading">Please enter your details to view our complete chemical catalog</p>
+            <div class="card-title-top-row">
+              <h1 class="card-main-heading">Customer Login</h1>
+              <span class="live-store-tag"><span class="live-pulse"></span> DIRECT STOREFRONT</span>
+            </div>
+            <p class="card-sub-heading">Please enter your details to view our complete chemical catalog at wholesale &amp; retail factory prices.</p>
+            <p class="card-tamil-sub">ஆலை நேரடி விலையில் கெமிக்கல்ஸ் பெற விவரங்களை உள்ளிடவும்</p>
           </div>
 
           <form id="vel-gateway-form" class="auth-form" onsubmit="event.preventDefault(); submitVelGatewayLogin(event); return false;" novalidate>
             
             <!-- Full Name -->
             <div class="form-input-group">
-              <label for="vel-user-name" class="input-label">Full Name</label>
+              <label for="vel-user-name" class="input-label">
+                <span>Full Name / பெயர்</span>
+                <span class="field-req-mark">*</span>
+              </label>
               <div class="input-field-wrapper">
-                <span class="input-icon">👤</span>
-                <input type="text" id="vel-user-name" class="auth-text-input" placeholder="Enter your full name" required autocomplete="name">
+                <span class="input-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </span>
+                <input type="text" id="vel-user-name" class="auth-text-input" placeholder="Enter your full name / உங்கள் பெயர்" required autocomplete="name">
               </div>
-              <span class="vel-field-error hidden" id="vel-name-error">Please enter your full name</span>
+              <span class="vel-field-error hidden" id="vel-name-error">Please enter your full name (குறைந்தது 2 எழுத்துக்கள்)</span>
             </div>
 
             <!-- Mobile Number -->
             <div class="form-input-group">
-              <label for="vel-user-mobile" class="input-label">Mobile Number</label>
+              <label for="vel-user-mobile" class="input-label">
+                <span>Mobile Number / வாட்ஸ்அப் எண்</span>
+                <span class="field-req-mark">*</span>
+              </label>
               <div class="input-field-wrapper">
-                <span class="country-pill">🇮🇳 +91</span>
+                <span class="country-pill">
+                  <span class="flag-icon">🇮🇳</span> +91
+                </span>
                 <input type="tel" id="vel-user-mobile" class="auth-text-input phone-input" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" required autocomplete="tel" oninput="this.value=this.value.replace(/\D/g,'');">
               </div>
               <span class="vel-field-error hidden" id="vel-mobile-error">Enter a valid 10-digit mobile number</span>
@@ -319,16 +386,23 @@
 
             <!-- Delivery City (Optional) -->
             <div class="form-input-group">
-              <label for="vel-user-city" class="input-label">City / District <span class="label-opt">(Optional)</span></label>
+              <label for="vel-user-city" class="input-label">
+                <span>City / District / ஊர் <span class="label-opt">(Optional)</span></span>
+              </label>
               <div class="input-field-wrapper">
-                <span class="input-icon">📍</span>
-                <input type="text" id="vel-user-city" class="auth-text-input" placeholder="e.g. Sivakasi, Madurai, Chennai">
+                <span class="input-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </span>
+                <input type="text" id="vel-user-city" class="auth-text-input" placeholder="e.g. Sivakasi, Madurai, Chennai, Coimbatore">
               </div>
             </div>
 
-            <!-- Primary Action Button (Modern Royal Ocean Sapphire) -->
-            <button type="submit" id="btn-vel-login-enter" class="btn-royal-auth" onclick="submitVelGatewayLogin(event)">
-              <span>Enter Store &amp; View Products</span>
+            <!-- Primary Action Button (Modern Royal Ocean Sapphire & Jade) -->
+            <button type="submit" id="btn-vel-login-enter" class="btn-royal-auth">
+              <span class="btn-text-content">Enter Store &amp; View Products</span>
               <svg viewBox="0 0 24 24" class="btn-arrow-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
@@ -336,15 +410,38 @@
             </button>
 
           </form>
+
+          <!-- Trust / Guarantee Micro Footer -->
+          <div class="auth-footer-guarantee">
+            <div class="guarantee-item">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <span>100% Genuine Factory Products</span>
+            </div>
+            <div class="guarantee-sep">&bull;</div>
+            <div class="guarantee-item">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 14 14"></polyline>
+              </svg>
+              <span>Instant Catalog Unlock</span>
+            </div>
+          </div>
         </div>
 
         <!-- 2. RETURNING USER PROFILE BLOCK -->
         <div id="vel-returning-user-wrapper" class="auth-flow-block hidden">
           <div class="returning-customer-card">
-            <div class="customer-avatar" id="vel-returning-avatar">V</div>
+            <div class="customer-avatar-wrap">
+              <div class="customer-avatar" id="vel-returning-avatar">V</div>
+              <span class="avatar-verified-check">✓</span>
+            </div>
             <span class="customer-badge">Verified Customer</span>
             <h3 class="customer-name" id="vel-returning-name">Customer</h3>
             <p class="customer-phone" id="vel-returning-phone">+91 9876543210</p>
+            <p class="customer-welcome-hint">Welcome back to Sivakasi Direct Chemical Store</p>
           </div>
 
           <button type="button" class="btn-royal-auth" onclick="enterStoreAsCurrentUser()">

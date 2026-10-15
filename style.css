@@ -12882,15 +12882,17 @@ html.welcome-active #customer-login-modal,
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 16px;
+  padding: 24px 16px;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
-  background: radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.06) 0%, transparent 45%),
-              radial-gradient(circle at 90% 90%, rgba(2, 132, 199, 0.06) 0%, transparent 45%),
+  background: radial-gradient(circle at 12% 15%, rgba(5, 150, 105, 0.09) 0%, transparent 40%),
+              radial-gradient(circle at 88% 20%, rgba(37, 99, 235, 0.08) 0%, transparent 45%),
+              radial-gradient(circle at 50% 92%, rgba(245, 158, 11, 0.07) 0%, transparent 50%),
               #f8fafc;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
   box-sizing: border-box;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  position: fixed;
 }
 
 .modern-auth-screen.fade-out {
@@ -12905,11 +12907,77 @@ html.welcome-active #customer-login-modal,
 }
 
 /* -------------------------------------------------------------
+   AMBIENT GLOWS & MESH GRID
+   ------------------------------------------------------------- */
+.auth-ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.65;
+  z-index: 0;
+}
+
+.auth-glow-emerald {
+  top: -60px;
+  left: 8%;
+  width: 320px;
+  height: 320px;
+  background: rgba(5, 150, 105, 0.16);
+  animation: authGlowFloat1 10s ease-in-out infinite alternate;
+}
+
+.auth-glow-cyan {
+  bottom: -60px;
+  right: 8%;
+  width: 340px;
+  height: 340px;
+  background: rgba(2, 132, 199, 0.14);
+  animation: authGlowFloat2 12s ease-in-out infinite alternate;
+}
+
+.auth-glow-gold {
+  top: 35%;
+  right: -40px;
+  width: 260px;
+  height: 260px;
+  background: rgba(245, 158, 11, 0.11);
+  animation: authGlowFloat3 14s ease-in-out infinite alternate;
+}
+
+@keyframes authGlowFloat1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, 25px) scale(1.08); }
+}
+
+@keyframes authGlowFloat2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-25px, -30px) scale(1.06); }
+}
+
+@keyframes authGlowFloat3 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-20px, 25px) scale(1.04); }
+}
+
+.auth-mesh-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(148, 163, 184, 0.22) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* -------------------------------------------------------------
    CONTAINER & BRAND HEADER
    ------------------------------------------------------------- */
 .modern-auth-container {
+  position: relative;
+  z-index: 2;
   width: 100%;
-  max-width: 450px;
+  max-width: 460px;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -12918,7 +12986,7 @@ html.welcome-active #customer-login-modal,
 }
 
 .modern-auth-header {
-  margin-bottom: 18px;
+  margin-bottom: 12px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -12927,25 +12995,26 @@ html.welcome-active #customer-login-modal,
 .modern-brand-badge {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .brand-icon-pod {
-  width: 46px;
-  height: 52px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  border: 1.5px solid #bfdbfe;
+  width: 50px;
+  height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #047857 100%);
+  border: 1.5px solid rgba(253, 224, 71, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+  box-shadow: 0 6px 18px rgba(4, 120, 87, 0.28), 0 0 15px rgba(245, 158, 11, 0.22);
   flex-shrink: 0;
 }
 
 .brand-vel-svg {
-  width: 30px;
-  height: 36px;
+  width: 32px;
+  height: 38px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
 }
 
 .brand-text-col {
@@ -12955,10 +13024,10 @@ html.welcome-active #customer-login-modal,
 }
 
 .brand-main-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.4rem;
+  font-family: 'Cinzel', 'Outfit', serif;
+  font-size: 1.45rem;
   font-weight: 800;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.8px;
   color: #0f172a;
   line-height: 1.15;
 }
@@ -12967,9 +13036,42 @@ html.welcome-active #customer-login-modal,
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 2px;
-  color: #2563eb;
+  color: #047857;
   text-transform: uppercase;
-  margin-top: 2px;
+  margin-top: 3px;
+}
+
+/* -------------------------------------------------------------
+   TRUST BADGES STRIP (3 VALUE PILLS)
+   ------------------------------------------------------------- */
+.auth-trust-badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  width: 100%;
+}
+
+.auth-trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: #334155;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+.auth-trust-pill .pill-dot {
+  color: #10b981;
+  font-size: 0.55rem;
 }
 
 /* -------------------------------------------------------------
@@ -12977,17 +13079,21 @@ html.welcome-active #customer-login-modal,
    ------------------------------------------------------------- */
 .modern-card-frame {
   width: 100%;
-  background: #ffffff;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), 0 0 1px rgba(15, 23, 42, 0.12);
-  padding: 32px 28px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(226, 232, 240, 0.95);
+  border-radius: 22px;
+  box-shadow: 0 24px 60px -12px rgba(15, 23, 42, 0.12),
+              0 10px 24px -6px rgba(5, 150, 105, 0.08),
+              0 0 1px rgba(15, 23, 42, 0.15);
+  padding: 30px 28px 24px;
   box-sizing: border-box;
-  animation: authFadeUp 0.32s ease-out;
+  animation: authFadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes authFadeUp {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -12996,23 +13102,66 @@ html.welcome-active #customer-login-modal,
 }
 
 .card-title-group {
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   text-align: left;
 }
 
+.card-title-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
 .card-main-heading {
-  font-size: 1.6rem;
+  font-size: 1.55rem;
   font-weight: 800;
   color: #0f172a;
-  margin: 0 0 4px 0;
+  margin: 0;
   letter-spacing: -0.3px;
 }
 
+.live-store-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #047857;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 999px;
+  padding: 2.5px 8px;
+  letter-spacing: 0.5px;
+}
+
+.live-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.35);
+  animation: livePulseAnim 1.8s infinite;
+}
+
+@keyframes livePulseAnim {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
 .card-sub-heading {
-  font-size: 0.85rem;
-  color: #64748b;
-  margin: 0;
+  font-size: 0.84rem;
+  color: #475569;
+  margin: 0 0 4px 0;
   line-height: 1.45;
+}
+
+.card-tamil-sub {
+  font-size: 0.74rem;
+  color: #059669;
+  font-weight: 600;
+  margin: 0;
 }
 
 /* -------------------------------------------------------------
@@ -13024,11 +13173,18 @@ html.welcome-active #customer-login-modal,
 }
 
 .input-label {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 0.82rem;
   font-weight: 700;
   color: #1e293b;
   margin-bottom: 6px;
+}
+
+.field-req-mark {
+  color: #ef4444;
+  margin-left: 2px;
 }
 
 .label-opt {
@@ -13044,38 +13200,45 @@ html.welcome-active #customer-login-modal,
   border: 1.5px solid #cbd5e1;
   border-radius: 12px;
   background: #ffffff;
-  height: 46px;
+  height: 48px;
   overflow: hidden;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease;
   box-sizing: border-box;
+  box-shadow: 0 1.5px 3px rgba(15, 23, 42, 0.04);
 }
 
 .input-field-wrapper:focus-within {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.14);
+  border-color: #059669;
+  box-shadow: 0 0 0 3.5px rgba(5, 150, 105, 0.16);
 }
 
 .input-icon {
   padding: 0 12px;
-  font-size: 1rem;
-  opacity: 0.75;
+  color: #64748b;
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   user-select: none;
 }
 
 .country-pill {
   padding: 0 12px;
-  background: #f1f5f9;
-  border-right: 1.5px solid #cbd5e1;
-  font-size: 0.86rem;
+  background: #f8fafc;
+  border-right: 1.5px solid #e2e8f0;
+  font-size: 0.88rem;
   font-weight: 700;
   color: #1e293b;
   height: 100%;
   display: flex;
   align-items: center;
+  gap: 4px;
   user-select: none;
   white-space: nowrap;
+}
+
+.flag-icon {
+  font-size: 1rem;
 }
 
 .auth-text-input {
@@ -13092,6 +13255,7 @@ html.welcome-active #customer-login-modal,
 
 .auth-text-input::placeholder {
   color: #94a3b8;
+  font-size: 0.88rem;
 }
 
 .vel-field-error {
@@ -13108,34 +13272,51 @@ html.welcome-active #customer-login-modal,
 }
 
 /* -------------------------------------------------------------
-   PRIMARY ACTION BUTTON (ROYAL OCEAN SAPPHIRE)
+   PRIMARY ACTION BUTTON (ROYAL JADE & SAPPHIRE GRADIENT)
    ------------------------------------------------------------- */
 .btn-royal-auth {
   width: 100%;
-  height: 48px;
-  border-radius: 12px;
+  height: 50px;
+  border-radius: 13px;
   border: none;
-  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 55%, #0284c7 100%);
+  background: linear-gradient(135deg, #059669 0%, #047857 50%, #064e3b 100%);
   color: #ffffff;
   font-family: 'Outfit', sans-serif;
-  font-size: 0.98rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.3px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  box-shadow: 0 10px 22px -4px rgba(37, 99, 235, 0.4);
-  transition: all 0.2s ease;
-  margin-top: 20px;
+  gap: 9px;
+  box-shadow: 0 10px 24px -4px rgba(5, 150, 105, 0.42);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 18px;
+  position: relative;
+  overflow: hidden;
   -webkit-tap-highlight-color: transparent;
+}
+
+.btn-royal-auth::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  transition: 0.5s;
+}
+
+.btn-royal-auth:hover::before {
+  left: 100%;
 }
 
 .btn-royal-auth:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 26px -4px rgba(37, 99, 235, 0.5);
-  filter: brightness(1.04);
+  box-shadow: 0 14px 28px -4px rgba(5, 150, 105, 0.52);
+  filter: brightness(1.05);
 }
 
 .btn-royal-auth:active {
@@ -13149,7 +13330,35 @@ html.welcome-active #customer-login-modal,
 }
 
 .btn-royal-auth:hover .btn-arrow-icon {
-  transform: translateX(3px);
+  transform: translateX(4px);
+}
+
+/* Micro Guarantee Footer */
+.auth-footer-guarantee {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.guarantee-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.guarantee-item svg {
+  color: #059669;
+}
+
+.guarantee-sep {
+  color: #cbd5e1;
 }
 
 /* -------------------------------------------------------------
@@ -13160,47 +13369,75 @@ html.welcome-active #customer-login-modal,
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 6px 0 16px;
+  padding: 8px 0 16px;
+}
+
+.customer-avatar-wrap {
+  position: relative;
+  margin-bottom: 12px;
 }
 
 .customer-avatar {
-  width: 60px;
-  height: 60px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  color: #1d4ed8;
-  border: 2px solid #3b82f6;
-  font-size: 1.6rem;
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: #047857;
+  border: 2.5px solid #059669;
+  font-size: 1.8rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.18);
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.25);
+}
+
+.avatar-verified-check {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #10b981;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .customer-badge {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  color: #15803d;
+  color: #047857;
   background: #dcfce7;
   border: 1px solid #bbf7d0;
   border-radius: 999px;
-  padding: 3px 10px;
-  margin-bottom: 6px;
+  padding: 3px 12px;
+  margin-bottom: 8px;
 }
 
 .customer-name {
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: #0f172a;
   margin: 0 0 2px 0;
 }
 
 .customer-phone {
-  font-size: 0.9rem;
-  color: #2563eb;
-  font-weight: 600;
+  font-size: 0.92rem;
+  color: #059669;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+}
+
+.customer-welcome-hint {
+  font-size: 0.78rem;
+  color: #64748b;
   margin: 0;
 }
 
@@ -13209,7 +13446,7 @@ html.welcome-active #customer-login-modal,
   background: transparent;
   border: 1.5px solid #e2e8f0;
   border-radius: 12px;
-  height: 42px;
+  height: 44px;
   color: #475569;
   font-size: 0.86rem;
   font-weight: 600;
@@ -13240,36 +13477,50 @@ html.welcome-active #customer-login-modal,
     max-width: 100%;
   }
   .modern-auth-header {
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
   .brand-icon-pod {
-    width: 40px;
-    height: 46px;
+    width: 42px;
+    height: 48px;
+    border-radius: 12px;
+  }
+  .brand-vel-svg {
+    width: 26px;
+    height: 32px;
   }
   .brand-main-title {
     font-size: 1.25rem;
   }
+  .auth-trust-badges {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .auth-trust-pill {
+    padding: 3px 8px;
+    font-size: 0.68rem;
+  }
   .modern-card-frame {
-    padding: 22px 18px;
+    padding: 22px 18px 18px;
     border-radius: 18px;
     border-color: #cbd5e1;
     box-shadow: 0 10px 25px -8px rgba(15, 23, 42, 0.08);
   }
   .card-title-group {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
   .card-main-heading {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
   }
   .card-sub-heading {
     font-size: 0.8rem;
   }
   .input-field-wrapper {
-    height: 44px;
+    height: 46px;
   }
   .btn-royal-auth {
-    height: 46px;
-    font-size: 0.95rem;
+    height: 48px;
+    font-size: 0.96rem;
     margin-top: 16px;
   }
 }
+

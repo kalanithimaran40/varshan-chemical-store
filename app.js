@@ -4890,8 +4890,17 @@ function initApplicationLifecycle() {
         document.body.style.overflow = '';
         document.documentElement.style.overflow = '';
         window.syncModalScrollLock?.();
-      }, 350);
+      }, 280);
     }
+
+    // Direct navigation straight into chemical product catalog
+    setTimeout(() => {
+      const target = document.getElementById('products-catalog-list') || document.querySelector('.category-filter-bar') || document.getElementById('store-portal');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 120);
+
     return true;
   }
   window.proceedToStorePortal = proceedToStorePortal;
