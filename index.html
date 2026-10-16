@@ -12,10 +12,21 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Philosopher:wght@700&family=Playfair+Display:wght@700;800;900&family=Syne:wght@700;800&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=30.0">
+  <link rel="stylesheet" href="style.css?v=32.0">
   <script>
     window._isWelcomeAnimationActive = true;
     window._isLoginMandatory = true;
+
+    // Auto-migrate old cached query params e.g. ?v=10.0 to ?v=32.0
+    try {
+      var sp = new URLSearchParams(window.location.search);
+      var curV = sp.get('v');
+      if (curV && curV !== '32.0') {
+        sp.set('v', '32.0');
+        var newUrl = window.location.pathname + '?' + sp.toString() + window.location.hash;
+        window.history.replaceState(null, '', newUrl);
+      }
+    } catch (e) {}
 
     // Check returning user or active admin session on load
     window.initVelGateway = function() {
@@ -107,22 +118,14 @@
       // 1. Immediately clear scroll locks from body and html
       document.body.classList.remove('welcome-active', 'modal-open');
       document.documentElement.classList.remove('welcome-active', 'modal-open');
-      document.body.style.removeProperty('overflow');
-      document.documentElement.style.removeProperty('overflow');
-      document.body.style.removeProperty('height');
-      document.documentElement.style.removeProperty('height');
-      document.body.style.overflow = 'auto';
-      document.documentElement.style.overflow = 'auto';
+      document.body.style.cssText = 'overflow: auto !important; height: auto !important;';
+      document.documentElement.style.cssText = 'overflow: auto !important; height: auto !important;';
 
       // 2. Hide welcome screen immediately and permanently
       var ws = document.getElementById('welcome-screen');
       if (ws) {
         ws.classList.add('fade-out', 'hidden');
-        ws.style.setProperty('display', 'none', 'important');
-        ws.style.setProperty('visibility', 'hidden', 'important');
-        ws.style.setProperty('z-index', '-1', 'important');
-        ws.style.setProperty('pointer-events', 'none', 'important');
-        ws.style.setProperty('opacity', '0', 'important');
+        ws.style.cssText = 'display: none !important; visibility: hidden !important; z-index: -99999 !important; pointer-events: none !important; opacity: 0 !important;';
       }
 
       // 3. Hide customer login modal if open
@@ -130,17 +133,14 @@
       if (custModal) {
         custModal.classList.remove('mandatory-login-gate');
         custModal.classList.add('hidden');
-        custModal.style.setProperty('display', 'none', 'important');
-        custModal.style.setProperty('visibility', 'hidden', 'important');
-        custModal.style.setProperty('z-index', '-1', 'important');
+        custModal.style.cssText = 'display: none !important; visibility: hidden !important; z-index: -99999 !important; pointer-events: none !important;';
       }
 
       // 4. Ensure store portal is completely visible
       var storePortal = document.getElementById('store-portal');
       if (storePortal) {
         storePortal.classList.remove('hidden');
-        storePortal.style.removeProperty('display');
-        storePortal.style.setProperty('display', 'block', 'important');
+        storePortal.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important;';
       }
 
       // 5. Refresh UI components
@@ -164,7 +164,7 @@
         if (target) {
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-      }, 40);
+      }, 50);
     };
 
     window.enterStoreAsCurrentUser = function() {
@@ -207,6 +207,8 @@
       if (cleanMobile.length > 10 && cleanMobile.startsWith('91')) cleanMobile = cleanMobile.slice(2);
       else if (cleanMobile.length > 10 && cleanMobile.startsWith('0')) cleanMobile = cleanMobile.slice(1);
       if (cleanMobile.length > 10) cleanMobile = cleanMobile.slice(0, 10);
+      if (cleanMobile.length === 9) cleanMobile = cleanMobile + '0';
+      if (!cleanMobile) cleanMobile = '9876543210';
 
       var city = (cityInput ? cityInput.value : '').trim();
 
@@ -226,7 +228,7 @@
       }
 
       var finalName = name || 'Customer';
-      var finalMobile = cleanMobile || '9876543210';
+      var finalMobile = cleanMobile;
       var finalAddress = city || 'Sivakasi / Direct Dispatch';
 
       if (submitBtn) {
@@ -264,12 +266,47 @@
       return false;
     };
 
-    // Initialize on DOM load
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', window.initVelGateway);
-    } else {
-      window.initVelGateway();
+    // Attach Gateway Event Listeners Directly via JavaScript (immune to CSP script-src-attr)
+    function attachGatewayListeners() {
+      if (typeof window.initVelGateway === 'function') {
+        window.initVelGateway();
+      }
+      var form = document.getElementById('vel-gateway-form');
+      var btn = document.getElementById('btn-vel-login-enter');
+      if (form && !form._gatewayBound) {
+        form._gatewayBound = true;
+        form.addEventListener('submit', function(e) {
+          if (e) {
+            try { e.preventDefault(); e.stopPropagation(); } catch (err) {}
+          }
+          window.submitVelGatewayLogin(e);
+          return false;
+        });
+      }
+      if (btn && !btn._gatewayBound) {
+        btn._gatewayBound = true;
+        btn.addEventListener('click', function(e) {
+          if (e) {
+            try { e.preventDefault(); e.stopPropagation(); } catch (err) {}
+          }
+          window.submitVelGatewayLogin(e);
+        });
+        btn.addEventListener('touchend', function(e) {
+          if (e) {
+            try { e.preventDefault(); e.stopPropagation(); } catch (err) {}
+          }
+          window.submitVelGatewayLogin(e);
+        }, { passive: false });
+      }
     }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', attachGatewayListeners);
+    } else {
+      attachGatewayListeners();
+    }
+    setTimeout(attachGatewayListeners, 50);
+    setTimeout(attachGatewayListeners, 250);
   </script>
 </head>
 <body class="welcome-active">
@@ -384,7 +421,7 @@
             </div>
 
             <!-- Primary Action Button (Modern Royal Ocean Sapphire & Jade) -->
-            <button type="submit" id="btn-vel-login-enter" class="btn-royal-auth" onclick="submitVelGatewayLogin(event)">
+            <button type="button" id="btn-vel-login-enter" class="btn-royal-auth" onclick="submitVelGatewayLogin(event)">
               <span class="btn-text-content">Enter Store &amp; View Products</span>
               <svg viewBox="0 0 24 24" class="btn-arrow-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -3479,7 +3516,7 @@
   <div id="toast-box" class="toast-popup hidden"></div>
 
   <!-- Main Application Script (High Priority, Zero External Blocking) -->
-  <script src="app.js?v=26.0"></script>
+  <script src="app.js?v=32.0"></script>
 </body>
 </html>
 

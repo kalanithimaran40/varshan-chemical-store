@@ -13301,6 +13301,10 @@ html.welcome-active #customer-login-modal,
   -webkit-tap-highlight-color: transparent;
 }
 
+.btn-royal-auth * {
+  pointer-events: none !important;
+}
+
 .btn-royal-auth::before {
   content: '';
   position: absolute;
@@ -13310,6 +13314,7 @@ html.welcome-active #customer-login-modal,
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
   transition: 0.5s;
+  pointer-events: none !important;
 }
 
 .btn-royal-auth:hover::before {
