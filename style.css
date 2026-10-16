@@ -12904,6 +12904,9 @@ html.welcome-active #customer-login-modal,
 .modern-auth-screen.hidden {
   display: none !important;
   pointer-events: none !important;
+  visibility: hidden !important;
+  z-index: -1 !important;
+  opacity: 0 !important;
 }
 
 /* -------------------------------------------------------------

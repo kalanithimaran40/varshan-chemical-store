@@ -215,7 +215,9 @@ window.modalBuyNow = function() {
 // (Guarantees scrolling ONLY on the first page / main storefront catalog)
 // =========================================================================
 window.syncModalScrollLock = function() {
-  const isWelcomeActive = document.querySelector('.welcome-screen:not(.hidden):not(.fade-out)');
+  const isWelcomeActive = document.querySelector(
+    '#welcome-screen:not(.hidden):not(.fade-out), .welcome-screen:not(.hidden):not(.fade-out), .modern-auth-screen:not(.hidden):not(.fade-out)'
+  );
   const isModalActive = document.querySelector(
     '.modal-backdrop:not(.hidden), .admin-modal:not(.hidden), .exit-splash-screen:not(.hidden)'
   );
@@ -4871,35 +4873,27 @@ function initApplicationLifecycle() {
       return false;
     }
 
-    if (hasEntered) return true;
-    hasEntered = true;
-    try { sessionStorage.setItem('varshan_store_entered', '1'); } catch (e) {}
+    if (typeof window.openProductPage === 'function') {
+      window.openProductPage();
+    } else {
+      hasEntered = true;
+      try { sessionStorage.setItem('varshan_store_entered', '1'); } catch (e) {}
 
-    if (storePortal) {
-      storePortal.classList.remove('hidden');
-    }
-
-    if (welcomeScreen) {
-      welcomeScreen.classList.add('fade-out');
-      welcomeScreen.style.pointerEvents = 'none';
-      setTimeout(() => {
-        welcomeScreen.classList.add('hidden');
-        welcomeScreen.style.display = 'none';
-        document.body.classList.remove('welcome-active');
-        document.documentElement.classList.remove('welcome-active');
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
-        window.syncModalScrollLock?.();
-      }, 280);
-    }
-
-    // Direct navigation straight into chemical product catalog
-    setTimeout(() => {
-      const target = document.getElementById('products-catalog-list') || document.querySelector('.category-filter-bar') || document.getElementById('store-portal');
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (storePortal) {
+        storePortal.classList.remove('hidden');
       }
-    }, 120);
+
+      if (welcomeScreen) {
+        welcomeScreen.classList.add('hidden', 'fade-out');
+        welcomeScreen.style.setProperty('display', 'none', 'important');
+      }
+
+      document.body.classList.remove('welcome-active');
+      document.documentElement.classList.remove('welcome-active');
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      window.syncModalScrollLock?.();
+    }
 
     return true;
   }
@@ -6012,7 +6006,7 @@ window.submitCustomerLoginForm = function(e) {
       refreshUserProfileUI();
     }
 
-    // Close Login Modal cleanly and unlock scrolling
+    // Close Login Modal cleanly, unlock scrolling, and open product page directly
     setTimeout(() => {
       window._isLoginMandatory = false;
       if (typeof window.closeCustomerLoginModal === 'function') {
@@ -6023,7 +6017,11 @@ window.submitCustomerLoginForm = function(e) {
           modal.classList.add('hidden');
           modal.style.setProperty('display', 'none', 'important');
         }
-        window.syncModalScrollLock?.();
+      }
+
+      // Open the product catalog page
+      if (typeof window.openProductPage === 'function') {
+        window.openProductPage();
       }
 
       if (submitBtn) {
@@ -6031,10 +6029,10 @@ window.submitCustomerLoginForm = function(e) {
         submitBtn.innerHTML = origBtnHtml;
       }
       window._isSubmittingCustomerLogin = false;
-    }, 280);
+    }, 150);
 
     if (typeof showToast === 'function') {
-      showToast(`✅ Welcome, ${name}! Profile saved successfully.`);
+      showToast(`✅ Welcome, ${name}! Product catalog unlocked.`);
     }
   } catch (err) {
     console.error('Login submit error:', err);

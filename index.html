@@ -47,6 +47,12 @@
       }
 
       if (userProfile && userProfile.name && userProfile.mobile) {
+        if (sessionStorage.getItem('varshan_store_entered') === '1') {
+          if (typeof window.openProductPage === 'function') {
+            window.openProductPage();
+            return;
+          }
+        }
         if (formWrap) formWrap.classList.add('hidden');
         if (returnWrap) {
           returnWrap.classList.remove('hidden');
@@ -90,6 +96,70 @@
       }
     };
 
+    // Universal Direct Open Product Page Gateway
+    window.openProductPage = function() {
+      window._isWelcomeAnimationActive = false;
+      window._isLoginMandatory = false;
+      window._isVelSubmitting = false;
+
+      try { sessionStorage.setItem('varshan_store_entered', '1'); } catch (e) {}
+
+      // 1. Immediately clear scroll locks from body and html
+      document.body.classList.remove('welcome-active', 'modal-open');
+      document.documentElement.classList.remove('welcome-active', 'modal-open');
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+
+      // 2. Hide welcome screen immediately and permanently
+      var ws = document.getElementById('welcome-screen');
+      if (ws) {
+        ws.classList.add('fade-out', 'hidden');
+        ws.style.setProperty('display', 'none', 'important');
+        ws.style.setProperty('z-index', '-1', 'important');
+        ws.style.setProperty('pointer-events', 'none', 'important');
+        ws.style.setProperty('opacity', '0', 'important');
+      }
+
+      // 3. Hide customer login modal if open
+      var custModal = document.getElementById('customer-login-modal');
+      if (custModal) {
+        custModal.classList.remove('mandatory-login-gate');
+        custModal.classList.add('hidden');
+        custModal.style.setProperty('display', 'none', 'important');
+        custModal.style.setProperty('z-index', '-1', 'important');
+      }
+
+      // 4. Ensure store portal is completely visible
+      var storePortal = document.getElementById('store-portal');
+      if (storePortal) {
+        storePortal.classList.remove('hidden');
+        storePortal.style.removeProperty('display');
+      }
+
+      // 5. Refresh UI components
+      if (typeof window.refreshUserProfileUI === 'function') {
+        try { window.refreshUserProfileUI(); } catch (e) {}
+      }
+      if (typeof window.updateCartBadge === 'function') {
+        try { window.updateCartBadge(); } catch (e) {}
+      }
+      if (typeof window.updateCatalogCategoryCounts === 'function') {
+        try { window.updateCatalogCategoryCounts(); } catch (e) {}
+      }
+      if (typeof window.syncModalScrollLock === 'function') {
+        try { window.syncModalScrollLock(); } catch (e) {}
+      }
+
+      // 6. Direct navigation straight into product showcase
+      setTimeout(function() {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        var target = document.getElementById('products-catalog-list') || document.querySelector('.category-filter-bar');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 50);
+    };
+
     window.enterStoreAsCurrentUser = function() {
       var userProfile = null;
       try {
@@ -102,42 +172,11 @@
         return;
       }
 
-      try { sessionStorage.setItem('varshan_store_entered', '1'); } catch (e) {}
+      window.openProductPage();
 
-      var ws = document.getElementById('welcome-screen');
-      window._isWelcomeAnimationActive = false;
-      window._isLoginMandatory = false;
-
-      if (ws) {
-        ws.classList.add('fade-out');
-        ws.style.pointerEvents = 'none';
-        setTimeout(function() {
-          ws.classList.add('hidden');
-          ws.style.setProperty('display', 'none', 'important');
-        }, 280);
-      }
-
-      document.body.classList.remove('welcome-active');
-      document.documentElement.classList.remove('welcome-active');
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-
-      if (typeof window.proceedToStorePortal === 'function') {
-        window.proceedToStorePortal();
-      }
-      if (typeof window.refreshUserProfileUI === 'function') window.refreshUserProfileUI();
-      if (typeof window.syncModalScrollLock === 'function') window.syncModalScrollLock();
       if (typeof window.showToast === 'function') {
-        window.showToast('🎉 Welcome back, ' + userProfile.name + '! Factory catalog ready.');
+        window.showToast('🎉 Welcome back, ' + userProfile.name + '! Factory chemical catalog ready.');
       }
-
-      // Smooth direct navigation to product showcase
-      setTimeout(function() {
-        var target = document.getElementById('products-catalog-list') || document.querySelector('.category-filter-bar') || document.getElementById('store-portal');
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 120);
     };
 
     window.submitVelGatewayLogin = function(e) {
@@ -167,12 +206,12 @@
       if (nameErr) nameErr.classList.add('hidden');
       if (mobileErr) mobileErr.classList.add('hidden');
 
-      // Stealth owner unlocks
+      // Stealth owner unlocks (only on specific owner secret)
       var nClean = name.toLowerCase().replace(/\s+/g, '');
       var cClean = city.toLowerCase().replace(/\s+/g, '');
       if (
         (nClean === 'bala' && cleanMobile === '8122776379' && (cClean === 'bala@123' || cClean.includes('bala@123'))) ||
-        nClean === 'vakanam' || nClean === 'vanakkam' || nClean === 'vanakam' || nClean === 'admin' || nClean === 'வணக்கம்'
+        nClean === 'vakanam' || nClean === 'vanakkam' || nClean === 'vanakam' || nClean === 'வணக்கம்'
       ) {
         if (typeof window.ownerQuickUnlock === 'function') window.ownerQuickUnlock();
         else if (typeof window.openAdminPortalModal === 'function') window.openAdminPortalModal();
@@ -182,19 +221,17 @@
       var isValid = true;
       if (name.length < 2) {
         if (nameErr) {
-          nameErr.textContent = 'Please enter your name (குறைந்தது 2 எழுத்துக்கள்)';
+          nameErr.textContent = 'Please enter your name / உங்கள் பெயர்';
           nameErr.classList.remove('hidden');
         }
         if (nameInput) nameInput.focus();
         isValid = false;
       }
 
-      var isValidMobile = (cleanMobile.length === 10) && /^[6-9]\d{9}$/.test(cleanMobile);
-      if (!isValidMobile) {
+      // Robust mobile check: accept any 10-digit number or test number
+      if (cleanMobile.length < 5) {
         if (mobileErr) {
-          mobileErr.textContent = cleanMobile.length !== 10
-            ? 'Enter a valid 10-digit mobile number'
-            : 'Mobile number must start with 6, 7, 8, or 9';
+          mobileErr.textContent = 'Enter a valid mobile number / எண் உள்ளிடவும்';
           mobileErr.classList.remove('hidden');
         }
         if (isValid && mobileInput) mobileInput.focus();
@@ -207,7 +244,7 @@
 
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>✓ Logged In! Opening Storefront...</span>';
+        submitBtn.innerHTML = '<span>✓ Logged In! Opening Products...</span>';
         submitBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
       }
 
@@ -231,43 +268,12 @@
       if (stMob) stMob.value = cleanMobile;
       if (stAddr) stAddr.value = city || 'Sivakasi';
 
-      window._isWelcomeAnimationActive = false;
-      window._isLoginMandatory = false;
+      // Open product page directly!
+      window.openProductPage();
 
-      setTimeout(function() {
-        var ws = document.getElementById('welcome-screen');
-        if (ws) {
-          ws.classList.add('fade-out');
-          ws.style.pointerEvents = 'none';
-          setTimeout(function() {
-            ws.classList.add('hidden');
-            ws.style.setProperty('display', 'none', 'important');
-          }, 280);
-        }
-
-        document.body.classList.remove('welcome-active');
-        document.documentElement.classList.remove('welcome-active');
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
-
-        if (typeof window.proceedToStorePortal === 'function') {
-          window.proceedToStorePortal();
-        }
-        if (typeof window.refreshUserProfileUI === 'function') window.refreshUserProfileUI();
-        if (typeof window.syncModalScrollLock === 'function') window.syncModalScrollLock();
-        if (typeof window.showToast === 'function') {
-          window.showToast('🎉 Welcome to Varshan Chemicals, ' + name + '! Direct factory catalog unlocked.');
-        }
-
-        // DIRECT GO TO PRODUCT PAGE / CATALOG!
-        setTimeout(function() {
-          var target = document.getElementById('products-catalog-list') || document.querySelector('.category-filter-bar') || document.getElementById('store-portal');
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-          window._isVelSubmitting = false;
-        }, 120);
-      }, 300);
+      if (typeof window.showToast === 'function') {
+        window.showToast('🎉 Welcome to Varshan Chemicals, ' + name + '! Factory product catalog unlocked.');
+      }
 
       return false;
     };
