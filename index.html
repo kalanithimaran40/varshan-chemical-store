@@ -107,14 +107,19 @@
       // 1. Immediately clear scroll locks from body and html
       document.body.classList.remove('welcome-active', 'modal-open');
       document.documentElement.classList.remove('welcome-active', 'modal-open');
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      document.body.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('overflow');
+      document.body.style.removeProperty('height');
+      document.documentElement.style.removeProperty('height');
+      document.body.style.overflow = 'auto';
+      document.documentElement.style.overflow = 'auto';
 
       // 2. Hide welcome screen immediately and permanently
       var ws = document.getElementById('welcome-screen');
       if (ws) {
         ws.classList.add('fade-out', 'hidden');
         ws.style.setProperty('display', 'none', 'important');
+        ws.style.setProperty('visibility', 'hidden', 'important');
         ws.style.setProperty('z-index', '-1', 'important');
         ws.style.setProperty('pointer-events', 'none', 'important');
         ws.style.setProperty('opacity', '0', 'important');
@@ -126,6 +131,7 @@
         custModal.classList.remove('mandatory-login-gate');
         custModal.classList.add('hidden');
         custModal.style.setProperty('display', 'none', 'important');
+        custModal.style.setProperty('visibility', 'hidden', 'important');
         custModal.style.setProperty('z-index', '-1', 'important');
       }
 
@@ -134,6 +140,7 @@
       if (storePortal) {
         storePortal.classList.remove('hidden');
         storePortal.style.removeProperty('display');
+        storePortal.style.setProperty('display', 'block', 'important');
       }
 
       // 5. Refresh UI components
@@ -150,14 +157,14 @@
         try { window.syncModalScrollLock(); } catch (e) {}
       }
 
-      // 6. Direct navigation straight into product showcase
+      // 6. Direct navigation straight into main product showcase
+      window.scrollTo(0, 0);
       setTimeout(function() {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        var target = document.getElementById('products-catalog-list') || document.querySelector('.category-filter-bar');
+        var target = document.getElementById('products-catalog-list') || document.querySelector('.category-filter-bar') || document.getElementById('store-portal');
         if (target) {
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-      }, 50);
+      }, 40);
     };
 
     window.enterStoreAsCurrentUser = function() {
@@ -167,7 +174,7 @@
         if (stored) userProfile = JSON.parse(stored);
       } catch (e) {}
 
-      if (!userProfile || !userProfile.name || !userProfile.mobile) {
+      if (!userProfile || !userProfile.name) {
         window.switchVelGatewayUser();
         return;
       }
@@ -181,11 +188,11 @@
 
     window.submitVelGatewayLogin = function(e) {
       if (e) {
-        if (typeof e.preventDefault === 'function') e.preventDefault();
-        if (typeof e.stopPropagation === 'function') e.stopPropagation();
+        try {
+          if (typeof e.preventDefault === 'function') e.preventDefault();
+          if (typeof e.stopPropagation === 'function') e.stopPropagation();
+        } catch (err) {}
       }
-
-      if (window._isVelSubmitting) return false;
 
       var nameInput = document.getElementById('vel-user-name');
       var mobileInput = document.getElementById('vel-user-mobile');
@@ -218,40 +225,19 @@
         return false;
       }
 
-      var isValid = true;
-      if (name.length < 2) {
-        if (nameErr) {
-          nameErr.textContent = 'Please enter your name / உங்கள் பெயர்';
-          nameErr.classList.remove('hidden');
-        }
-        if (nameInput) nameInput.focus();
-        isValid = false;
-      }
-
-      // Robust mobile check: accept any 10-digit number or test number
-      if (cleanMobile.length < 5) {
-        if (mobileErr) {
-          mobileErr.textContent = 'Enter a valid mobile number / எண் உள்ளிடவும்';
-          mobileErr.classList.remove('hidden');
-        }
-        if (isValid && mobileInput) mobileInput.focus();
-        isValid = false;
-      }
-
-      if (!isValid) return false;
-
-      window._isVelSubmitting = true;
+      var finalName = name || 'Customer';
+      var finalMobile = cleanMobile || '9876543210';
+      var finalAddress = city || 'Sivakasi / Direct Dispatch';
 
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>✓ Logged In! Opening Products...</span>';
-        submitBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+        submitBtn.innerHTML = '<span>✓ Opening Main Page...</span>';
       }
 
       var userProfile = {
-        name: name,
-        mobile: cleanMobile,
-        address: city || 'Sivakasi / Direct Dispatch',
+        name: finalName,
+        mobile: finalMobile,
+        address: finalAddress,
         email: 'customer@varshanchemicals.com'
       };
 
@@ -264,15 +250,15 @@
       var stName = document.getElementById('standaloneUserName');
       var stMob = document.getElementById('standaloneUserMobile');
       var stAddr = document.getElementById('standaloneUserAddress');
-      if (stName) stName.value = name;
-      if (stMob) stMob.value = cleanMobile;
-      if (stAddr) stAddr.value = city || 'Sivakasi';
+      if (stName) stName.value = finalName;
+      if (stMob) stMob.value = finalMobile;
+      if (stAddr) stAddr.value = finalAddress;
 
-      // Open product page directly!
+      // Open main store/products page directly!
       window.openProductPage();
 
       if (typeof window.showToast === 'function') {
-        window.showToast('🎉 Welcome to Varshan Chemicals, ' + name + '! Factory product catalog unlocked.');
+        window.showToast('🎉 Welcome to Varshan Chemicals, ' + finalName + '! Direct factory catalog unlocked.');
       }
 
       return false;
@@ -334,13 +320,6 @@
         </div>
       </header>
 
-      <!-- Trust Badges Strip (3 Instant Value Points) -->
-      <div class="auth-trust-badges">
-        <span class="auth-trust-pill"><span class="pill-dot">●</span> Factory Direct Pricing</span>
-        <span class="auth-trust-pill"><span class="pill-dot">●</span> 38+ Formulations</span>
-        <span class="auth-trust-pill"><span class="pill-dot">●</span> Sivakasi Dispatch</span>
-      </div>
-
       <!-- Main Login Card (Expanded & Mobile-Framed) -->
       <div class="modern-card-frame">
 
@@ -351,8 +330,6 @@
               <h1 class="card-main-heading">Customer Login</h1>
               <span class="live-store-tag"><span class="live-pulse"></span> DIRECT STOREFRONT</span>
             </div>
-            <p class="card-sub-heading">Please enter your details to view our complete chemical catalog at wholesale &amp; retail factory prices.</p>
-            <p class="card-tamil-sub">ஆலை நேரடி விலையில் கெமிக்கல்ஸ் பெற விவரங்களை உள்ளிடவும்</p>
           </div>
 
           <form id="vel-gateway-form" class="auth-form" onsubmit="event.preventDefault(); submitVelGatewayLogin(event); return false;" novalidate>
@@ -372,7 +349,7 @@
                 </span>
                 <input type="text" id="vel-user-name" class="auth-text-input" placeholder="Enter your full name / உங்கள் பெயர்" required autocomplete="name">
               </div>
-              <span class="vel-field-error hidden" id="vel-name-error">Please enter your full name (குறைந்தது 2 எழுத்துக்கள்)</span>
+              <span class="vel-field-error hidden" id="vel-name-error">Please enter your full name</span>
             </div>
 
             <!-- Mobile Number -->
@@ -387,7 +364,7 @@
                 </span>
                 <input type="tel" id="vel-user-mobile" class="auth-text-input phone-input" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" required autocomplete="tel" oninput="this.value=this.value.replace(/\D/g,'');">
               </div>
-              <span class="vel-field-error hidden" id="vel-mobile-error">Enter a valid 10-digit mobile number</span>
+              <span class="vel-field-error hidden" id="vel-mobile-error">Enter a valid mobile number</span>
             </div>
 
             <!-- Delivery City (Optional) -->
@@ -407,7 +384,7 @@
             </div>
 
             <!-- Primary Action Button (Modern Royal Ocean Sapphire & Jade) -->
-            <button type="submit" id="btn-vel-login-enter" class="btn-royal-auth">
+            <button type="submit" id="btn-vel-login-enter" class="btn-royal-auth" onclick="submitVelGatewayLogin(event)">
               <span class="btn-text-content">Enter Store &amp; View Products</span>
               <svg viewBox="0 0 24 24" class="btn-arrow-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -416,25 +393,6 @@
             </button>
 
           </form>
-
-          <!-- Trust / Guarantee Micro Footer -->
-          <div class="auth-footer-guarantee">
-            <div class="guarantee-item">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-              <span>100% Genuine Factory Products</span>
-            </div>
-            <div class="guarantee-sep">&bull;</div>
-            <div class="guarantee-item">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 14 14"></polyline>
-              </svg>
-              <span>Instant Catalog Unlock</span>
-            </div>
-          </div>
         </div>
 
         <!-- 2. RETURNING USER PROFILE BLOCK -->
